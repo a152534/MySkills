@@ -13,6 +13,7 @@ public class MySkillsDAO
 //testing
     Statement sqlstat = null;
     ResultSet RS = null;
+    String test;
 
     public MySkillsDAO() throws Exception
     {
