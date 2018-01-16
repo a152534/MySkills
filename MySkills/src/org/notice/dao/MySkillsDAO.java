@@ -10,10 +10,9 @@ public class MySkillsDAO
     String user = "dbuser", uName, password, sql;
     String passwd = "password";
     Connection con = null;
-//testing
     Statement sqlstat = null;
     ResultSet RS = null;
-    String test;
+   
 
     public MySkillsDAO() throws Exception
     {
