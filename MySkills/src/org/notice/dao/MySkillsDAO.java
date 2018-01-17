@@ -45,6 +45,7 @@ public class MySkillsDAO
 	{
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
+	    return false;
 	}
 	return true;
 
