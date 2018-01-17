@@ -1,0 +1,63 @@
+
+#Screen3
+
+SELECT 
+skill_name ,
+skill_id , 
+level ,
+num_endorsement , 
+avg_endorsement , 
+user_id
+ FROM myskills.v_user_skill_endorsements
+ where user_id = 'A000123'
+   xx
+
+
+
+
+#Screen 13: 
+#Resources for a skill 
+
+SELECT  
+user_id,
+first_name,
+surname,
+alias_name,
+num_endorsement,
+avg_endorsement
+
+FROM myskills.v_user_skill_endorsements where skill_id = XXXXXX
+
+===============================================
+#screen14
+#resources per skill
+
+v_endorsements_per_skill
+
+
+
+
+
+
+
+===============================================
+# screen15:
+#all resources with total endorsements 
+
+
+SELECT  
+user_id,
+first_name,
+surname,
+alias_name,
+sum(num_endorsement) as num_endorsements,
+avg(avg_endorsement) as avg_endorsements
+
+FROM myskills.v_user_skill_endorsements  
+group by user_id,
+first_name,
+surname,
+alias_name
+
+
+
