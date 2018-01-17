@@ -50,18 +50,21 @@ public class MySkillsDAO
 
     }
 
-    public void queryDB(String sql)
+    public ResultSet queryDB(String sql)
     {
 
 	try
 	{
-	    sqlstat.executeQuery(sql);
+	    RS = sqlstat.executeQuery(sql);
+	               
+            
 	} catch (SQLException e)
 	{
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
+	   
 	}
-	
+	return RS;
     }
     
     public Connection getCon()
