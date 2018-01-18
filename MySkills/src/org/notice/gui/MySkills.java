@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -105,7 +106,8 @@ public class MySkills extends JFrame implements ActionListener {
 		if(transaction.getObject() == null ) {
 			JOptionPane.showConfirmDialog(this, "Failed to validate user");
 		} else {
-			loggedOnUser = (User)transaction.getObject() ; 
+			ArrayList<User> users = (ArrayList<User>)transaction.getObject();
+			loggedOnUser = users.get(0);
 			JOptionPane.showConfirmDialog(this, "Logged on " + loggedOnUser.getFirstName());
 		}
 		

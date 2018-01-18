@@ -1,8 +1,5 @@
 package org.notice.server;
 
-
- 
-
 import org.notice.buscontrol.*;
 
 import java.io.IOException;
@@ -10,16 +7,16 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class SkillServer {
-	private BusinessControl bc ;
+	private BusinessControl bc;
 	private ServerSocket serverSocket;
 	private Socket clientSocket;
 	private SkillsServerWorkerThread worker;
-	
+
 	public SkillServer() {
 		bc = new BusinessControl();
 		System.out.println("Server running ");
 		serverSocket = null;
-		
+
 		try {
 			serverSocket = new ServerSocket(60606);
 		} catch (IOException e) {
