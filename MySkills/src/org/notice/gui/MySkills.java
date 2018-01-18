@@ -8,6 +8,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import org.notice.beans.User;
+import org.notice.client.SkillClient;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
@@ -18,7 +22,9 @@ public class MySkills extends JFrame implements ActionListener {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JPasswordField passwordField;
-
+	private User loggedOnUser ; 
+	private SkillClient client ; 
+	private JButton btnLogin;
 	/**
 	 * Launch the application.
 	 */
@@ -68,7 +74,7 @@ public class MySkills extends JFrame implements ActionListener {
 		passwordField.setBounds(201, 126, 114, 19);
 		panel.add(passwordField);
 		
-		JButton btnLogin = new JButton("Login");
+	    btnLogin = new JButton("Login");
 		btnLogin.setBounds(147, 198, 117, 25);
 		panel.add(btnLogin);
 		btnLogin.addActionListener(this);
@@ -77,7 +83,25 @@ public class MySkills extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		setBounds(100, 100, 725, 392);
+		Object source = e.getSource();
+		
+		if(source == btnLogin)
+		{
+			setBounds(100, 100, 725, 392);
+		}
+		
+		 
 		
 	}
+	private void addPanels() {
+		//Create JtabbedPane
+		//create myprofile panel
+		//create colleauge panel 
+		//create skillSearchPanel
+		//create reportsPanel
+		//remove loginPanel
+		//add JtabbedPane
+		//add panels
+	}
 }
+
