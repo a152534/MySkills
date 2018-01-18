@@ -126,6 +126,7 @@ public class BusinessControl
 					+ "surname, alias_name, email, phone_num from user where user_id = '" + userId + "'");
 			
 			//Write to ArrayList
+			userResult.next();
 			String userID = userResult.getString("user_id");
 			String firstName = userResult.getString("first_name");
 			String surname = userResult.getString("surname");
@@ -161,6 +162,7 @@ public class BusinessControl
 					 " or first_name like '" + userId +  "%' or surname like '" + userId + "%'");
 			
 			//Write to ArrayList
+			userResult.next();
 			String userID = userResult.getString("user_id");
 			String firstName = userResult.getString("first_name");
 			String surname = userResult.getString("surname");
