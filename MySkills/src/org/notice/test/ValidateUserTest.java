@@ -1,4 +1,4 @@
-package org.notice.buscontrol;
+package org.notice.test;
 
 import static org.junit.Assert.*;
 
