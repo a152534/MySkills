@@ -53,7 +53,9 @@ public class BusinessControl
 
              case "getUserList" : 
              {
-         	
+        	 userId = transaction.getObject().toString();
+                 transaction.setObject(this.getUserList(userId));
+                 transaction.setDescription("UserList");
          	break;
              }
                 
@@ -111,10 +113,45 @@ public class BusinessControl
     
     public ArrayList<User> getUser(String userId)
 	{
+//		
 		UserList = new ArrayList<User>();
-		this.userId = userId;
 		if (validateUser(userId))
 		{
+		
+		try
+		{
+			//Fetch from database
+			
+			userResult = skillsDB.queryDB("select user_id, first_name, "
+					+ "surname, alias_name, email, phone_num from user where user_id = '" + userId + "'");
+			
+			//Write to ArrayList
+			String userID = userResult.getString("user_id");
+			String firstName = userResult.getString("first_name");
+			String surname = userResult.getString("surname");
+			String aliasName = userResult.getString("alias_name");
+			String email = userResult.getString("email");
+			String phoneNum = userResult.getString("phone_num");
+			 
+			UserList.add(new User(userID, firstName, surname, aliasName, email, phoneNum));
+		} catch (SQLException se)
+		{
+			System.out.println("ERROR: " + se.getMessage());
+			return null;
+		}
+		return UserList;
+		}
+		else
+		{
+		 return   UserList= null;
+		    
+		}
+	}
+    
+    public ArrayList<User> getUserList(String userId)
+	{
+		UserList = new ArrayList<User>();
+		this.userId = userId;
 		
 		try
 		{
@@ -144,12 +181,7 @@ public class BusinessControl
 			return null;
 		}
 		return UserList;
-		}
-		else
-		{
-		 return   UserList= null;
-		    
-		}
+		
 	}
     
     public boolean deleteUserSkill(String userSkillId)
