@@ -1,6 +1,8 @@
 package org.notice.client;
 
-public class Transaction {
+import java.io.Serializable;
+
+public class Transaction implements Serializable{
 	String Description ; 
 	Object object ;
 	

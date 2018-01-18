@@ -11,8 +11,10 @@ import javax.swing.border.EmptyBorder;
 
 import org.notice.beans.User;
 import org.notice.client.SkillClient;
+import org.notice.client.Transaction;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
@@ -20,11 +22,12 @@ import javax.swing.JButton;
 public class MySkills extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField txtName;
 	private JPasswordField passwordField;
 	private User loggedOnUser ; 
 	private SkillClient client ; 
 	private JButton btnLogin;
+	private Transaction transaction ; 
 	/**
 	 * Launch the application.
 	 */
@@ -45,6 +48,7 @@ public class MySkills extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public MySkills() {
+		client = new SkillClient();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 //	
@@ -65,10 +69,10 @@ public class MySkills extends JFrame implements ActionListener {
 		lblPassword.setBounds(100, 128, 97, 15);
 		panel.add(lblPassword);
 		
-		textField = new JTextField();
-		textField.setBounds(201, 81, 114, 19);
-		panel.add(textField);
-		textField.setColumns(10);
+		txtName = new JTextField();
+		txtName.setBounds(201, 81, 114, 19);
+		panel.add(txtName);
+		txtName.setColumns(10);
 		
 		passwordField = new JPasswordField();
 		passwordField.setBounds(201, 126, 114, 19);
@@ -87,12 +91,26 @@ public class MySkills extends JFrame implements ActionListener {
 		
 		if(source == btnLogin)
 		{
-			setBounds(100, 100, 725, 392);
+			validateUser();
 		}
 		
 		 
 		
 	}
+	private void validateUser() {
+		String userId = txtName.getText();
+		transaction = new Transaction("getUser", userId);
+		transaction = client.sendTransaction(transaction);
+		
+		if(transaction.getObject() == null ) {
+			JOptionPane.showConfirmDialog(this, "Failed to validate user");
+		} else {
+			loggedOnUser = (User)transaction.getObject() ; 
+			JOptionPane.showConfirmDialog(this, "Logged on " + loggedOnUser.getFirstName());
+		}
+		
+	}
+
 	private void addPanels() {
 		//Create JtabbedPane
 		//create myprofile panel
