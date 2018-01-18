@@ -7,14 +7,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import org.notice.beans.User;
+import org.notice.client.Transaction;
 import org.notice.dao.MySkillsDAO;
 
 public class BusinessControl
 {
-    private String userId;
+    private String userId , action;
     private MySkillsDAO skillsDB  = null;
     private ResultSet RS = null;
-    
+    private Transaction transaction = null;
     private MySkillsDAO userAccess = null;
     private ArrayList<User> UserList = null;
 	private Connection userConnect = null;
@@ -24,6 +25,42 @@ public class BusinessControl
     public BusinessControl()
     {
 
+    }
+    
+    public Transaction handleTransaction(Transaction transaction)
+    {
+	this.transaction = transaction;
+	action = transaction.getDescription();
+	switch(action)
+
+        {
+
+             case "getUser" :
+
+             {
+        	userId = transaction.getObject().toString();
+                transaction.setObject(this.getUser(userId));
+                transaction.setDescription("User");
+                
+                break;
+
+             }
+
+             case "getUserList" : 
+             {
+         	
+         	break;
+             }
+                
+             
+         default : System.out.println("Incorrect selection"); 
+
+ 
+        }
+	
+	return transaction;
+	
+	
     }
     
     public boolean ValidateUser(String userId)
