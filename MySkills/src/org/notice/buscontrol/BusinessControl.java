@@ -65,15 +65,15 @@ public class BusinessControl
 	{
 		UserList = new ArrayList<User>();
 		this.userId = userId;
-		if ValidateUser(userId)
+		if (ValidateUser(userId))
 		{
 		
 		try
 		{
 			//Fetch from database
 			
-			userResult = skillsDB.queryDB("select * from user where user_id like '" + user_ID + "%'" +
-					 " or first_name like '" + user_ID +  "%' or surname like '" + user_ID + "%'");
+			userResult = skillsDB.queryDB("select * from user where user_id like '" + userId + "%'" +
+					 " or first_name like '" + userId +  "%' or surname like '" + userId + "%'");
 			
 			//Write to ArrayList
 			String userID = userResult.getString("user_id");
@@ -93,7 +93,7 @@ public class BusinessControl
 		}
 		else
 		{
-		    UserList= null;
+		 return   UserList= null;
 		    
 		}
 	}
