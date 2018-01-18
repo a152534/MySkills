@@ -29,7 +29,8 @@ public class GetUser
 		{
 			//Fetch from database
 			Usertate = userConnect.createStatement();
-			userResult = Usertate.executeQuery("select * from user where user_id = '" + user_ID + "'");
+			userResult = Usertate.executeQuery("select user_id, first_name, "
+					+ "surname, alias_name, email, phone_num from user where user_id = '" + user_ID + "'");
 			
 			//Write to ArrayList
 			String userID = userResult.getString("user_id");

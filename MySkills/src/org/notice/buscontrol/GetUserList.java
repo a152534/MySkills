@@ -29,7 +29,8 @@ public class GetUserList
 		{
 			//Fetch from database
 			Usertate = userConnect.createStatement();
-			userResult = Usertate.executeQuery("select * from user where user_id like '" + user_ID + "%'" +
+			userResult = Usertate.executeQuery("select user_id, first_name, surname,"
+					+ "alias_name, email, phone_num from user where user_id like '" + user_ID + "%'" +
 					 " or first_name like '" + user_ID +  "%' or surname like '" + user_ID + "%'");
 			
 			//Write to ArrayList
