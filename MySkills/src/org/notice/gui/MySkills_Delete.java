@@ -18,9 +18,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
+import javax.swing.JTabbedPane;
 import javax.swing.JButton;
 
-public class MySkills extends JFrame implements ActionListener {
+public class MySkills_Delete extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JTextField txtName;
@@ -29,6 +30,11 @@ public class MySkills extends JFrame implements ActionListener {
 	private SkillClient client ; 
 	private JButton btnLogin;
 	private Transaction transaction ; 
+	private JTabbedPane tabbedPane ; 
+	 
+	
+	private JPanel basePanel = null, myProfile = null, skillsSearch = null, endorseSkills = null, skillsAdmin = null, mySkillsReports = null, logOff = null;
+	 
 	/**
 	 * Launch the application.
 	 */
@@ -36,7 +42,7 @@ public class MySkills extends JFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MySkills frame = new MySkills();
+					MySkills_Delete frame = new MySkills_Delete();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -48,7 +54,7 @@ public class MySkills extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public MySkills() {
+	public MySkills_Delete() {
 		client = new SkillClient();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -109,11 +115,35 @@ public class MySkills extends JFrame implements ActionListener {
 			ArrayList<User> users = (ArrayList<User>)transaction.getObject();
 			loggedOnUser = users.get(0);
 			JOptionPane.showConfirmDialog(this, "Logged on " + loggedOnUser.getFirstName());
+			addPanels();
 		}
 		
 	}
 
 	private void addPanels() {
+		
+
+		 
+		 
+		contentPane.removeAll();
+		 
+		
+		tabbedPane = new JTabbedPane() ; 
+		myProfile = new JPanel();
+		skillsSearch = new JPanel();
+		endorseSkills = new JPanel();
+		skillsAdmin = new JPanel();
+		mySkillsReports = new JPanel();
+		
+		tabbedPane.add("My Profile", myProfile) ; 
+		tabbedPane.add("Colleague" , endorseSkills) ; 
+		tabbedPane.add("SkillSearch", skillsAdmin) ; 
+		
+		contentPane.add(tabbedPane);
+		
+		 
+
+		
 		//Create JtabbedPane
 		//create myprofile panel
 		//create colleauge panel 
