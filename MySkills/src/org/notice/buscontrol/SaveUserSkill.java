@@ -8,7 +8,8 @@ import org.notice.dao.*;
 public class SaveUserSkill
 {
 
-private String userId , skillId, level;
+private String userId;
+private int skillId, level; 
 private MySkillsDAO skillsDB  = null;
 private ResultSet RS = null;
 
@@ -18,7 +19,7 @@ public SaveUserSkill()
     
 }
 
-public boolean SaveUSkill(String userId , String skillId, String level)
+public boolean SaveUSkill(String userId , int skillId, int level)
 {
     this.userId = userId;
     this.skillId = skillId;
@@ -26,23 +27,22 @@ public boolean SaveUSkill(String userId , String skillId, String level)
    
     try
     {
-	skillsDB = new MySkillsDAO();
-	RS = skillsDB.queryDB("SELECT * from user_skill where user_id = '" + userId + "' and skill_id = '" + skillId + "'");
+    skillsDB = new MySkillsDAO();
+	RS = skillsDB.queryDB("SELECT * from user_skill where user_id = '" + userId + "' and skill_id = " + skillId);
 	
 	if (!RS.next())
 	{
-		skillsDB.updateDB("insert into user_skill values(" + userId + ", " + skillId + ", " + level + ")");
-		 
+		skillsDB.updateDB("insert into user_skill values(null, '" + userId + "', " + skillId + ", " + level + ", null");
+	
 	}
 	else
 			
-		
-		skillsDB.updateDB("update user_skill set level = '" +  level + "' where user_id = '" + userId + "'" + " and skill_id = '" + skillId + "'");
-	
+		skillsDB.updateDB("update user_skill set level = " +  level + " where user_id = '" + userId + "' and skill_id = " + skillId);
     } 
     catch (SQLException e)
     {
 	e.printStackTrace();
+	 
 	return false;
     } 
     catch (Exception e)
