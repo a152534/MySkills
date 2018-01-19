@@ -165,7 +165,8 @@ public class BusinessControl
 					 " or first_name like '" + userId +  "%' or surname like '" + userId + "%'");
 			
 			//Write to ArrayList
-			userResult.next();
+			while (userResult.next())
+			{
 			String userID = userResult.getString("user_id");
 			String firstName = userResult.getString("first_name");
 			String surname = userResult.getString("surname");
@@ -174,6 +175,7 @@ public class BusinessControl
 			String phoneNum = userResult.getString("phone_num");
 			 
 			UserList.add(new User(userID, firstName, surname, aliasName, email, phoneNum));
+			}
 		} 
 		catch (SQLException se)
 		{
@@ -220,12 +222,15 @@ public class BusinessControl
 			userSkillResult = skillsDB.queryDB("SELECT * from user_skill where user_id = '" + user_ID + "'");
 			
 			//Write to ArrayList
+			while (userSkillResult.next())
+			{
 			int userSkillID = userSkillResult.getInt("user_skill_id");
 			String userID = userSkillResult.getString("user_id");
 			int skillID = userSkillResult.getInt("skill_id");
 			int level = userSkillResult.getInt("level");
 			Date addedDate = userSkillResult.getDate("added_date");
 			userSkillList.add(new UserSkills(userSkillID, userID, skillID, level, addedDate));
+			}
 		} 
 		catch (SQLException se)
 		{
