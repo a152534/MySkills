@@ -105,7 +105,7 @@ public class MyProfile extends JPanel
 		
 		btnSave = new JButton("Save");
 		btnSave.setFont(fontButton);
-		btnSave.setBounds(781, 80, 90, 25);
+		btnSave.setBounds(780, 80, 90, 25);
 		add(btnSave);
 		
 		btnAddSkill = new JButton("Add Skill");
