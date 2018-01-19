@@ -13,9 +13,9 @@ public class Reports extends JPanel
 {
 	private JButton btnSkills;
 	private JButton btnUsers;
-	private Font fontButton;
 	private JScrollPane scrollPaneSkillsUsers;
 	private JTable tableSkillsUsers;
+	private Font fontButton;
 	
 	public Reports() 
 	{
