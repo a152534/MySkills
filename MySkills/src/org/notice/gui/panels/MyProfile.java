@@ -3,6 +3,9 @@ package org.notice.gui.panels;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
+import org.notice.beans.CommonStuff;
+
 import java.awt.Font;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -27,12 +30,14 @@ public class MyProfile extends JPanel
 	private Font fontTextBox;
 	private Font fontButton;
 	private Font fontComboBox;
+	private CommonStuff commonStuff; 
 
 	/**
 	 * Create the panel.
 	 */
-	public MyProfile() 
+	public MyProfile(CommonStuff inCommonStuff) 
 	{
+		commonStuff = inCommonStuff ; 
 		setLayout(null);
 		
 		fontLabel = (new Font("Arial", Font.BOLD, 14));
@@ -126,5 +131,17 @@ public class MyProfile extends JPanel
 		tableEndorsementRequests = new JTable();
 		scrollPaneEndorsementRequests.setColumnHeaderView(tableEndorsementRequests);
 
+		populateUserInfo();
 	}
+
+	private void populateUserInfo() {
+		txtAlias.setText(commonStuff.getLoggedOnUser().getAliasName());
+		txtName.setText(commonStuff.getLoggedOnUser().getFirstName());
+		txtSurname.setText(commonStuff.getLoggedOnUser().getSurName());
+		txtPhone.setText(commonStuff.getLoggedOnUser().getPhoneNumber());
+		txtEmail.setText(commonStuff.getLoggedOnUser().getEmail());
+		
+		
+	}
+	
 }

@@ -21,9 +21,9 @@ public class MySkillsGUI extends JFrame
 		
 		this.setTitle("MySkills");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setBounds(100, 100, 800, 600);
+		this.setBounds(100, 100, 1000, 800);
 		//this.setLocation(400, 100);
-		this.setResizable(false);
+		//this.setResizable(false);
 
 
 		
