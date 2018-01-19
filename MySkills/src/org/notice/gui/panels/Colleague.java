@@ -16,17 +16,23 @@ public class Colleague extends JPanel
 	private JTable tableColleagueSkills;
 	private JButton btnRequestEndorsement;
 	private JButton btnSave;
+	private Font fontButton;
+	private Font fontComboBox;
+	
 	
 	public Colleague() 
 	{
+		fontButton = (new Font("Arial", Font.BOLD, 18));
+		fontComboBox = (new Font("Arial", Font.PLAIN, 14));
+		
 		setLayout(null);
 		comboBoxColleagueSearch = new JComboBox();
-		comboBoxColleagueSearch.setFont(new Font("Arial", Font.PLAIN, 14));
+		comboBoxColleagueSearch.setFont(fontComboBox);
 		comboBoxColleagueSearch.setBounds(240, 50, 302, 25);
 		add(comboBoxColleagueSearch);
 		
 		btnSearch = new JButton("Search");
-		btnSearch.setFont(new Font("Ariel", Font.BOLD, 18));
+		btnSearch.setFont(fontButton);
 		btnSearch.setBounds(552, 50, 108, 25);
 		add(btnSearch);
 		
@@ -39,13 +45,13 @@ public class Colleague extends JPanel
 		
 		btnRequestEndorsement = new JButton("Request Endorsement");
 		btnRequestEndorsement.setEnabled(false);
-		btnRequestEndorsement.setFont(new Font("Arial", Font.BOLD, 18));
+		btnRequestEndorsement.setFont(fontButton);
 		btnRequestEndorsement.setBounds(190, 500, 243, 25);
 		add(btnRequestEndorsement);
 		
 		btnSave = new JButton("Save");
 		btnSave.setEnabled(false);
-		btnSave.setFont(new Font("Arial", Font.BOLD, 18));
+		btnSave.setFont(fontButton);
 		btnSave.setBounds(620, 500, 90, 25);
 		add(btnSave);
 	}

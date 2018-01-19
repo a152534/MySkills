@@ -23,6 +23,10 @@ public class MyProfile extends JPanel
 	private JButton btnDeleteSkill;
 	private JScrollPane scrollPaneEndorsementRequests;
 	private JTable tableEndorsementRequests;
+	private Font fontLabel;
+	private Font fontTextBox;
+	private Font fontButton;
+	private Font fontComboBox;
 
 	/**
 	 * Create the panel.
@@ -31,57 +35,62 @@ public class MyProfile extends JPanel
 	{
 		setLayout(null);
 		
+		fontLabel = (new Font("Arial", Font.BOLD, 14));
+		fontTextBox = (new Font("Arial", Font.PLAIN, 12));
+		fontButton = (new Font("Arial", Font.BOLD, 18));
+		fontComboBox = (new Font("Arial", Font.PLAIN, 14));
+		
 		JLabel lblName = new JLabel("Name:");
-		lblName.setFont(new Font("Arial", Font.BOLD, 14));
+		lblName.setFont(fontLabel);
 		lblName.setBounds(20, 20, 60, 20);
 		add(lblName);
 		
 		JLabel lblSurname = new JLabel("Surname:");
-		lblSurname.setFont(new Font("Arial", Font.BOLD, 14));
+		lblSurname.setFont(fontLabel);
 		lblSurname.setBounds(20, 50, 75, 20);
 		add(lblSurname);
 		
 		JLabel lblAlias = new JLabel("Alias:");
-		lblAlias.setFont(new Font("Arial", Font.BOLD, 14));
+		lblAlias.setFont(fontLabel);
 		lblAlias.setBounds(20, 80, 60, 20);
 		add(lblAlias);
 		
 		txtName = new JTextField();
-		txtName.setFont(new Font("Arial", Font.PLAIN, 12));
+		txtName.setFont(fontTextBox);
 		txtName.setBounds(97, 20, 300, 20);
 		add(txtName);
 		txtName.setColumns(10);
 		
 		txtSurname = new JTextField();
-		txtSurname.setFont(new Font("Arial", Font.PLAIN, 12));
+		txtSurname.setFont(fontTextBox);
 		txtSurname.setBounds(97, 50, 300, 19);
 		add(txtSurname);
 		txtSurname.setColumns(10);
 		
 		txtAlias = new JTextField();
-		txtAlias.setFont(new Font("Arial", Font.PLAIN, 12));
+		txtAlias.setFont(fontTextBox);
 		txtAlias.setBounds(97, 80, 300, 19);
 		add(txtAlias);
 		txtAlias.setColumns(10);
 		
 		JLabel lblPhoneNumber = new JLabel("Phone number:");
-		lblPhoneNumber.setFont(new Font("Arial", Font.BOLD, 14));
+		lblPhoneNumber.setFont(fontLabel);
 		lblPhoneNumber.setBounds(450, 21, 136, 15);
 		add(lblPhoneNumber);
 		
 		txtPhone = new JTextField();
-		txtPhone.setFont(new Font("Arial", Font.PLAIN, 12));
+		txtPhone.setFont(fontTextBox);
 		txtPhone.setColumns(10);
 		txtPhone.setBounds(570, 21, 300, 19);
 		add(txtPhone);
 		
 		lblEmailAddress = new JLabel("Email Address:");
-		lblEmailAddress.setFont(new Font("Arial", Font.BOLD, 14));
+		lblEmailAddress.setFont(fontLabel);
 		lblEmailAddress.setBounds(450, 51, 131, 15);
 		add(lblEmailAddress);
 		
 		txtEmail = new JTextField();
-		txtEmail.setFont(new Font("Arial", Font.PLAIN, 12));
+		txtEmail.setFont(fontTextBox);
 		txtEmail.setColumns(10);
 		txtEmail.setBounds(570, 51, 300, 19);
 		add(txtEmail);
@@ -95,18 +104,18 @@ public class MyProfile extends JPanel
 		add(scrollPaneSkills);
 		
 		btnSave = new JButton("Save");
-		btnSave.setFont(new Font("Arial", Font.BOLD, 14));
+		btnSave.setFont(fontButton);
 		btnSave.setBounds(781, 80, 90, 25);
 		add(btnSave);
 		
 		btnAddSkill = new JButton("Add Skill");
-		btnAddSkill.setFont(new Font("Arial", Font.BOLD, 18));
+		btnAddSkill.setFont(fontButton);
 		btnAddSkill.setBounds(220, 392, 145, 25);
 		add(btnAddSkill);
 		
 		btnDeleteSkill = new JButton("Delete Skill");
 		btnDeleteSkill.setEnabled(false);
-		btnDeleteSkill.setFont(new Font("Arial", Font.BOLD, 18));
+		btnDeleteSkill.setFont(fontButton);
 		btnDeleteSkill.setBounds(535, 392, 145, 25);
 		add(btnDeleteSkill);
 		
