@@ -8,7 +8,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
 
-public class MyProfile extends JPanel {
+public class MyProfile extends JPanel 
+{
 	private JTextField txtName;
 	private JTextField txtSurname;
 	private JTextField txtAlias;
@@ -26,7 +27,8 @@ public class MyProfile extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public MyProfile() {
+	public MyProfile() 
+	{
 		setLayout(null);
 		
 		JLabel lblName = new JLabel("Name:");
@@ -94,7 +96,7 @@ public class MyProfile extends JPanel {
 		
 		btnSave = new JButton("Save");
 		btnSave.setFont(new Font("Arial", Font.BOLD, 14));
-		btnSave.setBounds(781, 80, 89, 23);
+		btnSave.setBounds(781, 80, 90, 25);
 		add(btnSave);
 		
 		btnAddSkill = new JButton("Add Skill");
