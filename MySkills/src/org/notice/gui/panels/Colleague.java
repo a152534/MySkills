@@ -10,7 +10,7 @@ import javax.swing.JTable;
 
 public class Colleague extends JPanel
 {
-	private JComboBox comboBoxSkillsSearch;
+	private JComboBox comboBoxColleagueSearch;
 	private JButton btnSearch;
 	private JScrollPane scrollPaneColleagueSkills;
 	private JTable tableColleagueSkills;
@@ -20,10 +20,10 @@ public class Colleague extends JPanel
 	public Colleague() 
 	{
 		setLayout(null);
-		comboBoxSkillsSearch = new JComboBox();
-		comboBoxSkillsSearch.setFont(new Font("Arial", Font.PLAIN, 14));
-		comboBoxSkillsSearch.setBounds(240, 50, 302, 25);
-		add(comboBoxSkillsSearch);
+		comboBoxColleagueSearch = new JComboBox();
+		comboBoxColleagueSearch.setFont(new Font("Arial", Font.PLAIN, 14));
+		comboBoxColleagueSearch.setBounds(240, 50, 302, 25);
+		add(comboBoxColleagueSearch);
 		
 		btnSearch = new JButton("Search");
 		btnSearch.setFont(new Font("Ariel", Font.BOLD, 18));
