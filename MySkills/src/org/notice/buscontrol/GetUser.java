@@ -33,6 +33,7 @@ public class GetUser
 					+ "surname, alias_name, email, phone_num from user where user_id = '" + user_ID + "'");
 			
 			//Write to ArrayList
+			userResult.next();
 			String userID = userResult.getString("user_id");
 			String firstName = userResult.getString("first_name");
 			String surname = userResult.getString("surname");

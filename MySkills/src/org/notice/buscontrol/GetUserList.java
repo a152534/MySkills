@@ -34,6 +34,7 @@ public class GetUserList
 					 " or first_name like '" + user_ID +  "%' or surname like '" + user_ID + "%'");
 			
 			//Write to ArrayList
+			userResult.next();
 			String userID = userResult.getString("user_id");
 			String firstName = userResult.getString("first_name");
 			String surname = userResult.getString("surname");
