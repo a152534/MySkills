@@ -1,5 +1,6 @@
 package org.notice.buscontrol;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -7,20 +8,25 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.notice.beans.GetRatedSkills;
 import org.notice.beans.User;
 import org.notice.client.Transaction;
 import org.notice.dao.MySkillsDAO;
-import org.notice.tonysandpit.UserSkills;
+
 
 public class BusinessControl
 {
-    private String userId , userSkillId, action;
+    private String userId , skillName, action;
     private MySkillsDAO skillsDB  = null;
     private ResultSet RS = null;
     private Transaction transaction = null;
     private ArrayList<User> UserList = null;
-    private ArrayList<UserSkills> userSkillList = null ;
+    private ArrayList<GetRatedSkills> userSkillList = null ;
     private ResultSet userResult = null , userSkillResult = null;
+    int userSkillId, skillId ,level, numEndorsement;
+    Date addedDate = null;
+    BigDecimal avgEndorsement;
+    
    
     public BusinessControl()
     {
@@ -64,7 +70,15 @@ public class BusinessControl
                 
              case "deleteUserSkill" : 
              {
-         	userSkillId =  transaction.getObject().toString();
+         	userSkillId =  Integer.parseInt(transaction.getObject().toString());
+                transaction.setObject(this.deleteUserSkill(userSkillId));
+                transaction.setDescription("deleteUserSkill");
+         	break;
+             }
+             
+             case "getUserSkills" : 
+             {
+         	userId =  transaction.getObject().toString();
                 transaction.setObject(this.deleteUserSkill(userSkillId));
                 transaction.setDescription("deleteUserSkill");
          	break;
@@ -191,14 +205,14 @@ public class BusinessControl
 		
 	}
     
-    public boolean deleteUserSkill(String userSkillId)
+    public boolean deleteUserSkill(int userSkillId)
     {
         this.userSkillId = userSkillId;
         
         try
         {
-    	skillsDB.updateDB("delete from endorsement where user_skill_id = '" + userSkillId + "'");
-    	skillsDB.updateDB("delete from user_skill where user_skill_id = '" + userSkillId + "'");
+    	skillsDB.updateDB("delete from endorsement where user_skill_id = " + userSkillId );
+    	skillsDB.updateDB("delete from user_skill where user_skill_id = " + userSkillId );
     	
         } 
         catch (Exception e)
@@ -210,26 +224,30 @@ public class BusinessControl
         return true;
     }
     
-    public ArrayList<UserSkills> getUserSkills(String user_ID)
+    public ArrayList<GetRatedSkills> getUserSkills(String userId)
 	{
-
-		userSkillList = new ArrayList<UserSkills>();
+		this.userId = userId;
+		userSkillList = new ArrayList<GetRatedSkills>();
 		
 		try
 		{
 			//Fetch from database
 			
-			userSkillResult = skillsDB.queryDB("SELECT * from user_skill where user_id = '" + user_ID + "'");
+			userSkillResult = skillsDB.queryDB("Select user_id, user_skill_id, skill_id, level, " +
+				"num_endorsement, avg_endorsement, skill_name from v_user_skill_endorsements where user_id = '" + userId + "'");
 			
 			//Write to ArrayList
 			while (userSkillResult.next())
 			{
-			int userSkillID = userSkillResult.getInt("user_skill_id");
-			String userID = userSkillResult.getString("user_id");
-			int skillID = userSkillResult.getInt("skill_id");
-			int level = userSkillResult.getInt("level");
-			Date addedDate = userSkillResult.getDate("added_date");
-			userSkillList.add(new UserSkills(userSkillID, userID, skillID, level, addedDate));
+			userSkillId = userSkillResult.getInt("user_skill_id");
+			userId = userSkillResult.getString("user_id");
+			skillId = userSkillResult.getInt("skill_id");
+			level = userSkillResult.getInt("level");
+			numEndorsement = userSkillResult.getInt("num_endorsement");
+			skillName = userSkillResult.getString("skill_name");
+			avgEndorsement = userSkillResult.getBigDecimal("avg_endorsement");
+			userSkillList.add(new GetRatedSkills(skillId, userSkillId, level, numEndorsement, userId,
+			skillName, avgEndorsement));
 			}
 		} 
 		catch (SQLException se)
@@ -239,5 +257,26 @@ public class BusinessControl
 		}
 		return userSkillList;
 	}
+    
+    
+    public boolean endorseNomination(int userSkillId, String userId)
+    {
+	this.userSkillId = userSkillId;
+	this.userId = userId;
+	try
+        {
+    		skillsDB.updateDB("insert into endorsement_nomination values(null, " + userSkillId + ",'"  + userId + "',null)");
+    	    	
+        } 
+        catch (Exception e)
+        {
+    	e.printStackTrace();
+    	return false;
+        } 
+       
+        return true;
+	
+	
+    }
     
 }
