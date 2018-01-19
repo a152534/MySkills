@@ -1,6 +1,7 @@
 package org.notice.buscontrol;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import org.notice.beans.User;
 import org.notice.client.Transaction;
 import org.notice.dao.MySkillsDAO;
+import org.notice.tonysandpit.UserSkills;
 
 public class BusinessControl
 {
@@ -17,7 +19,8 @@ public class BusinessControl
     private ResultSet RS = null;
     private Transaction transaction = null;
     private ArrayList<User> UserList = null;
-    private ResultSet userResult = null;
+    private ArrayList<UserSkills> userSkillList = null ;
+    private ResultSet userResult = null , userSkillResult = null;
    
     public BusinessControl()
     {
@@ -204,5 +207,32 @@ public class BusinessControl
        
         return true;
     }
+    
+    public ArrayList<UserSkills> getUserSkills(String user_ID)
+	{
+
+		userSkillList = new ArrayList<UserSkills>();
+		
+		try
+		{
+			//Fetch from database
+			
+			userSkillResult = skillsDB.queryDB("SELECT * from user_skill where user_id = '" + user_ID + "'");
+			
+			//Write to ArrayList
+			int userSkillID = userSkillResult.getInt("user_skill_id");
+			String userID = userSkillResult.getString("user_id");
+			int skillID = userSkillResult.getInt("skill_id");
+			int level = userSkillResult.getInt("level");
+			Date addedDate = userSkillResult.getDate("added_date");
+			userSkillList.add(new UserSkills(userSkillID, userID, skillID, level, addedDate));
+		} 
+		catch (SQLException se)
+		{
+			System.out.println("ERROR: " + se.getMessage());
+			return null;
+		}
+		return userSkillList;
+	}
     
 }
