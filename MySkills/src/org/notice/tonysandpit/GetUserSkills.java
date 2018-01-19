@@ -27,16 +27,19 @@ public class GetUserSkills
 		try
 		{
 			//Fetch from database
-			userSkillState = userSkillConnect.createStatement();
-			userSkillResult = userSkillState.executeQuery("SELECT * from user_skill where user_id = '" + user_ID + "'");
+			
+			userSkillResult = skillAccess.queryDB("SELECT * from user_skill where user_id = '" + user_ID + "'");
 			
 			//Write to ArrayList
-			int userSkillID = userSkillResult.getInt("user_skill_id");
-			String userID = userSkillResult.getString("user_id");
-			int skillID = userSkillResult.getInt("skill_id");
-			int level = userSkillResult.getInt("level");
-			Date addedDate = userSkillResult.getDate("added_date");
-			userSkillList.add(new UserSkills(userSkillID, userID, skillID, level, addedDate));
+			while(userSkillResult.next())
+			{
+				int userSkillID = userSkillResult.getInt("user_skill_id");
+				String userID = userSkillResult.getString("user_id");
+				int skillID = userSkillResult.getInt("skill_id");
+				int level = userSkillResult.getInt("level");
+				Date addedDate = userSkillResult.getDate("added_date");
+				userSkillList.add(new UserSkills(userSkillID, userID, skillID, level, addedDate));
+			}
 		} catch (SQLException se)
 		{
 			System.out.println("ERROR: " + se.getMessage());

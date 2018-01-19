@@ -1,4 +1,4 @@
-package org.notice.tonysandpit;
+package org.notice.buscontrol;
 
 import java.util.ArrayList;
 import org.notice.beans.Skill;
@@ -9,8 +9,6 @@ public class GetSkillList
 {
 	private MySkillsDAO skillAccess = null;
 	private ArrayList<Skill> skillList = null;
-	private Connection skillConnect = null;
-	private Statement skillState = null;
 	private ResultSet skillResult = null;
 	
 	public GetSkillList() throws Exception
@@ -27,8 +25,8 @@ public class GetSkillList
 		try
 		{
 			//Fetch from database
-			skillState = skillConnect.createStatement();
-			skillResult = skillState.executeQuery("SELECT * from skills");
+			
+			skillResult = skillAccess.queryDB("SELECT * from skills");
 			
 			//Write to ArrayList
 			while(skillResult.next())
