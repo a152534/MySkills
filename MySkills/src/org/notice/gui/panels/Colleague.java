@@ -1,26 +1,19 @@
 package org.notice.gui.panels;
 
 import java.awt.Font;
+import java.awt.event.*;
+import javax.swing.*;
 
-import javax.swing.JPanel;
-import javax.swing.JComboBox;
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-
-public class Colleague extends JPanel
+public class Colleague extends JPanel implements ActionListener
 {
 	private JComboBox comboBoxColleagueSearch;
 	private JButton btnSearch;
 	private JScrollPane scrollPaneColleagueSkills;
 	private JTable tableColleagueSkills;
-	private JButton btnRequestEndorsement;
-	private JButton btnSave;
-	private Font fontButton;
-	private Font fontComboBox;
+	private JButton btnRequestEndorsement, btnSave;
+	private Font fontButton, fontComboBox;
 	
-	
-	public Colleague() 
+	public Colleague()
 	{
 		fontButton = (new Font("Arial", Font.BOLD, 18));
 		fontComboBox = (new Font("Arial", Font.PLAIN, 14));
@@ -29,6 +22,7 @@ public class Colleague extends JPanel
 		comboBoxColleagueSearch = new JComboBox();
 		comboBoxColleagueSearch.setFont(fontComboBox);
 		comboBoxColleagueSearch.setBounds(240, 50, 302, 25);
+		comboBoxColleagueSearch.isEditable();
 		add(comboBoxColleagueSearch);
 		
 		btnSearch = new JButton("Search");
@@ -54,6 +48,19 @@ public class Colleague extends JPanel
 		btnSave.setFont(fontButton);
 		btnSave.setBounds(620, 500, 90, 25);
 		add(btnSave);
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent ae)
+	{
+		Object source = ae.getSource();
+		
+		if(source == btnSearch)
+		{
+			String colleagueSearch = (String)comboBoxColleagueSearch.getSelectedItem();
+		}
+		
 	}
 
 }
