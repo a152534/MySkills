@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import org.notice.beans.Endorsement;
-import org.notice.beans.GetRatedSkills;
+import org.notice.beans.RatedSkills;
 import org.notice.beans.Skill;
 import org.notice.beans.User;
 import org.notice.beans.UserSkills;
@@ -24,13 +24,14 @@ public class BusinessControl
     private ResultSet RS = null;
     private Transaction transaction = null;
     private ArrayList<User> UserList = null;
-    private ArrayList<GetRatedSkills> userSkillList = null ;
+    private ArrayList<RatedSkills> userSkillList = null ;
     private  ArrayList<Skill> skillList = null;
     private ResultSet userResult = null , userSkillResult = null, skillResult = null;
     private int userSkillId, skillId ,level, numEndorsement;
     private BigDecimal avgEndorsement;
     private UserSkills US = null;
     private Endorsement endorse = null;
+    private  EndorsementNomination endorseNom = null;
     
    
     public BusinessControl()
@@ -96,6 +97,14 @@ public class BusinessControl
          	break;
              }
              
+             case "SearchSkills" : 
+             {
+        	skillName = transaction.getObject().toString();
+         	transaction.setObject(this.searchSkills(skillName));
+                transaction.setDescription("SearchSkills");
+         	break;
+             }
+             
              case "SaveUserSkill" : 
              {
         	US=(UserSkills)transaction.getObject();
@@ -109,6 +118,15 @@ public class BusinessControl
         	endorse =(Endorsement)transaction.getObject();
         	transaction.setObject(this.createEndorsement( endorse.getUserSkillId(), endorse.getEndorser(), endorse.getLevel()));
                 transaction.setDescription("createEndorsement");
+         	break;
+             }
+             
+             
+             case "endorseNomination" : 
+             {
+        	endorseNom =(EndorsementNomination)transaction.getObject();
+        	transaction.setObject(this.endorseNomination( endorseNom.getUserSkillId(), endorseNom.getEndorser()));
+                transaction.setDescription("endorsementNomination");
          	break;
              }
              
@@ -252,10 +270,10 @@ public class BusinessControl
         return true;
     }
     
-    public ArrayList<GetRatedSkills> getUserSkills(String userId)
+    public ArrayList<RatedSkills> getUserSkills(String userId)
 	{
 		this.userId = userId;
-		userSkillList = new ArrayList<GetRatedSkills>();
+		userSkillList = new ArrayList<RatedSkills>();
 		
 		try
 		{
@@ -274,7 +292,7 @@ public class BusinessControl
 			numEndorsement = userSkillResult.getInt("num_endorsement");
 			skillName = userSkillResult.getString("skill_name");
 			avgEndorsement = userSkillResult.getBigDecimal("avg_endorsement");
-			userSkillList.add(new GetRatedSkills(skillId, userSkillId, level, numEndorsement, userId,
+			userSkillList.add(new RatedSkills(skillId, userSkillId, level, numEndorsement, userId,
 			skillName, avgEndorsement));
 			}
 		} 
@@ -284,6 +302,36 @@ public class BusinessControl
 			return null;
 		}
 		return userSkillList;
+	}
+    
+    public ArrayList<Skill> searchSkills(String skillName)
+	{
+		this.skillName = skillName;
+		skillList = new ArrayList<Skill>();
+		
+		try
+		{
+			//Fetch from database
+			
+			skillResult = skillsDB.queryDB("select skill_id, skill_name from skills"
+					+ " where skill_name like ('" + skillName + "%')");
+			
+			//Write to ArrayList
+			while (skillResult.next())
+			{
+			int skillId = skillResult.getInt("skill_id");
+			skillName = skillResult.getString("skill_name");
+		 	 
+			skillList.add(new Skill(skillId, skillName));
+			}
+			
+		} 
+		catch (SQLException se)
+		{
+			System.out.println("ERROR: " + se.getMessage());
+			return null;
+		}
+		return skillList;
 	}
     
     

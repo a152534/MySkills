@@ -3,7 +3,7 @@ package org.notice.beans;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class GetRatedSkills
+public class RatedSkills
 {
 	private int skillId = 0, userSkillId = 0, level = 0 , numEndorsement = 0;
 	private String userId = null , SkillName = null;
@@ -11,7 +11,7 @@ public class GetRatedSkills
 	
 	
 	
-	public GetRatedSkills(int skillId, int userSkillId, int level, int numEndorsement, String userId,
+	public RatedSkills(int skillId, int userSkillId, int level, int numEndorsement, String userId,
 		String skillName, BigDecimal avgEndorsement)
 	{
 	    super();
