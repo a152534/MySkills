@@ -4,32 +4,19 @@ import java.sql.Date;
 
 public class EndorsementNomination
 {
-    int endorsementNominationId = 0, userSkillId = 0;
-    Date addedTimestamp = null;
+    int userSkillId = 0;
+    String nominatedEndorsee = null;
     
-    public EndorsementNomination(int endorsementNominationId, int userSkillId, Date addedTimestamp)
+    public EndorsementNomination(int userSkillId, String nominatedEndorsee)
     {
 	super();
-	this.endorsementNominationId = endorsementNominationId;
+	 
 	this.userSkillId = userSkillId;
-	this.addedTimestamp = addedTimestamp;
+	this.nominatedEndorsee = nominatedEndorsee;
+	
     }
 
    
-
-	public int getEndorsementNominationId()
-	{
-		return endorsementNominationId;
-	}
-
-
-
-	public void setEndorsementNominationId(int endorsementNominationId)
-	{
-		this.endorsementNominationId = endorsementNominationId;
-	}
-
-
 
 	public int getUserSkillId()
 	{
@@ -43,18 +30,16 @@ public class EndorsementNomination
 		this.userSkillId = userSkillId;
 	}
 
-
-
-	public Date getAddedTimestamp()
+	public String getNominatedEndorsee()
 	{
-		return addedTimestamp;
+		return nominatedEndorsee;
 	}
 
 
 
-	public void setAddedTimestamp(Date addedTimestamp)
+	public void setNominatedEndorsee(String nominatedEndorsee)
 	{
-		this.addedTimestamp = addedTimestamp;
+		this.nominatedEndorsee = nominatedEndorsee;
 	}
 
 
@@ -62,7 +47,7 @@ public class EndorsementNomination
 	@Override
     public String toString()
     {
-	return "EndorsementNomination [endorsementNominationId=" + endorsementNominationId + ", userSkillId=" + userSkillId + ", addedTimestamp=" + addedTimestamp + "]";
+	return "EndorsementNomination [userSkillId= " + userSkillId + ", nominatedEndorsee=" + nominatedEndorsee + "]";
     }
     
     
