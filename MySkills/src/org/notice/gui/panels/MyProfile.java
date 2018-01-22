@@ -62,42 +62,42 @@ public class MyProfile extends JPanel
 		
 		txtName = new JTextField();
 		txtName.setFont(fontTextBox);
-		txtName.setBounds(97, 20, 300, 20);
+		txtName.setBounds(120, 20, 290, 20);
 		add(txtName);
 		txtName.setColumns(10);
 		
 		txtSurname = new JTextField();
 		txtSurname.setFont(fontTextBox);
-		txtSurname.setBounds(97, 50, 300, 19);
+		txtSurname.setBounds(120, 50, 290, 19);
 		add(txtSurname);
 		txtSurname.setColumns(10);
 		
 		txtAlias = new JTextField();
 		txtAlias.setFont(fontTextBox);
-		txtAlias.setBounds(97, 80, 300, 19);
+		txtAlias.setBounds(120, 80, 290, 19);
 		add(txtAlias);
 		txtAlias.setColumns(10);
 		
 		JLabel lblPhoneNumber = new JLabel("Phone number:");
 		lblPhoneNumber.setFont(fontLabel);
-		lblPhoneNumber.setBounds(450, 21, 136, 15);
+		lblPhoneNumber.setBounds(440, 21, 136, 15);
 		add(lblPhoneNumber);
 		
 		txtPhone = new JTextField();
 		txtPhone.setFont(fontTextBox);
 		txtPhone.setColumns(10);
-		txtPhone.setBounds(570, 21, 300, 19);
+		txtPhone.setBounds(580, 21, 290, 19);
 		add(txtPhone);
 		
 		lblEmailAddress = new JLabel("Email Address:");
 		lblEmailAddress.setFont(fontLabel);
-		lblEmailAddress.setBounds(450, 51, 131, 15);
+		lblEmailAddress.setBounds(440, 51, 131, 15);
 		add(lblEmailAddress);
 		
 		txtEmail = new JTextField();
 		txtEmail.setFont(fontTextBox);
 		txtEmail.setColumns(10);
-		txtEmail.setBounds(570, 51, 300, 19);
+		txtEmail.setBounds(580, 51, 290, 19);
 		add(txtEmail);
 		
 		scrollPaneSkills = new JScrollPane();
