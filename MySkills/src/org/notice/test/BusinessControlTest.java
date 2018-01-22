@@ -2,12 +2,13 @@ package org.notice.test;
 
 import static org.junit.Assert.*;
 
+
 import java.util.ArrayList;
 
 import org.notice.beans.GetRatedSkills;
 import org.notice.beans.User;
+import org.notice.beans.UserSkills;
 import org.notice.buscontrol.*;
-import org.notice.tonysandpit.UserSkills;
 import org.junit.Test;
 
 public class BusinessControlTest
@@ -90,6 +91,9 @@ public class BusinessControlTest
 //			System.out.println("GetUserSkills " + us1.getUserSkills("A000678") );
 //	//		assertEquals("A000678", us1.getUserSkills("A000678"));
 //		}
+	    
+	    
+
 	}
 	
 
