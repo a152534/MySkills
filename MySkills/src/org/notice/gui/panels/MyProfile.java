@@ -3,13 +3,20 @@ package org.notice.gui.panels;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import org.notice.beans.CommonStuff;
+import org.notice.beans.RatedSkills;
+import org.notice.client.Transaction;
+import org.notice.tablemodel.MyProfileRatedSkillTableModel;
 
 import java.awt.Font;
+import java.util.ArrayList;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
+import javax.swing.ScrollPaneConstants;
 
 public class MyProfile extends JPanel 
 {
@@ -31,6 +38,7 @@ public class MyProfile extends JPanel
 	private Font fontButton;
 	private Font fontComboBox;
 	private CommonStuff commonStuff; 
+	private Transaction transaction ; 
 
 	/**
 	 * Create the panel.
@@ -101,12 +109,14 @@ public class MyProfile extends JPanel
 		add(txtEmail);
 		
 		scrollPaneSkills = new JScrollPane();
+		scrollPaneSkills.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPaneSkills.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPaneSkills.setBounds(140, 120, 620, 250);
 				
-		tableSkills = new JTable();
-		tableSkills.setBounds(0, 0, 1, 1);
-		scrollPaneSkills.add(tableSkills);
-		add(scrollPaneSkills);
+//		tableSkills = new JTable();
+//		tableSkills.setBounds(0, 0, 1, 1);
+//		scrollPaneSkills.add(tableSkills);
+	
 		
 		btnSave = new JButton("Save");
 		btnSave.setFont(fontButton);
@@ -132,8 +142,10 @@ public class MyProfile extends JPanel
 		scrollPaneEndorsementRequests.setColumnHeaderView(tableEndorsementRequests);
 
 		populateUserInfo();
+		populateSkills();
 	}
 
+	
 	private void populateUserInfo() {
 		txtAlias.setText(commonStuff.getLoggedOnUser().getAliasName());
 		txtName.setText(commonStuff.getLoggedOnUser().getFirstName());
@@ -143,5 +155,27 @@ public class MyProfile extends JPanel
 		
 		
 	}
+	private void populateSkills() {
+		ArrayList<RatedSkills> ratedSkills;
+		transaction = new Transaction("getUserSkills", commonStuff.getLoggedOnUser().getUserID());
+		transaction = commonStuff.getClient().sendTransaction(transaction);
+		ratedSkills = (ArrayList<RatedSkills>)transaction.getObject();
+		MyProfileRatedSkillTableModel myModel = new MyProfileRatedSkillTableModel(ratedSkills);
+				
+		tableSkills = new JTable(myModel);
+		tableSkills.setColumnSelectionAllowed(true);
+		tableSkills.setCellSelectionEnabled(true);
+		tableSkills.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//		tableSkills.setBounds(0, 0, 1, 1);
+		scrollPaneSkills.add(tableSkills);		
+		add(scrollPaneSkills);
+		myModel.fireTableDataChanged();
+		
+		
+		
+		
+	}
+
+	
 	
 }
