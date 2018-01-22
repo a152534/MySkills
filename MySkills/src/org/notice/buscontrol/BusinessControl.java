@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import org.notice.beans.Endorsement;
+import org.notice.beans.EndorsementNomination;
 import org.notice.beans.RatedSkills;
 import org.notice.beans.Skill;
 import org.notice.beans.User;
