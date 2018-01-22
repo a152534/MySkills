@@ -126,7 +126,7 @@ public class BusinessControl
              case "endorseNomination" : 
              {
         	endorseNom =(EndorsementNomination)transaction.getObject();
-        	transaction.setObject(this.endorseNomination( endorseNom.getUserSkillId(), endorseNom.getEndorser()));
+        	transaction.setObject(this.endorseNomination( endorseNom.getUserSkillId(), endorseNom.getNominatedEndorsee()));
                 transaction.setDescription("endorsementNomination");
          	break;
              }
