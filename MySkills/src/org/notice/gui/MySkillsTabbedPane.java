@@ -19,6 +19,8 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 		this.basePanel = basePanel;
 		
 		myProfile =  new MyProfile(commonStuff );
+		
+		
 		skillsSearch = new JPanel();
 		endorseSkills = new JPanel();
 		skillsAdmin = new JPanel();

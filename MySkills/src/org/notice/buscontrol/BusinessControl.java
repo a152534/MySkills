@@ -281,7 +281,7 @@ public class BusinessControl
 			//Fetch from database
 			
 			userSkillResult = skillsDB.queryDB("Select user_id, user_skill_id, skill_id, level, " +
-				"num_endorsement, avg_endorsement, skill_name from v_user_skill_endorsements where user_id = '" + userId + "'");
+				"num_of_endorsements, avg_endorsement, skill_name from v_user_skill_endorsements where user_id = '" + userId + "'");
 			
 			//Write to ArrayList
 			while (userSkillResult.next())
@@ -290,7 +290,7 @@ public class BusinessControl
 			userId = userSkillResult.getString("user_id");
 			skillId = userSkillResult.getInt("skill_id");
 			level = userSkillResult.getInt("level");
-			numEndorsement = userSkillResult.getInt("num_endorsement");
+			numEndorsement = userSkillResult.getInt("num_of_endorsements");
 			skillName = userSkillResult.getString("skill_name");
 			avgEndorsement = userSkillResult.getBigDecimal("avg_endorsement");
 			userSkillList.add(new RatedSkills(skillId, userSkillId, level, numEndorsement, userId,

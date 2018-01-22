@@ -1,9 +1,10 @@
 package org.notice.beans;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class RatedSkills
+public class RatedSkills implements Serializable
 {
 	private int skillId = 0, userSkillId = 0, level = 0 , numEndorsement = 0;
 	private String userId = null , SkillName = null;
