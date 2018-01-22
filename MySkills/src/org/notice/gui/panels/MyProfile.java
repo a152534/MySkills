@@ -47,57 +47,57 @@ public class MyProfile extends JPanel
 		
 		JLabel lblName = new JLabel("Name:");
 		lblName.setFont(fontLabel);
-		lblName.setBounds(20, 20, 60, 20);
+		lblName.setBounds(20, 20, 130, 20);
 		add(lblName);
 		
 		JLabel lblSurname = new JLabel("Surname:");
 		lblSurname.setFont(fontLabel);
-		lblSurname.setBounds(20, 50, 75, 20);
+		lblSurname.setBounds(20, 50, 130, 20);
 		add(lblSurname);
 		
 		JLabel lblAlias = new JLabel("Alias:");
 		lblAlias.setFont(fontLabel);
-		lblAlias.setBounds(20, 80, 60, 20);
+		lblAlias.setBounds(20, 80, 130, 20);
 		add(lblAlias);
 		
 		txtName = new JTextField();
 		txtName.setFont(fontTextBox);
-		txtName.setBounds(97, 20, 300, 20);
+		txtName.setBounds(120, 20, 290, 20);
 		add(txtName);
 		txtName.setColumns(10);
 		
 		txtSurname = new JTextField();
 		txtSurname.setFont(fontTextBox);
-		txtSurname.setBounds(97, 50, 300, 19);
+		txtSurname.setBounds(120, 50, 290, 19);
 		add(txtSurname);
 		txtSurname.setColumns(10);
 		
 		txtAlias = new JTextField();
 		txtAlias.setFont(fontTextBox);
-		txtAlias.setBounds(97, 80, 300, 19);
+		txtAlias.setBounds(120, 80, 290, 19);
 		add(txtAlias);
 		txtAlias.setColumns(10);
 		
 		JLabel lblPhoneNumber = new JLabel("Phone number:");
 		lblPhoneNumber.setFont(fontLabel);
-		lblPhoneNumber.setBounds(450, 21, 136, 15);
+		lblPhoneNumber.setBounds(440, 21, 136, 15);
 		add(lblPhoneNumber);
 		
 		txtPhone = new JTextField();
 		txtPhone.setFont(fontTextBox);
 		txtPhone.setColumns(10);
-		txtPhone.setBounds(570, 21, 300, 19);
+		txtPhone.setBounds(580, 21, 290, 19);
 		add(txtPhone);
 		
 		lblEmailAddress = new JLabel("Email Address:");
 		lblEmailAddress.setFont(fontLabel);
-		lblEmailAddress.setBounds(450, 51, 131, 15);
+		lblEmailAddress.setBounds(440, 51, 131, 15);
 		add(lblEmailAddress);
 		
 		txtEmail = new JTextField();
 		txtEmail.setFont(fontTextBox);
 		txtEmail.setColumns(10);
-		txtEmail.setBounds(570, 51, 300, 19);
+		txtEmail.setBounds(580, 51, 290, 19);
 		add(txtEmail);
 		
 		scrollPaneSkills = new JScrollPane();
