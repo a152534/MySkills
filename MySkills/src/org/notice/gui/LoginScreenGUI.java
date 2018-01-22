@@ -25,8 +25,20 @@ public class LoginScreenGUI extends JPanel implements ActionListener {
 
 	private SkillClient client;
 	private CommonStuff commonStuff;
+	private Font fontLabel;
+	private Font fontJPasswordField;
+	private Font fontButton;
+	private Font fontComboBox;
+	private Font fontTextBox;
 
-	public LoginScreenGUI(JPanel basePanel, CommonStuff commonStuff) {
+	public LoginScreenGUI(JPanel basePanel, CommonStuff commonStuff) 
+	{
+		fontLabel = (new Font("Arial", Font.BOLD, 14));
+		fontTextBox = (new Font("Arial", Font.PLAIN, 12));
+		fontJPasswordField = (new Font("Arial", Font.PLAIN, 12));
+		fontButton = (new Font("Arial", Font.BOLD, 18));
+		fontComboBox = (new Font("Arial", Font.PLAIN, 14));
+		
 		this.basePanel = basePanel;
 		this.commonStuff = commonStuff;
 		
@@ -36,24 +48,29 @@ public class LoginScreenGUI extends JPanel implements ActionListener {
 
 		this.add(screenTitle);
 
-		userIDLabel = new JLabel("User ID");
-		userIDLabel.setBounds(50, 20, 180, 20);
+		userIDLabel = new JLabel("User ID:");
+		userIDLabel.setBounds(240, 50, 180, 20);
+		userIDLabel.setFont(fontLabel);
 		this.add(userIDLabel);
 
 		userIDField = new JTextField();
-		userIDField.setBounds(250, 20, 180, 20);
+		userIDField.setBounds(350, 50, 300, 20);
+		userIDField.setFont(fontTextBox);
 		this.add(userIDField);
 
-		passwordLabel = new JLabel("Password");
-		passwordLabel.setBounds(50, 60, 180, 20);
+		passwordLabel = new JLabel("Password:");
+		passwordLabel.setBounds(240, 90, 180, 20);
+		passwordLabel.setFont(fontLabel);
 		this.add(passwordLabel);
 
 		passwordField = new JPasswordField();
-		passwordField.setBounds(250, 60, 180, 20);
+		passwordField.setBounds(350, 90,300, 20);
+		passwordField.setFont(fontJPasswordField);
 		this.add(passwordField);
 
 		loginButton = new JButton("Log In");
-		loginButton.setBounds(150, 100, 180, 40);
+		loginButton.setBounds(350, 130, 145, 25);
+		loginButton.setFont(fontButton);
 		// loginButton.setFont(loginFont);
 		loginButton.addActionListener(this);
 		this.add(loginButton);
