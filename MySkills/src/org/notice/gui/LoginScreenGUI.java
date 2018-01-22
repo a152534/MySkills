@@ -2,122 +2,96 @@ package org.notice.gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
-public class LoginScreenGUI extends JPanel implements ActionListener
-{
+import org.notice.beans.CommonStuff;
+import org.notice.beans.User;
+import org.notice.client.SkillClient;
+import org.notice.client.Transaction;
+
+public class LoginScreenGUI extends JPanel implements ActionListener {
 	private JPanel basePanel = null;
 	private JLabel userIDLabel = null, screenTitle = null, passwordLabel = null;
 	private JTextField userIDField = null;
 	private JPasswordField passwordField = null;
 	private JButton loginButton = null;
-//	private Font loginFont = null;
+	// private Font loginFont = null;
 	private GridBagLayout loginScreenLayout = null;
-	private GridBagConstraints titleConstraints = null, userIDLabelConstraints = null, userIDTextConstraints = null, passwordLabelConstraints = null,
-							passwordFieldConstraints = null, loginbuttonConstraints = null;
+	private GridBagConstraints titleConstraints = null, userIDLabelConstraints = null, userIDTextConstraints = null,
+			passwordLabelConstraints = null, passwordFieldConstraints = null, loginbuttonConstraints = null;
 	private MySkillsTabbedPane skillsMainScreen = null;
 
+	private SkillClient client;
+	private CommonStuff commonStuff;
 
-	
-	public LoginScreenGUI(JPanel basePanel)
-	{
+	public LoginScreenGUI(JPanel basePanel, CommonStuff commonStuff) {
 		this.basePanel = basePanel;
-//		loginScreenConstraints = new GridBagConstraints();
-//		loginFont = new Font("Arial", Font.BOLD, 25);
-		loginScreenLayout = new GridBagLayout();
-		loginScreenLayout.columnWidths = new int[]{325, 325, 325, 0};
-		loginScreenLayout.rowHeights = new int[]{75, 75, 75, 75, 75, 75, 75, 75, 75, 0};
-		loginScreenLayout.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		loginScreenLayout.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-		setLayout(loginScreenLayout);
+		this.commonStuff = commonStuff;
 		
+		setLayout(null);
 
 		screenTitle = new JLabel("MySkills Login");
-//		screenTitle.setFont(loginFont);
-		titleConstraints  = new GridBagConstraints();
-		titleConstraints.fill = GridBagConstraints.BOTH;
-		titleConstraints.insets = new Insets(0, 0, 5, 0);
-		titleConstraints.gridx = 1;
-		titleConstraints.gridy = 0;
-		this.add(screenTitle, titleConstraints);
-		
-				
-		userIDLabel = new JLabel("User ID");
-//		userIDLabel.setFont(loginFont);
-		userIDLabelConstraints = new GridBagConstraints();
-		userIDLabelConstraints.fill = GridBagConstraints.BOTH;
-		userIDLabelConstraints.insets = new Insets(0, 0, 5, 0);
-		userIDLabelConstraints.gridx = 0;
-		userIDLabelConstraints.gridy = 3;
-		this.add(userIDLabel, userIDLabelConstraints);
-				
-				
-		userIDField = new JTextField();
-//		userIDField.setFont(loginFont);
-		userIDTextConstraints = new GridBagConstraints();
-		userIDTextConstraints.fill = GridBagConstraints.BOTH;
-		userIDTextConstraints.insets = new Insets(0, 0, 5, 0);
-		userIDTextConstraints.gridx = 2;
-		userIDTextConstraints.gridy = 3;
-		this.add(userIDField, userIDTextConstraints);
-		
-		
-		passwordLabel = new JLabel("Password");
-//		passwordLabel.setFont(loginFont);
-		passwordLabelConstraints = new GridBagConstraints();
-		passwordLabelConstraints.fill = GridBagConstraints.BOTH;
-		passwordLabelConstraints.insets = new Insets(0, 0, 5, 0);
-		passwordLabelConstraints.gridx = 0;
-		passwordLabelConstraints.gridy = 5;
-		this.add(passwordLabel, passwordLabelConstraints);
-				
-		
-		passwordField = new JPasswordField();
-//		passwordField.setFont(loginFont);
-		passwordFieldConstraints = new GridBagConstraints();
-		passwordFieldConstraints.fill = GridBagConstraints.BOTH;
-		passwordFieldConstraints.insets = new Insets(0, 0, 5, 0);
-		passwordFieldConstraints.gridx = 2;
-		passwordFieldConstraints.gridy = 5;
-		this.add(passwordField, passwordFieldConstraints);
-				
-				
-		loginButton = new JButton("Log In");
-//		loginButton.setFont(loginFont);
-		loginButton.addActionListener(this);
-		loginbuttonConstraints = new GridBagConstraints();
-		loginbuttonConstraints.insets = new Insets(5, 5, 5, 5);
-		loginbuttonConstraints.fill = GridBagConstraints.BOTH;
-		loginbuttonConstraints.gridx = 1;
-		loginbuttonConstraints.gridy = 8;
-		this.add(loginButton, loginbuttonConstraints);
-	
 
-	 }
+		this.add(screenTitle);
+
+		userIDLabel = new JLabel("User ID");
+		userIDLabel.setBounds(50, 20, 180, 20);
+		this.add(userIDLabel);
+
+		userIDField = new JTextField();
+		userIDField.setBounds(250, 20, 180, 20);
+		this.add(userIDField);
+
+		passwordLabel = new JLabel("Password");
+		passwordLabel.setBounds(50, 60, 180, 20);
+		this.add(passwordLabel);
+
+		passwordField = new JPasswordField();
+		passwordField.setBounds(250, 60, 180, 20);
+		this.add(passwordField);
+
+		loginButton = new JButton("Log In");
+		loginButton.setBounds(150, 100, 180, 40);
+		// loginButton.setFont(loginFont);
+		loginButton.addActionListener(this);
+		this.add(loginButton);
+
+	}
 
 	@Override
-	public void actionPerformed(ActionEvent ae)
-	{
+	public void actionPerformed(ActionEvent ae) {
 		Object source = ae.getSource();
-		
-		if(source == loginButton)
-		{
-//			if(loggedOnUser.validateUser(user, passwordString()) == true)
-//			{
-				
-				skillsMainScreen = new MySkillsTabbedPane(basePanel);
-				this.basePanel.removeAll();
-				this.basePanel.validate();
-				this.basePanel.repaint();
-				this.basePanel.add(skillsMainScreen);
-				this.basePanel.validate();
-				this.basePanel.repaint();
 
-				
+		if (source == loginButton) {
+			validateUser();
 
-//			}
 		}
-		
+
 	}
-	
+
+	private void validateUser() {
+		String userId = userIDField.getText();
+		Transaction transaction = new Transaction("getUser", userId);
+		transaction = commonStuff.getClient().sendTransaction(transaction);
+
+		if (transaction.getObject() == null) {
+			JOptionPane.showConfirmDialog(this, "Failed to validate user");
+		} else {
+			ArrayList<User> users = (ArrayList<User>) transaction.getObject();
+			User loggedOnUser = users.get(0);
+			commonStuff.setLoggedOnUser(loggedOnUser);
+			JOptionPane.showConfirmDialog(this, "Logged on " + loggedOnUser.getFirstName());
+			skillsMainScreen = new MySkillsTabbedPane(basePanel,   commonStuff);
+			this.basePanel.removeAll();
+			this.basePanel.validate();
+			this.basePanel.repaint();
+			this.basePanel.add(skillsMainScreen);
+			this.basePanel.validate();
+			this.basePanel.repaint();
+
+		}
+	}
+
 }
