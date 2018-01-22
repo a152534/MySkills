@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import org.notice.beans.GetRatedSkills;
+import org.notice.beans.RatedSkills;
 import org.notice.beans.User;
 import org.notice.beans.UserSkills;
 import org.notice.buscontrol.*;
@@ -69,7 +69,7 @@ public class BusinessControlTest
 		{
 			validate = new BusinessControl();
 		
-			final ArrayList<GetRatedSkills> result = validate.getUserSkills("A000678");
+			final ArrayList<RatedSkills> result = validate.getUserSkills("A000678");
 			assertNotEquals(0, result.size());
 			 
 		} catch (Exception e)
