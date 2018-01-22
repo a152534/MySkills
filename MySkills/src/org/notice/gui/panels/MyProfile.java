@@ -47,17 +47,17 @@ public class MyProfile extends JPanel
 		
 		JLabel lblName = new JLabel("Name:");
 		lblName.setFont(fontLabel);
-		lblName.setBounds(20, 20, 60, 20);
+		lblName.setBounds(20, 20, 130, 20);
 		add(lblName);
 		
 		JLabel lblSurname = new JLabel("Surname:");
 		lblSurname.setFont(fontLabel);
-		lblSurname.setBounds(20, 50, 75, 20);
+		lblSurname.setBounds(20, 50, 130, 20);
 		add(lblSurname);
 		
 		JLabel lblAlias = new JLabel("Alias:");
 		lblAlias.setFont(fontLabel);
-		lblAlias.setBounds(20, 80, 60, 20);
+		lblAlias.setBounds(20, 80, 130, 20);
 		add(lblAlias);
 		
 		txtName = new JTextField();
