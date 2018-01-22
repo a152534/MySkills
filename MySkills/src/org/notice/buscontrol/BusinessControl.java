@@ -8,24 +8,29 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.notice.beans.Endorsement;
 import org.notice.beans.GetRatedSkills;
+import org.notice.beans.Skill;
 import org.notice.beans.User;
+import org.notice.beans.UserSkills;
 import org.notice.client.Transaction;
 import org.notice.dao.MySkillsDAO;
 
 
 public class BusinessControl
 {
-    private String userId , skillName, action;
+    private String userId , skillName, endorsor, action;
     private MySkillsDAO skillsDB  = null;
     private ResultSet RS = null;
     private Transaction transaction = null;
     private ArrayList<User> UserList = null;
     private ArrayList<GetRatedSkills> userSkillList = null ;
-    private ResultSet userResult = null , userSkillResult = null;
-    int userSkillId, skillId ,level, numEndorsement;
-    Date addedDate = null;
-    BigDecimal avgEndorsement;
+    private  ArrayList<Skill> skillList = null;
+    private ResultSet userResult = null , userSkillResult = null, skillResult = null;
+    private int userSkillId, skillId ,level, numEndorsement;
+    private BigDecimal avgEndorsement;
+    private UserSkills US = null;
+    private Endorsement endorse = null;
     
    
     public BusinessControl()
@@ -79,8 +84,31 @@ public class BusinessControl
              case "getUserSkills" : 
              {
          	userId =  transaction.getObject().toString();
-                transaction.setObject(this.deleteUserSkill(userSkillId));
-                transaction.setDescription("deleteUserSkill");
+                transaction.setObject(this.getUserSkills(userId));
+                transaction.setDescription("UserSkills");
+         	break;
+             }
+             
+             case "getSkillList" : 
+             {
+         	transaction.setObject(this.getSkillList());
+                transaction.setDescription("SkillsList");
+         	break;
+             }
+             
+             case "SaveUserSkill" : 
+             {
+        	US=(UserSkills)transaction.getObject();
+         	transaction.setObject(this.SaveUserSkill(US.getUserId(), US.getSkillID(), US.getLevel()));
+                transaction.setDescription("SaveUserSkill");
+         	break;
+             }
+             
+             case "createEndorsement" : 
+             {
+        	endorse =(Endorsement)transaction.getObject();
+        	transaction.setObject(this.createEndorsement( endorse.getUserSkillId(), endorse.getEndorser(), endorse.getLevel()));
+                transaction.setDescription("createEndorsement");
          	break;
              }
              
@@ -278,5 +306,85 @@ public class BusinessControl
 	
 	
     }
+    
+    public ArrayList<Skill> getSkillList()
+	{
+//		
+		skillList = new ArrayList<Skill>();
+		
+		try
+		{
+			//Fetch from database
+			
+			skillResult = skillsDB.queryDB("SELECT skill_id, skill_name from skills");
+			
+			//Write to ArrayList
+			while(skillResult.next())
+			{
+			 skillId = skillResult.getInt("skill_id");
+			 skillName = skillResult.getString("skill_name");
+			 skillList.add(new Skill(skillId, skillName));		
+			}//End while	
+		} catch (SQLException se)
+		{
+			System.out.println("ERROR: " + se.getMessage());
+			return null;
+		}
+		return skillList;
+	}
+    
+    public boolean SaveUserSkill(String userId , int skillId, int level)
+    {
+        this.userId = userId;
+        this.skillId = skillId;
+        this.level = level;
+       
+        try
+        {
+        skillsDB = new MySkillsDAO();
+    	RS = skillsDB.queryDB("SELECT * from user_skill where user_id = '" + userId + "' and skill_id = " + skillId);
+    	
+    	if (!RS.next())
+    	{
+    		skillsDB.updateDB("insert into user_skill values(null, '" + userId + "', " + skillId + ", " + level + ", null");
+    	
+    	}
+    	else
+    			
+    		skillsDB.updateDB("update user_skill set level = " +  level + " where user_id = '" + userId + "' and skill_id = " + skillId);
+        } 
+        catch (SQLException e)
+        {
+    	e.printStackTrace();
+    	 
+    	return false;
+        } 
+        catch (Exception e)
+        {
+    	// TODO Auto-generated catch block
+    	e.printStackTrace();
+    	return false;
+        }
+        return true;
+    }
+    
+   
+    public boolean createEndorsement(int userSkillId, String endorser, int level)
+	{	
+		this.userSkillId = userSkillId; 
+		this.endorsor = endorser;
+		this.level = level;
+		try
+		{
+			skillsDB.updateDB("INSERT INTO endorsement VALUES (null, " + userSkillId + ",'" + endorsor + "'," + level + ", null)");
+			
+		}
+		catch(Exception e)
+		{
+			System.out.println("ERROR: " + e.getMessage());
+			return false;
+		}
+		return true;
+	}
     
 }
