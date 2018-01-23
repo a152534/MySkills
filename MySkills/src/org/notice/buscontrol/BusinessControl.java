@@ -136,8 +136,8 @@ public class BusinessControl
              
              case "getSkillsReport" : 
              {
-        	transaction.setObject(this.endorseNomination( endorseNom.getUserSkillId(), endorseNom.getNominatedEndorsee()));
-                transaction.setDescription("endorsementNomination");
+        	transaction.setObject(this.getSkillsReport());
+                transaction.setDescription("getSkillsReport");
          	break;
              }
              
