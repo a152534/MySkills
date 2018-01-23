@@ -35,6 +35,7 @@ public class BusinessControl
     private Endorsement endorse = null;
     private  EndorsementNomination endorseNom = null;
     private  ArrayList<EndorsementsGroupedBySkill> skillReport = null;
+    private  ArrayList<RatedSkills> ratedSkillsList = null;
     
    
     public BusinessControl()
@@ -145,6 +146,14 @@ public class BusinessControl
         	skillName = transaction.getObject().toString();
           	transaction.setObject(this.searchSkills(skillName));
                 transaction.setDescription("SearchSkills");
+         	break;
+             }
+                          
+             case "getUserEndorsementsPerSkill" : 
+             {
+        	skillId = Integer.parseInt(transaction.getObject().toString());
+          	transaction.setObject(this.getUserEndorsementsPerSkill(skillId));
+                transaction.setDescription("getUserEndorsementPerSkill");
          	break;
              }
              
@@ -453,37 +462,7 @@ public class BusinessControl
 		return true;
 	}
     
-<<<<<<< HEAD
-    
-	public String fetchUserIDFromArrayList(String surnameSearched, String firstNameSearched)
-	{
-		//Allows get of specific field details for graphical representation
-		for(int pos = 0; pos < UserList.size(); pos++)
-		{
-			if((UserList.get(pos).getSurName().equals(surnameSearched)) && (UserList.get(pos).getSurName().equals(firstNameSearched)))
-			{
-				userId = UserList.get(pos).getUserID();
-			}
-		}
-		return userId;
-	}
-	
-	public String fetchUserNamesFromArrayList(ArrayList detailsSearched)
-	{
-		//Allows get of specific field details for graphical representation
-		String surnameAndName = null;
-		for(int pos = 0; pos < UserList.size(); pos++)
-		{
-			if((UserList.get(pos).getSurName().equals(detailsSearched)) || (UserList.get(pos).getSurName().equals(detailsSearched)) ||
-					(UserList.get(pos).getUserID().equals(detailsSearched)))
-			{
-				surnameAndName = surnameAndName + UserList.get(pos).getSurName() + ", " + UserList.get(pos).getFirstName();
-			}
-		}
-		return surnameAndName;
-	}
-	
-=======
+
     public ArrayList<EndorsementsGroupedBySkill> getSkillsReport()
 	{
 //		
@@ -513,5 +492,36 @@ public class BusinessControl
 		return skillReport;
 	}
     
->>>>>>> branch 'master' of https://github.com/a152534/MySkills.git
+
+    public ArrayList<RatedSkills> getUserEndorsementsPerSkill(int skillId)
+	{
+		this.skillId = skillId;
+		ratedSkillsList = new ArrayList<RatedSkills>();
+		
+		try
+		{
+			//Fetch from database
+			
+			userResult = skillsDB.queryDB("Select user_id, first_name, surname,  user_skill_id, skill_id, level, " +
+					"num_of_endorsements, avg_endorsement, skill_name from v_user_skill_endorsements where skill_id = '" + skillId + "'");
+			
+			while (userResult.next())
+			{
+			int userSkillId = userResult.getInt("user_skill_id");
+			String userId = userResult.getString("user_id");
+			skillId = userResult.getInt("skill_id");
+			int level = userResult.getInt("level");
+			int numEndorsement = userResult.getInt("num_of_endorsements");
+			String skillName = userResult.getString("skill_name");
+			BigDecimal avgEndorsement = userResult.getBigDecimal("avg_endorsement");
+			ratedSkillsList.add(new RatedSkills(skillId, userSkillId, level, numEndorsement, userId,
+			skillName, avgEndorsement));
+			}
+		} catch (SQLException se)
+		{
+			System.out.println("ERROR: " + se.getMessage());
+			return null;
+		}
+		return ratedSkillsList;
+	}
 }
