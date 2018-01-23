@@ -97,7 +97,7 @@ public class BusinessControl
              case "getSkillList" : 
              {
          	transaction.setObject(this.getSkillList());
-                transaction.setDescription("SkillsList");
+                transaction.setDescription("SkillList");
          	break;
              }
              
