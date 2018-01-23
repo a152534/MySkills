@@ -92,7 +92,24 @@ public class Reports extends JPanel implements ActionListener
 	    if(source == btnUsers)
 
 	        {
+		transaction = new Transaction("getSkillsReport", commonStuff.getLoggedOnUser().getUserID());
+		transaction = commonStuff.getClient().sendTransaction(transaction);
+		skillReport = (ArrayList<EndorsementsPerSkill>) transaction.getObject();
+
+		ReportsSkillsReportTableModel myModel = new ReportsSkillsReportTableModel(skillReport);
+
+		tableSkillsReport = new JTable(myModel);
+		//tableSkills.setColumnSelectionAllowed(true);
+		tableSkillsReport.setCellSelectionEnabled(true);
+	
 		
+		myModel.fireTableDataChanged();
+
+		scrollPaneSkillsUsers = new JScrollPane(tableSkillsReport);
+		scrollPaneSkillsUsers.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPaneSkillsUsers.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPaneSkillsUsers.setBounds(140, 120, 620, 250);
+		add(scrollPaneSkillsUsers);
 	        }
 	    
 	}
