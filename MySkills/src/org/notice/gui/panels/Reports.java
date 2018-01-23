@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-public class Reports extends JPanel
+public class Reports extends JPanel implements ActionListener
 {
 	private JButton btnSkills;
 	private JButton btnUsers;
@@ -43,6 +43,13 @@ public class Reports extends JPanel
 		
 		
 		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+	    // TODO Auto-generated method stub
+	    
 	}
 
 }
