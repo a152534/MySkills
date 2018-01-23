@@ -31,17 +31,16 @@ public class LoginScreenGUI extends JPanel implements ActionListener {
 	private Font fontComboBox;
 	private Font fontTextBox;
 
-	public LoginScreenGUI(JPanel basePanel, CommonStuff commonStuff) 
-	{
+	public LoginScreenGUI(JPanel basePanel, CommonStuff commonStuff) {
 		fontLabel = (new Font("Arial", Font.BOLD, 14));
 		fontTextBox = (new Font("Arial", Font.PLAIN, 12));
 		fontJPasswordField = (new Font("Arial", Font.PLAIN, 12));
 		fontButton = (new Font("Arial", Font.BOLD, 18));
 		fontComboBox = (new Font("Arial", Font.PLAIN, 14));
-		
+
 		this.basePanel = basePanel;
 		this.commonStuff = commonStuff;
-		
+
 		setLayout(null);
 
 		screenTitle = new JLabel("MySkills Login");
@@ -64,7 +63,7 @@ public class LoginScreenGUI extends JPanel implements ActionListener {
 		this.add(passwordLabel);
 
 		passwordField = new JPasswordField();
-		passwordField.setBounds(350, 90,300, 20);
+		passwordField.setBounds(350, 90, 300, 20);
 		passwordField.setFont(fontJPasswordField);
 		this.add(passwordField);
 
@@ -90,6 +89,11 @@ public class LoginScreenGUI extends JPanel implements ActionListener {
 
 	private void validateUser() {
 		String userId = userIDField.getText();
+		if (userId.equals("")) {
+			userId = "A000123";
+		} else {
+			userId = userIDField.getText();
+		}
 		Transaction transaction = new Transaction("getUser", userId);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 
@@ -99,8 +103,9 @@ public class LoginScreenGUI extends JPanel implements ActionListener {
 			ArrayList<User> users = (ArrayList<User>) transaction.getObject();
 			User loggedOnUser = users.get(0);
 			commonStuff.setLoggedOnUser(loggedOnUser);
-			JOptionPane.showConfirmDialog(this, "Logged on " + loggedOnUser.getFirstName());
-			skillsMainScreen = new MySkillsTabbedPane(basePanel,   commonStuff);
+			// JOptionPane.showConfirmDialog(this, "Logged on " +
+			// loggedOnUser.getFirstName());
+			skillsMainScreen = new MySkillsTabbedPane(basePanel, commonStuff);
 			this.basePanel.removeAll();
 			this.basePanel.validate();
 			this.basePanel.repaint();

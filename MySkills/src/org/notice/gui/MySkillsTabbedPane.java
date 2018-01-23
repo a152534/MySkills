@@ -11,14 +11,14 @@ import org.notice.beans.CommonStuff;
 public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 {
 	private JPanel basePanel = null, skillsSearch = null, endorseSkills = null, skillsAdmin = null, mySkillsReports = null, logOff = null;
-	private MyProfile  myProfile = null; 
+	private MyProfile1  myProfile = null; 
 	private JButton logoffButton = null;
 	
 	public MySkillsTabbedPane(JPanel basePanel, CommonStuff commonStuff)
 	{
 		this.basePanel = basePanel;
 		
-		myProfile =  new MyProfile(commonStuff );
+		myProfile =  new MyProfile1(commonStuff );
 		
 		
 		skillsSearch = new JPanel();
