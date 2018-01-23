@@ -436,4 +436,33 @@ public class BusinessControl
 		return true;
 	}
     
+    
+	public String fetchUserIDFromArrayList(String surnameSearched, String firstNameSearched)
+	{
+		//Allows get of specific field details for graphical representation
+		for(int pos = 0; pos < UserList.size(); pos++)
+		{
+			if((UserList.get(pos).getSurName().equals(surnameSearched)) && (UserList.get(pos).getSurName().equals(firstNameSearched)))
+			{
+				userId = UserList.get(pos).getUserID();
+			}
+		}
+		return userId;
+	}
+	
+	public String fetchUserNamesFromArrayList(ArrayList detailsSearched)
+	{
+		//Allows get of specific field details for graphical representation
+		String surnameAndName = null;
+		for(int pos = 0; pos < UserList.size(); pos++)
+		{
+			if((UserList.get(pos).getSurName().equals(detailsSearched)) || (UserList.get(pos).getSurName().equals(detailsSearched)) ||
+					(UserList.get(pos).getUserID().equals(detailsSearched)))
+			{
+				surnameAndName = surnameAndName + UserList.get(pos).getSurName() + ", " + UserList.get(pos).getFirstName();
+			}
+		}
+		return surnameAndName;
+	}
+	
 }
