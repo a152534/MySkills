@@ -10,6 +10,8 @@ import javax.swing.table.*;
 import org.notice.beans.*;
 import org.notice.buscontrol.BusinessControl;
 import org.notice.client.Transaction;
+import org.notice.tablemodel.ColleagueProfileSkillTableModel;
+
 
 
 
@@ -27,7 +29,8 @@ public class Colleague extends JPanel implements ActionListener
 	private CommonStuff commonStuff = null;
 	private Transaction transaction = null;
 	private ArrayList<User> users = null;
-	private ArrayList<UserSkills> userSkills= null;
+	private ArrayList<RatedSkills> ratedSkills= null;
+	private ColleagueProfileSkillTableModel colleagueModel =  null;
 	
 	public Colleague(CommonStuff inCommonStuff)
 	{
@@ -70,12 +73,14 @@ public class Colleague extends JPanel implements ActionListener
 		btnRequestEndorsement.setFont(fontButton);
 		btnRequestEndorsement.setBounds(190, 500, 243, 25);
 		add(btnRequestEndorsement);
+		btnRequestEndorsement.setVisible(false);
 		
 		btnSave = new JButton("Save");
 		btnSave.setEnabled(false);
 		btnSave.setFont(fontButton);
 		btnSave.setBounds(620, 500, 90, 25);
 		add(btnSave);
+		btnSave.setVisible(false);
 		
 		textSearch = new JTextField();
 		textSearch.setBounds(242, 25, 302, 22);
@@ -121,24 +126,25 @@ public class Colleague extends JPanel implements ActionListener
 				int delimeter = searchName.indexOf(':');
 				searchID = searchName.substring(delimeter + 1);
 				transaction = new Transaction("getUserSkills", searchID);
-				userSkills = (ArrayList<UserSkills>) transaction.getObject();
+				ratedSkills = (ArrayList<RatedSkills>) transaction.getObject();
 			}
 			else
 			{
 				JOptionPane.showMessageDialog(null, "Invalid Selection");	
 			}
 			
-//			searchID = businessControl.fetchUserIDFromArrayList(searchSurname, searchFirstName);
-//			businessControl.getUserSkills(searchID);
-			
-//			myModel new MyProfileRatedSkillTableModel(ratedSkills);
-//			tableColleagueSkills = new JTable(myModel);
-			
-			
-			
+
+			colleagueModel = new ColleagueProfileSkillTableModel(ratedSkills);
+			tableColleagueSkills = new JTable(colleagueModel);
+			tableColleagueSkills.setCellSelectionEnabled(true);
 			tableColleagueSkills.setShowHorizontalLines(true);
 			tableColleagueSkills.setShowVerticalLines(true);
+			
 			scrollPaneColleagueSkills.setColumnHeaderView(tableColleagueSkills);
+			scrollPaneColleagueSkills.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+			scrollPaneColleagueSkills.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+			scrollPaneColleagueSkills.setBounds(140, 120, 620, 250);
+			add(scrollPaneColleagueSkills);
 		}
 	}
 }
