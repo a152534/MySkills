@@ -1,16 +1,17 @@
 package org.notice.gui.panels;
 
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.table.*;
 
-import org.notice.beans.CommonStuff;
+import org.notice.beans.*;
 import org.notice.buscontrol.BusinessControl;
-import java.awt.Color;
-import java.awt.Dimension;
+import org.notice.client.Transaction;
+
+
 
 public class Colleague extends JPanel implements ActionListener
 {
@@ -24,6 +25,9 @@ public class Colleague extends JPanel implements ActionListener
 	private BusinessControl businessControl = null;
 	private int tableRows = 1, tableColumns = 3;
 	private CommonStuff commonStuff = null;
+	private Transaction transaction = null;
+	private ArrayList<User> users = null;
+	private ArrayList<UserSkills> userSkills= null;
 	
 	public Colleague(CommonStuff inCommonStuff)
 	{
@@ -51,32 +55,11 @@ public class Colleague extends JPanel implements ActionListener
 		add(scrollPaneColleagueSkills);
 		
 		
-//		TableModel colleagueSkillTable = new AbstractTableModel()
-//				{
-//
-//					@Override
-//					public int getRowCount()
-//					{
-//						return 5;//Must find a way to insert int of how man y actual rows.
-//					}
-//
-//					@Override
-//					public int getColumnCount()
-//					{
-//						return 3;
-//					}
-//
-//					@Override
-//					public Object getValueAt(int rowIndex, int columnIndex)
-//					{
-//						return null;
-//					}
-//			
-//				};
+
 		
-		tableColleagueSkills = new JTable(tableRows, tableColumns);
-		tableColleagueSkills.setShowHorizontalLines(true);
-		tableColleagueSkills.setShowVerticalLines(true);
+//		tableColleagueSkills = new JTable(tableRows, tableColumns);
+//		tableColleagueSkills.setShowHorizontalLines(true);
+//		tableColleagueSkills.setShowVerticalLines(true);
 		scrollPaneColleagueSkills.setColumnHeaderView(tableColleagueSkills);
 		
 		
@@ -106,29 +89,56 @@ public class Colleague extends JPanel implements ActionListener
 	public void actionPerformed(ActionEvent ae)
 	{
 		Object source = ae.getSource();
-		businessControl = new BusinessControl();
 		String searchName = null, searchID = null;
-		ArrayList searchList = new ArrayList();
 		
 		if(source == textSearch)
 		{
-			searchList = businessControl.getUserList(textSearch.getText());
-			
-			for(int pos = 0; pos < searchList.size(); pos++)
+			String displayName = null;
+			transaction = new Transaction("getUserList", null);
+			transaction = commonStuff.getClient().sendTransaction(transaction);
+			users = (ArrayList<User>) transaction.getObject();
+			if(users != null)
 			{
-				comboBoxColleagueSearch.addItem(((BusinessControl) searchList.get(pos)).fetchUserNamesFromArrayList(searchList));
+				for(int pos = 0; pos < users.size(); pos++)
+				{
+					displayName = (users.get(pos).getSurName() + ", " + users.get(pos).getFirstName() + ": " + users.get(pos).getUserID());
+					comboBoxColleagueSearch.addItem(displayName);
+				}
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null, "No Data For Selection");
 			}
 		}
+		
+		
 		
 		if(source == btnSearch)
 		{
 			searchName = (String)comboBoxColleagueSearch.getSelectedItem();
-			int index = searchName.indexOf(',');
-			String searchSurname = searchName.substring(0, index);
-			String searchFirstName = searchName.substring(index + 1);				
-			searchID = businessControl.fetchUserIDFromArrayList(searchSurname, searchFirstName);
-			businessControl.getUserSkills(searchID);
+			if(searchName != null)
+			{
+				int delimeter = searchName.indexOf(':');
+				searchID = searchName.substring(delimeter + 1);
+				transaction = new Transaction("getUserSkills", searchID);
+				userSkills = (ArrayList<UserSkills>) transaction.getObject();
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null, "Invalid Selection");	
+			}
 			
+//			searchID = businessControl.fetchUserIDFromArrayList(searchSurname, searchFirstName);
+//			businessControl.getUserSkills(searchID);
+			
+//			myModel new MyProfileRatedSkillTableModel(ratedSkills);
+//			tableColleagueSkills = new JTable(myModel);
+			
+			
+			
+			tableColleagueSkills.setShowHorizontalLines(true);
+			tableColleagueSkills.setShowVerticalLines(true);
+			scrollPaneColleagueSkills.setColumnHeaderView(tableColleagueSkills);
 		}
 	}
 }
