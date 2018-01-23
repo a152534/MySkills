@@ -1,12 +1,15 @@
 package org.notice.beans;
 
+import java.math.BigDecimal;
+
 public class EndorsementsGroupedBySkill
 {
 	int skillId = 0;
 	String skillName = null;
-	double avgRating = 0.0, numRating = 0.0;
+	BigDecimal avgRating = null;
+	int numRating = 0;
 	
-	public EndorsementsGroupedBySkill(int skillId, String skillName, double avgRating, double numRating)
+	public EndorsementsGroupedBySkill(int skillId, String skillName, BigDecimal avgRating, int numRating)
 	{
 		this.skillId = skillId;
 		this.skillName = skillName;
@@ -16,7 +19,7 @@ public class EndorsementsGroupedBySkill
 	
 	public EndorsementsGroupedBySkill(int skillId)
 	{
-		this(skillId, " ", 0.0, 0.0);
+		this(skillId, " ", null, 0);
 	}
 
 	public int getSkillId()
@@ -29,7 +32,7 @@ public class EndorsementsGroupedBySkill
 		return skillName;
 	}
 
-	public double getAvgRating()
+	public BigDecimal getAvgRating()
 	{
 		return avgRating;
 	}
@@ -49,12 +52,12 @@ public class EndorsementsGroupedBySkill
 		this.skillName = skillName;
 	}
 
-	public void setAvgRating(double avgRating)
+	public void setAvgRating(BigDecimal avgRating)
 	{
 		this.avgRating = avgRating;
 	}
 
-	public void setNumRating(double numRating)
+	public void setNumRating(int numRating)
 	{
 		this.numRating = numRating;
 	}
