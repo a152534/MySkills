@@ -69,7 +69,7 @@ public class Reports extends JPanel implements ActionListener
 
 	        {
 		
-		transaction = new Transaction("getSkillsReport", commonStuff.getLoggedOnUser().getUserID());
+		transaction = new Transaction("getSkillsReport", null);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 		skillReport = (ArrayList<EndorsementsPerSkill>) transaction.getObject();
 
@@ -92,7 +92,7 @@ public class Reports extends JPanel implements ActionListener
 	    if(source == btnUsers)
 
 	        {
-		transaction = new Transaction("getSkillsReport", commonStuff.getLoggedOnUser().getUserID());
+		transaction = new Transaction("getSkillsReport", null);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 		skillReport = (ArrayList<EndorsementsPerSkill>) transaction.getObject();
 
