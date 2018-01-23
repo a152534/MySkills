@@ -19,7 +19,7 @@ public class MySkillsGUI extends JFrame
 		commonstuff = new CommonStuff() ;
 		commonstuff.setClient(new SkillClient());
 		
-		this.setTitle("MySkills");
+		this.setTitle("My Skills");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBounds(100, 100, 1000, 800);
 	

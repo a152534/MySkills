@@ -24,7 +24,7 @@ public class SkillClient {
 			in = new ObjectInputStream(socket.getInputStream());
 		} catch (IOException e)
 		{
-			e.printStackTrace();
+			System.out.println("Client Unable to connect to Server \nCheck if server is running  on port 60606");
 		}
 	}
 	

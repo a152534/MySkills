@@ -89,7 +89,7 @@ public class MyProfileRatedSkillTableModel extends AbstractTableModel {
 			return ratedSkill.getNumEndorsement();
 		}
 		if (columnIndex == 3) {
-			return ratedSkill.getNumEndorsement();
+			return ratedSkill.getAvgEndorsement();
 		}
 
 		return "1";

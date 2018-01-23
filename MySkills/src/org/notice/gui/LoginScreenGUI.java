@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 import org.notice.beans.CommonStuff;
+import org.notice.beans.Skill;
 import org.notice.beans.User;
 import org.notice.client.SkillClient;
 import org.notice.client.Transaction;
@@ -114,6 +115,21 @@ public class LoginScreenGUI extends JPanel implements ActionListener {
 			this.basePanel.repaint();
 
 		}
+		transaction = new Transaction("getSkillList", null);
+		transaction = commonStuff.getClient().sendTransaction(transaction);
+	 
+		if(transaction.getObject() == null) {
+			System.out.println("LoginScreenGui skillslist == null ");
+		} else {
+			commonStuff.setSkillsList((ArrayList<Skill>)transaction.getObject());
+			System.out.println("LoginScreenGui skillslist size " + commonStuff.getSkillsList().size());
+		}
+			
+		 
+	 
+		
+		
+		
 	}
 
 }
