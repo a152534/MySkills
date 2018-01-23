@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import org.notice.beans.Endorsement;
 import org.notice.beans.EndorsementNomination;
+import org.notice.beans.EndorsementsGroupedBySkill;
 import org.notice.beans.RatedSkills;
 import org.notice.beans.Skill;
 import org.notice.beans.User;
@@ -33,6 +34,7 @@ public class BusinessControl
     private UserSkills US = null;
     private Endorsement endorse = null;
     private  EndorsementNomination endorseNom = null;
+    private  ArrayList<EndorsementsGroupedBySkill> skillReport = null;
     
    
     public BusinessControl()
@@ -128,6 +130,21 @@ public class BusinessControl
         	endorseNom =(EndorsementNomination)transaction.getObject();
         	transaction.setObject(this.endorseNomination( endorseNom.getUserSkillId(), endorseNom.getNominatedEndorsee()));
                 transaction.setDescription("endorsementNomination");
+         	break;
+             }
+             
+             case "getSkillsReport" : 
+             {
+        	transaction.setObject(this.endorseNomination( endorseNom.getUserSkillId(), endorseNom.getNominatedEndorsee()));
+                transaction.setDescription("endorsementNomination");
+         	break;
+             }
+             
+             case "getUsersPerSkill" : 
+             {
+        	skillName = transaction.getObject().toString();
+          	transaction.setObject(this.searchSkills(skillName));
+                transaction.setDescription("SearchSkills");
          	break;
              }
              
@@ -281,7 +298,7 @@ public class BusinessControl
 			//Fetch from database
 			
 			userSkillResult = skillsDB.queryDB("Select user_id, user_skill_id, skill_id, level, " +
-				"num_endorsement, avg_endorsement, skill_name from v_user_skill_endorsements where user_id = '" + userId + "'");
+				"num_of_endorsements, avg_endorsement, skill_name from v_user_skill_endorsements where user_id = '" + userId + "'");
 			
 			//Write to ArrayList
 			while (userSkillResult.next())
@@ -290,7 +307,7 @@ public class BusinessControl
 			userId = userSkillResult.getString("user_id");
 			skillId = userSkillResult.getInt("skill_id");
 			level = userSkillResult.getInt("level");
-			numEndorsement = userSkillResult.getInt("num_endorsement");
+			numEndorsement = userSkillResult.getInt("num_of_endorsements");
 			skillName = userSkillResult.getString("skill_name");
 			avgEndorsement = userSkillResult.getBigDecimal("avg_endorsement");
 			userSkillList.add(new RatedSkills(skillId, userSkillId, level, numEndorsement, userId,
@@ -436,6 +453,7 @@ public class BusinessControl
 		return true;
 	}
     
+<<<<<<< HEAD
     
 	public String fetchUserIDFromArrayList(String surnameSearched, String firstNameSearched)
 	{
@@ -465,4 +483,35 @@ public class BusinessControl
 		return surnameAndName;
 	}
 	
+=======
+    public ArrayList<EndorsementsGroupedBySkill> getSkillsReport()
+	{
+//		
+		skillReport = new ArrayList<EndorsementsGroupedBySkill>();
+		
+		try
+		{
+			//Fetch from database
+			
+			skillResult = skillsDB.queryDB("SELECT skill_id, skill_name, avg_rating, num_rating from v_endorsements_grouped_by_skills");
+			
+			//Write to ArrayList
+			while(skillResult.next())
+			{
+			 skillId = skillResult.getInt("skill_id");
+			 skillName = skillResult.getString("skill_name");
+			 avgEndorsement = skillResult.getBigDecimal("avg_rating");
+			 numEndorsement = skillResult.getInt("num_rating");
+			 
+			 skillReport.add(new EndorsementsGroupedBySkill(skillId, skillName, avgEndorsement, numEndorsement));		
+			}//End while	
+		} catch (SQLException se)
+		{
+			System.out.println("ERROR: " + se.getMessage());
+			return null;
+		}
+		return skillReport;
+	}
+    
+>>>>>>> branch 'master' of https://github.com/a152534/MySkills.git
 }

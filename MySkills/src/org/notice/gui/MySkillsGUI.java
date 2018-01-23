@@ -22,22 +22,16 @@ public class MySkillsGUI extends JFrame
 		this.setTitle("MySkills");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBounds(100, 100, 1000, 800);
-		//this.setLocation(400, 100);
-		//this.setResizable(false);
-
-
-		
+	
 		basePanel = new JPanel();
 		basePanel.setBorder(new EmptyBorder(15, 15, 15, 15));
-		
-	
+
 		basePanel.setLayout(new GridLayout(1,1));
-//		baseTabbedPane.add(basePanel);
-		
+
 		loginScreen = new LoginScreenGUI(basePanel, commonstuff);
 		basePanel.add(loginScreen);
 		this.setContentPane(basePanel);
-		
+
 		
 	}
 	
