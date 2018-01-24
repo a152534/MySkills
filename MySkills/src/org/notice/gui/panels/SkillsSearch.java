@@ -9,8 +9,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import org.notice.beans.EndorsementsGroupedBySkill;
-import org.notice.beans.RatedSkills;
+import org.notice.beans.UserSkillEndorsements;
+ 
 import org.notice.beans.Skill;
  
 import org.notice.buscontrol.*;
@@ -78,7 +78,7 @@ public class SkillsSearch extends JPanel implements ActionListener
 		 
 		for(int pos = 0; pos < skillsList.size() -1 ; pos++)
 		{
-			System.out.println("In for loop");
+		
 			comboBoxSkillsSearch.addItem(skillsList.get(pos).getSkillName());
 		}
 	}
@@ -91,15 +91,15 @@ public class SkillsSearch extends JPanel implements ActionListener
 
 	    System.out.println("In populdateSkillperuser skill " + skill);
 	    
-	    ArrayList<RatedSkills> ratedSkills;
+	    ArrayList<UserSkillEndorsements> userSkillEndorsements;
 	    
 	    transaction = new Transaction("getUserEndorsementsPerSkill", skill);
  		transaction = commonStuff.getClient().sendTransaction(transaction);
  		
- 		ratedSkills = (ArrayList<RatedSkills>)transaction.getObject();
+ 		userSkillEndorsements = (ArrayList<UserSkillEndorsements>)transaction.getObject();
 	    
 		 
-		SkillsRatedTableModel myModel = new SkillsRatedTableModel(ratedSkills);
+		SkillsRatedTableModel myModel = new SkillsRatedTableModel(userSkillEndorsements);
 
 		tableSkills = new JTable(myModel);
 		//tableSkills.setColumnSelectionAllowed(true);
