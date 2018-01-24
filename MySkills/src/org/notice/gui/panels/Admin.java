@@ -1,6 +1,9 @@
 package org.notice.gui.panels;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,12 +15,14 @@ import org.notice.client.Transaction;
 import org.notice.*;
 import org.notice.client.Transaction;
 import org.notice.tablemodel.MyProfileRatedSkillTableModel;
+import java.awt.Button;
 
 public class Admin extends JPanel implements ActionListener
 {
 	private JComboBox comboBox;
 	private JTable tableSkills;
 	private JComboBox<String> skillsList = null;
+	private JScrollPane scrollPaneSkills;
 	private JButton btnAdd;
 	private JButton btnDelete;
 	private Font fontComboBox;
@@ -30,6 +35,7 @@ public class Admin extends JPanel implements ActionListener
 	private String deleteSkill;
 	private int skillID;
 	private String dulicateSkill;
+	private Button btnSearch;
 	
 	public Admin(CommonStuff inCommonStuff)  
 	{
@@ -64,13 +70,18 @@ public class Admin extends JPanel implements ActionListener
 		btnDelete.setBounds(535, 451, 100, 25);
 		add(btnDelete);
 		
+		btnSearch = new Button("Search");
+		btnSearch.setBounds(605, 50, 70, 25);
+		btnSearch.setFont(fontButton);
+		add(btnSearch);
+		
 		populateSkillsInfo();
 				
 	}
 	
 	private void populateSkillsInfo() 
 	{
-		comboBox.setToolTipText(commonStuff.getLoggedOnUser().getSurName());
+		comboBox.getToolTipText(commonStuff.getLoggedOnUser());
 		
 		ArrayList<Skill> skillsList = new ArrayList<Skill>();
 		businessControl = new BusinessControl();
@@ -86,7 +97,36 @@ public class Admin extends JPanel implements ActionListener
 		}
  		
 		populateSkillsInfo();
+		
+		scrollPaneSkills = new JScrollPane(tableSkills);
+		scrollPaneSkills.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPaneSkills.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPaneSkills.setBounds(300, 75, 300, 250);
+		add(scrollPaneSkills);
 
+	}
+	
+	public void setUpLevelColumn(JTable table, TableColumn levelColumn) 
+	{
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.addItem("1");
+		comboBox.addItem("2");
+		comboBox.addItem("3");
+		comboBox.addItem("4");
+		comboBox.addItem("5");
+		comboBox.addItem("6");
+		comboBox.addItem("7");
+		comboBox.addItem("8");
+		comboBox.addItem("9");
+		comboBox.addItem("10");
+		
+		levelColumn.setCellEditor(new DefaultCellEditor(comboBox));
+
+		
+		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+		renderer.setToolTipText("Click for combo box");
+		levelColumn.setCellRenderer(renderer);
 	}
 	
 	@Override
