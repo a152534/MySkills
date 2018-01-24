@@ -417,7 +417,7 @@ public class BusinessControl
     	
     	if (!RS.next())
     	{
-    		skillsDB.updateDB("insert into user_skill values(null, '" + userId + "', " + skillId + ", " + level + ", null");
+    		skillsDB.updateDB("insert into user_skill values(null, '" + userId + "', " + skillId + ", " + level + ", null)");
     	
     	}
     	else
