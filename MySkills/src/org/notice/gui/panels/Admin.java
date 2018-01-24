@@ -81,7 +81,7 @@ public class Admin extends JPanel implements ActionListener
 	
 	private void populateSkillsInfo() 
 	{
-		comboBox.getToolTipText(commonStuff.getLoggedOnUser());
+		//comboBox.getToolTipText(commonStuff.getLoggedOnUser());
 		
 		ArrayList<Skill> skillsList = new ArrayList<Skill>();
 		businessControl = new BusinessControl();
