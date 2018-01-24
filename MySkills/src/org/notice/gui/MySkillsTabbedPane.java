@@ -16,6 +16,7 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 	private Reports reports = null;
 	private JButton logoffButton = null;
 	private Colleague colleague;
+	private Admin admin;
 	
 	public MySkillsTabbedPane(JPanel basePanel, CommonStuff commonStuff)
 	{
@@ -23,7 +24,7 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 		
 		myProfile =  new MyProfile1(commonStuff );
 		colleague = new Colleague(commonStuff);
-		
+		admin = new Admin(commonStuff);
 		skillsSearch = new SkillsSearch(commonStuff);
 		
 		
@@ -40,9 +41,7 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 		this.addTab("Colleague", colleague);
 		this.addTab("Skills Search", skillsSearch);
 		this.addTab("Reports", reports);
-		this.addTab("Admin", logOff);
-		
-		
+		this.addTab("Admin", admin);
 
 	}
 

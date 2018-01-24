@@ -4,30 +4,28 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
-import org.notice.beans.EndorsementsGroupedBySkill;
 import org.notice.beans.RatedSkills;
-import org.notice.beans.Skill;
- 
+import org.notice.beans.UserSkillEndorsements;
 
  
 @SuppressWarnings("serial")
 public class SkillsRatedTableModel extends AbstractTableModel {
 	private boolean DEBUG = false;
 	
-	ArrayList<RatedSkills> EndorsementsGroupedBySkill;
+	ArrayList<UserSkillEndorsements> userSkillEndorsements;
 	private String[] columnNames = { "Name", "Number of endorsements", "Endorsement Average" };
 
-	public SkillsRatedTableModel(ArrayList<RatedSkills> ratedSkills) {
+	public SkillsRatedTableModel(ArrayList<UserSkillEndorsements> userSkillEndorsements) {
 		super();
-		this.EndorsementsGroupedBySkill = ratedSkills;
-		System.out.println("SkillsRatedTableModel :  rows in rated skills " + ratedSkills.size());
+		this.userSkillEndorsements = userSkillEndorsements;
+		System.out.println("SkillsRatedTableModel :  rows in rated skills " + userSkillEndorsements.size());
 	}
 
 	@Override
 	public int getRowCount() {
 		// TODO Auto-generated method stub
 		// return ratedSkills.size();
-		return EndorsementsGroupedBySkill.size();
+		return userSkillEndorsements.size();
 	}
 
 	@Override
@@ -69,17 +67,18 @@ public class SkillsRatedTableModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		// System.out.println("MyProfileRatedSkillTableModel getValueAt ");
-		RatedSkills ratedSkill = EndorsementsGroupedBySkill.get(rowIndex);
+	
+		UserSkillEndorsements ratedSkills = userSkillEndorsements.get(rowIndex);
 		if (columnIndex == 0) {
-			return ratedSkill.getSkillName();
+			return (ratedSkills.getSurname() + ", " + ratedSkills.getSkillName());
 		}
 
 			if (columnIndex == 1) {
 			
-			return ratedSkill.getNumEndorsement();
+			return ratedSkills.getNumOfEndorsements();
 		}
 		if (columnIndex == 2) {
-			return ratedSkill.getAvgEndorsement();
+			return ratedSkills.getAvgEndorsement();
 		}
 
 		return "1";

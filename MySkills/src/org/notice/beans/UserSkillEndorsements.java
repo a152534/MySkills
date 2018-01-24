@@ -1,8 +1,9 @@
 package org.notice.beans;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class UserSkillEndorsements
+public class UserSkillEndorsements implements Serializable
 {
 	String userId = null, firstName = null, surname = null, alias = null, eMail = null, phoneNum = null, skillName = null;
 	int userSkillId = 0, skillId = 0, level = 0;
