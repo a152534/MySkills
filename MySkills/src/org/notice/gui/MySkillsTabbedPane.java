@@ -40,7 +40,7 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 		this.addTab("Colleague", colleague);
 		this.addTab("Skills Search", skillsSearch);
 		this.addTab("Reports", reports);
-		this.addTab("Logoff", logOff);
+		this.addTab("Admin", logOff);
 		
 		
 
