@@ -25,6 +25,7 @@ public class Reports extends JPanel implements ActionListener
 	private JTable tableSkillsUsers;
 	private Font fontButton;
 	private  ArrayList<EndorsementsPerSkill> skillReport = null;
+	private  ArrayList<UserSkillEndorsements> userSkillReport = null;
 	private Transaction transaction = null;
 	private CommonStuff commonStuff;
 	private JTable tableSkillsReport;
@@ -65,6 +66,8 @@ public class Reports extends JPanel implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 	    Object source = e.getSource();
+	    String skilName = null;
+	    int skillId = 0;
 	    
 	    if(source == btnSkills)
 
@@ -88,24 +91,24 @@ public class Reports extends JPanel implements ActionListener
 		scrollPaneSkillsUsers.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPaneSkillsUsers.setBounds(140, 120, 620, 450);
 		add(scrollPaneSkillsUsers);
-	        }
+	        
 	    
 	    if(source == btnUsers)
 
 	        {
-		//skillName = 
-		transaction = new Transaction("getUsersPerSkill", null);
+		//skillid = skillReport.skillName
+		transaction = new Transaction("getUserEndorsementsPerSkill", skillId);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
-		skillReport = (ArrayList<EndorsementsPerSkill>) transaction.getObject();
+		userSkillReport = (ArrayList<UserSkillEndorsements>) transaction.getObject();
 
-		ReportsSkillsReportTableModel myModel = new ReportsSkillsReportTableModel(skillReport);
+		ReportsUserReportTableModel myModelUser = new ReportsUserReportTableModel(userSkillReport);
 
-		tableSkillsReport = new JTable(myModel);
+		tableSkillsReport = new JTable(myModelUser);
 		//tableSkills.setColumnSelectionAllowed(true);
 		tableSkillsReport.setCellSelectionEnabled(true);
 	
 		
-		myModel.fireTableDataChanged();
+		myModelUser.fireTableDataChanged();
 
 		scrollPaneSkillsUsers = new JScrollPane(tableSkillsReport);
 		scrollPaneSkillsUsers.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -113,6 +116,7 @@ public class Reports extends JPanel implements ActionListener
 		scrollPaneSkillsUsers.setBounds(140, 120, 620, 450);
 		add(scrollPaneSkillsUsers);
 	        }
+		}
 	    
 	}
 
