@@ -27,7 +27,7 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 		
 		endorseSkills = new JPanel();
 		skillsAdmin = new JPanel();
-		reports = new Reports();
+		reports = new Reports(commonStuff);
 		logOff = new JPanel();
 		
 		logoffButton = new JButton("Log Off");

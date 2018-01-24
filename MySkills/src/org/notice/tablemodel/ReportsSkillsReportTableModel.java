@@ -12,7 +12,7 @@ public class ReportsSkillsReportTableModel extends AbstractTableModel
 	private boolean DEBUG = false;
 	
 	ArrayList<EndorsementsPerSkill> skillReport;
-	private String[] columnNames = { "Skill", "My rating", "Number of endorsements", "Average endorsement" };
+	private String[] columnNames = { "Skills",  "Number of endorsements", "Average endorsement", "Number of Resources" };
 
 	public ReportsSkillsReportTableModel(ArrayList<EndorsementsPerSkill> skillReport) 
 	{
