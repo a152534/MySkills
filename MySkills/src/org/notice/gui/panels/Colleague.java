@@ -20,7 +20,7 @@ public class Colleague extends JPanel implements ActionListener
 	private JComboBox comboBoxColleagueSearch;
 	private JScrollPane scrollPaneColleagueSkills;
 	private JTable tableColleagueSkills;
-	private JButton btnRequestEndorsement, btnSave, btnSearch;
+	private JButton btnRequestEndorsement, btnSave, btnSearch, btnLookup;
 	private Font fontButton, fontComboBox;
 	private JTextField textSearch;
 	private BusinessControl businessControl = null;
@@ -30,7 +30,7 @@ public class Colleague extends JPanel implements ActionListener
 	private ArrayList<User> users = null;
 	private ArrayList<RatedSkills> ratedSkills= null;
 	private ColleagueProfileSkillTableModel colleagueModel =  null;
-	private JButton TestButton;
+	
 	
 	public Colleague(CommonStuff inCommonStuff)
 	{
@@ -39,6 +39,12 @@ public class Colleague extends JPanel implements ActionListener
 		
 		fontButton = (new Font("Arial", Font.BOLD, 18));
 		fontComboBox = (new Font("Arial", Font.PLAIN, 14));
+		
+		btnLookup = new JButton("Lookup");
+		btnLookup.setFont(fontButton);
+		btnLookup.setBounds(552, 24, 108, 25);
+		btnLookup.addActionListener(this);
+		add(btnLookup);		
 		
 		setLayout(null);
 		comboBoxColleagueSearch = new JComboBox();
@@ -50,8 +56,9 @@ public class Colleague extends JPanel implements ActionListener
 		btnSearch = new JButton("Search");
 		btnSearch.setFont(fontButton);
 		btnSearch.setBounds(552, 50, 108, 25);
-		add(btnSearch);
+		btnSearch.setVisible(false);
 		btnSearch.addActionListener(this);
+		add(btnSearch);
 		
 		scrollPaneColleagueSkills = new JScrollPane();
 		scrollPaneColleagueSkills.setBounds(140, 150, 620, 320);
@@ -88,10 +95,7 @@ public class Colleague extends JPanel implements ActionListener
 		textSearch.setColumns(10);
 		textSearch.addActionListener(this);
 		
-		TestButton = new JButton("Test");
-		TestButton.setBounds(552, 24, 97, 25);
-		TestButton.addActionListener(this);
-		add(TestButton);
+
 	}
 
 
@@ -101,7 +105,7 @@ public class Colleague extends JPanel implements ActionListener
 		Object source = ae.getSource();
 		String searchName = null, searchID = null;
 		
-		if(source == TestButton)
+		if(source == btnLookup)
 		{
 			String displayName = null;
 			transaction = new Transaction("getUserList", textSearch.getText());
@@ -133,8 +137,9 @@ public class Colleague extends JPanel implements ActionListener
 				int delimeter = searchName.indexOf(':');
 				searchID = searchName.substring(delimeter + 2);
 				System.out.println(searchID);
-//				transaction = new Transaction("getUserSkills", searchID);
-//				ratedSkills = (ArrayList<RatedSkills>) transaction.getObject();
+				transaction = new Transaction("getUserSkills", searchID);
+				transaction = commonStuff.getClient().sendTransaction(transaction);
+				ratedSkills = (ArrayList<RatedSkills>) transaction.getObject();
 			}
 			else
 			{
