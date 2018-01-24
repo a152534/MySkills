@@ -9,12 +9,14 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import org.notice.beans.EndorsementsGroupedBySkill;
 import org.notice.beans.RatedSkills;
 import org.notice.beans.Skill;
  
 import org.notice.buscontrol.*;
 import org.notice.client.Transaction;
 import org.notice.tablemodel.MyProfileRatedSkillTableModel;
+import org.notice.tablemodel.SkillsRatedTableModel;
 
 public class SkillsSearch extends JPanel implements ActionListener
 {
@@ -42,7 +44,9 @@ public class SkillsSearch extends JPanel implements ActionListener
 		fontComboBox = (new Font("Arial", Font.PLAIN, 14));
 		comboBoxSkillsSearch = new JComboBox();
 		
-	//	populateSkillsList();
+		System.out.println("Before populateSkill List");
+		populateSkillsList();
+		System.out.println("After populateSkill List");
 		
 		comboBoxSkillsSearch.setFont(fontComboBox);
 		comboBoxSkillsSearch.setBounds(240, 50, 302, 25);
@@ -63,51 +67,39 @@ public class SkillsSearch extends JPanel implements ActionListener
 	}
 	
 	private void populateSkillsList() {
-		ArrayList<Skill> skillsList = new ArrayList<Skill> ();
-		businessControl = new BusinessControl();
-		
 		System.out.println("In populate skills");
-//		commonStuff = new CommonStuff();
-		
-	//	skillsList = commonStuff.getSkillsList(); 
+		ArrayList<Skill> skillsList = new ArrayList<Skill> ();
+//		skillsList = commonStuff.getSkillsList(); 
 		
 		transaction = new Transaction("getSkillList", null);
  		transaction = commonStuff.getClient().sendTransaction(transaction);
- 		
- 	//	skillsList = (ArrayList<Skill>)businessControl.getSkillList();
-		skillsList = (ArrayList<Skill>)transaction.getObject();
-		
-		System.out.println("After skill list");
-		
-	 
-	//	System.out.println("Skill List to string" + skillsList.toString());
-	//	System.out.printl("Skill List to object" + skillsList.toArray());
-		System.out.println("userskilllist size" + skillsList.size());
-	//	System.out.println("Skill List is empty" + skillsList.isEmpty());
-		
+
+ 		skillsList = (ArrayList<Skill>)transaction.getObject();
 		 
 		for(int pos = 0; pos < skillsList.size() -1 ; pos++)
 		{
 			System.out.println("In for loop");
-			//comboBoxSkillsSearch.addItem(skillsList.get(pos).getSkillName());
+			comboBoxSkillsSearch.addItem(skillsList.get(pos).getSkillName());
 		}
 	}
 	
 	private void populateSkillPerUser() {
-		
+		System.out.println("In populdateSkillperuser");
 		int skill = 0; 
 	    skill = comboBoxSkillsSearch.getSelectedIndex();
-	    String skillSearch = null;
-	 // get the skill id
+	    skill = skill + 1;
+
+	    System.out.println("In populdateSkillperuser skill " + skill);
 	    
+	    ArrayList<RatedSkills> ratedSkills;
 	    
-		ArrayList<RatedSkills> ratedSkills;
-		//  getuserskills, null
-//		transaction = new Transaction("getUserSkills", commonStuff.getLoggedOnUser().getUserID());
-//		transaction = commonStuff.getClient().sendTransaction(transaction);
-		ratedSkills = (ArrayList<RatedSkills>)transaction.getObject();
-				
-		MyProfileRatedSkillTableModel myModel = new MyProfileRatedSkillTableModel(ratedSkills);
+	    transaction = new Transaction("getUserEndorsementsPerSkill", skill);
+ 		transaction = commonStuff.getClient().sendTransaction(transaction);
+ 		
+ 		ratedSkills = (ArrayList<RatedSkills>)transaction.getObject();
+	    
+		 
+		SkillsRatedTableModel myModel = new SkillsRatedTableModel(ratedSkills);
 
 		tableSkills = new JTable(myModel);
 		//tableSkills.setColumnSelectionAllowed(true);
@@ -148,6 +140,7 @@ public class SkillsSearch extends JPanel implements ActionListener
 		Object source = e.getSource();
 		if(source == btnSearch) 
 		{
+			System.out.println("in action performed");
 			populateSkillPerUser();
 					}
 	}
