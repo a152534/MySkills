@@ -1,6 +1,8 @@
 package org.notice.beans;
 
-public class UserSkills
+import java.io.Serializable;
+
+public class UserSkills implements Serializable
 {
     private int skillID = 0  , level = 0;
     private String userId = null;
