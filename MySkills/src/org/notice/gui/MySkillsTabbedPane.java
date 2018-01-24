@@ -10,9 +10,10 @@ import org.notice.beans.CommonStuff;
 
 public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 {
-	private JPanel basePanel = null,  endorseSkills = null, skillsAdmin = null, mySkillsReports = null, logOff = null;
+	private JPanel basePanel = null,  endorseSkills = null, skillsAdmin = null,  logOff = null;
 	private MyProfile1  myProfile = null; 
 	private SkillsSearch skillsSearch = null;
+	private Reports reports = null;
 	private JButton logoffButton = null;
 	
 	public MySkillsTabbedPane(JPanel basePanel, CommonStuff commonStuff)
@@ -26,7 +27,7 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 		
 		endorseSkills = new JPanel();
 		skillsAdmin = new JPanel();
-		mySkillsReports = new JPanel();
+		reports = new Reports();
 		logOff = new JPanel();
 		
 		logoffButton = new JButton("Log Off");
@@ -37,7 +38,7 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 		this.addTab("My Profile", myProfile);
 		this.addTab("Colleague", endorseSkills);
 		this.addTab("Skills Search", skillsSearch);
-		this.addTab("Reports", mySkillsReports);
+		this.addTab("Reports", reports);
 		this.addTab("Logoff", logOff);
 		
 		
