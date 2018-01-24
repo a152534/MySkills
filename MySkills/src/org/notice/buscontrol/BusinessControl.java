@@ -1,6 +1,7 @@
 package org.notice.buscontrol;
 
 import java.math.BigDecimal;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -8,20 +9,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import org.notice.beans.Endorsement;
-import org.notice.beans.EndorsementNomination;
-import org.notice.beans.EndorsementsGroupedBySkill;
-import org.notice.beans.RatedSkills;
-import org.notice.beans.Skill;
-import org.notice.beans.User;
-import org.notice.beans.UserSkills;
+import org.notice.beans.*;
 import org.notice.client.Transaction;
 import org.notice.dao.MySkillsDAO;
 
 
 public class BusinessControl
 {
-    private String userId , skillName, endorsor, action;
+    private String userId , skillName, endorsor, action , firstName , surname;
     private MySkillsDAO skillsDB  = null;
     private ResultSet RS = null;
     private Transaction transaction = null;
@@ -30,12 +25,13 @@ public class BusinessControl
     private  ArrayList<Skill> skillList = null;
     private ResultSet userResult = null , userSkillResult = null, skillResult = null;
     private int userSkillId, skillId ,level, numEndorsement;
-    private BigDecimal avgEndorsement;
+    private Long numOfResources = 0L;
+    private BigDecimal avgEndorsement , numOfEndorsements;
     private UserSkills US = null;
     private Endorsement endorse = null;
     private  EndorsementNomination endorseNom = null;
-    private  ArrayList<EndorsementsGroupedBySkill> skillReport = null;
-    private  ArrayList<RatedSkills> ratedSkillsList = null;
+    private  ArrayList<EndorsementsPerSkill> skillReport = null;
+    private  ArrayList<UserSkillEndorsements> ratedSkillsList = null;
     
    
     public BusinessControl()
@@ -421,7 +417,7 @@ public class BusinessControl
     	
     	if (!RS.next())
     	{
-    		skillsDB.updateDB("insert into user_skill values(null, '" + userId + "', " + skillId + ", " + level + ", null");
+    		skillsDB.updateDB("insert into user_skill values(null, '" + userId + "', " + skillId + ", " + level + ", null)");
     	
     	}
     	else
@@ -463,26 +459,28 @@ public class BusinessControl
 	}
     
 
-    public ArrayList<EndorsementsGroupedBySkill> getSkillsReport()
+    public ArrayList<EndorsementsPerSkill> getSkillsReport()
 	{
 //		
-		skillReport = new ArrayList<EndorsementsGroupedBySkill>();
+		skillReport = new ArrayList<EndorsementsPerSkill>();
 		
 		try
 		{
 			//Fetch from database
 			
-			skillResult = skillsDB.queryDB("SELECT skill_id, skill_name, avg_rating, num_rating from v_endorsements_grouped_by_skills");
+			skillResult = skillsDB.queryDB("SELECT skill_id, skill_name, num_of_resources, num_of_endorsements,"
+				+ " avg_endorsement  from v_endorsements_per_skill");
 			
 			//Write to ArrayList
 			while(skillResult.next())
 			{
 			 skillId = skillResult.getInt("skill_id");
 			 skillName = skillResult.getString("skill_name");
-			 avgEndorsement = skillResult.getBigDecimal("avg_rating");
-			 numEndorsement = skillResult.getInt("num_rating");
-			 
-			 skillReport.add(new EndorsementsGroupedBySkill(skillId, skillName, avgEndorsement, numEndorsement));		
+			 avgEndorsement = skillResult.getBigDecimal("avg_endorsement");
+			 numOfEndorsements = skillResult.getBigDecimal("num_of_endorsements");
+			 numOfResources = skillResult.getLong("num_of_resources");
+			
+			 skillReport.add(new EndorsementsPerSkill(skillId, numOfResources, skillName, numOfEndorsements, avgEndorsement));		
 			}//End while	
 		} catch (SQLException se)
 		{
@@ -493,10 +491,10 @@ public class BusinessControl
 	}
     
 
-    public ArrayList<RatedSkills> getUserEndorsementsPerSkill(int skillId)
+    public ArrayList<UserSkillEndorsements> getUserEndorsementsPerSkill(int skillId)
 	{
 		this.skillId = skillId;
-		ratedSkillsList = new ArrayList<RatedSkills>();
+		ratedSkillsList = new ArrayList<UserSkillEndorsements>();
 		
 		try
 		{
@@ -510,12 +508,15 @@ public class BusinessControl
 			int userSkillId = userResult.getInt("user_skill_id");
 			String userId = userResult.getString("user_id");
 			skillId = userResult.getInt("skill_id");
-			int level = userResult.getInt("level");
-			int numEndorsement = userResult.getInt("num_of_endorsements");
-			String skillName = userResult.getString("skill_name");
-			BigDecimal avgEndorsement = userResult.getBigDecimal("avg_endorsement");
-			ratedSkillsList.add(new RatedSkills(skillId, userSkillId, level, numEndorsement, userId,
-			skillName, avgEndorsement));
+			level = userResult.getInt("level");
+			numEndorsement = userResult.getInt("num_of_endorsements");
+			skillName = userResult.getString("skill_name");
+			firstName = userResult.getString("first_name");
+			surname = userResult.getString("surname");
+			avgEndorsement = userResult.getBigDecimal("avg_endorsement");
+			ratedSkillsList.add(new UserSkillEndorsements(firstName, surname, numEndorsement, avgEndorsement));
+			
+			
 			}
 		} catch (SQLException se)
 		{

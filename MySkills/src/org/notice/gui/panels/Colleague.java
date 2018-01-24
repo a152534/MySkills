@@ -18,10 +18,9 @@ import org.notice.tablemodel.ColleagueProfileSkillTableModel;
 public class Colleague extends JPanel implements ActionListener
 {
 	private JComboBox comboBoxColleagueSearch;
-	private JButton btnSearch;
 	private JScrollPane scrollPaneColleagueSkills;
 	private JTable tableColleagueSkills;
-	private JButton btnRequestEndorsement, btnSave;
+	private JButton btnRequestEndorsement, btnSave, btnSearch;
 	private Font fontButton, fontComboBox;
 	private JTextField textSearch;
 	private BusinessControl businessControl = null;
@@ -31,6 +30,7 @@ public class Colleague extends JPanel implements ActionListener
 	private ArrayList<User> users = null;
 	private ArrayList<RatedSkills> ratedSkills= null;
 	private ColleagueProfileSkillTableModel colleagueModel =  null;
+	private JButton TestButton;
 	
 	public Colleague(CommonStuff inCommonStuff)
 	{
@@ -73,20 +73,25 @@ public class Colleague extends JPanel implements ActionListener
 		btnRequestEndorsement.setFont(fontButton);
 		btnRequestEndorsement.setBounds(190, 500, 243, 25);
 		add(btnRequestEndorsement);
-		btnRequestEndorsement.setVisible(false);
+		btnRequestEndorsement.setVisible(true);
 		
 		btnSave = new JButton("Save");
 		btnSave.setEnabled(false);
 		btnSave.setFont(fontButton);
 		btnSave.setBounds(620, 500, 90, 25);
 		add(btnSave);
-		btnSave.setVisible(false);
+		btnSave.setVisible(true);
 		
 		textSearch = new JTextField();
 		textSearch.setBounds(242, 25, 302, 22);
 		add(textSearch);
 		textSearch.setColumns(10);
 		textSearch.addActionListener(this);
+		
+		TestButton = new JButton("Test");
+		TestButton.setBounds(552, 24, 97, 25);
+		TestButton.addActionListener(this);
+		add(TestButton);
 	}
 
 
@@ -96,10 +101,10 @@ public class Colleague extends JPanel implements ActionListener
 		Object source = ae.getSource();
 		String searchName = null, searchID = null;
 		
-		if(source == textSearch)
+		if(source == TestButton)
 		{
 			String displayName = null;
-			transaction = new Transaction("getUserList", null);
+			transaction = new Transaction("getUserList", textSearch.getText());
 			transaction = commonStuff.getClient().sendTransaction(transaction);
 			users = (ArrayList<User>) transaction.getObject();
 			if(users != null)
@@ -108,6 +113,8 @@ public class Colleague extends JPanel implements ActionListener
 				{
 					displayName = (users.get(pos).getSurName() + ", " + users.get(pos).getFirstName() + ": " + users.get(pos).getUserID());
 					comboBoxColleagueSearch.addItem(displayName);
+					comboBoxColleagueSearch.setVisible(true);
+					btnRequestEndorsement.setVisible(true);					
 				}
 			}
 			else
@@ -124,9 +131,10 @@ public class Colleague extends JPanel implements ActionListener
 			if(searchName != null)
 			{
 				int delimeter = searchName.indexOf(':');
-				searchID = searchName.substring(delimeter + 1);
-				transaction = new Transaction("getUserSkills", searchID);
-				ratedSkills = (ArrayList<RatedSkills>) transaction.getObject();
+				searchID = searchName.substring(delimeter + 2);
+				System.out.println(searchID);
+//				transaction = new Transaction("getUserSkills", searchID);
+//				ratedSkills = (ArrayList<RatedSkills>) transaction.getObject();
 			}
 			else
 			{
@@ -145,6 +153,18 @@ public class Colleague extends JPanel implements ActionListener
 			scrollPaneColleagueSkills.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 			scrollPaneColleagueSkills.setBounds(140, 120, 620, 250);
 			add(scrollPaneColleagueSkills);
+			btnSave.setVisible(true);
+		}
+		
+		if(source == btnRequestEndorsement)
+		{
+			int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to request an endorsement");
+			
+			if(option == JOptionPane.OK_OPTION)
+			{
+				
+			}
+			return;	
 		}
 	}
 }

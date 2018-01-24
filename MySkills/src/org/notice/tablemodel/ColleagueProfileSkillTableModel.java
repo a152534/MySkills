@@ -32,7 +32,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 	{
 		super();
 		this.ratedSkills = ratedSkills;
-		System.out.println("ColleagueProfileSkillTableModel :  rows in User Skills " + ratedSkills.size());
+//		System.out.println("ColleagueProfileSkillTableModel :  rows in User Skills " + ratedSkills.size());
 		
 		endorseBox = new JComboBox<Skill_Levels>();
 		endorseBox.addItem(Notice);
