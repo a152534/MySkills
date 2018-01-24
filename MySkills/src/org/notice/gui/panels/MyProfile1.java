@@ -2,6 +2,7 @@ package org.notice.gui.panels;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -10,6 +11,8 @@ import javax.swing.table.TableColumn;
 
 import org.notice.beans.CommonStuff;
 import org.notice.beans.RatedSkills;
+import org.notice.beans.Skill;
+import org.notice.beans.UserSkills;
 import org.notice.client.Transaction;
 import org.notice.tablemodel.MyProfileRatedSkillTableModel;
 
@@ -17,7 +20,11 @@ import org.notice.tablemodel.MyProfileRatedSkillTableModel;
 
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Vector;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -26,7 +33,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.ScrollPaneConstants;
 
-public class MyProfile1 extends JPanel {
+public class MyProfile1 extends JPanel implements ActionListener{
 	private JTextField txtName;
 	private JTextField txtSurname;
 	private JTextField txtAlias;
@@ -46,6 +53,8 @@ public class MyProfile1 extends JPanel {
 	private Font fontComboBox;
 	private CommonStuff commonStuff;
 	private Transaction transaction;
+	private ArrayList<RatedSkills> ratedSkills;
+	private MyProfileRatedSkillTableModel myModel ;
 
 	/**
 	 * Create the panel.
@@ -124,9 +133,11 @@ public class MyProfile1 extends JPanel {
 		add(btnSave);
 
 		btnAddSkill = new JButton("Add Skill");
+		btnAddSkill.addActionListener(this);
 		btnAddSkill.setFont(fontButton);
 		btnAddSkill.setBounds(220, 392, 145, 25);
 		add(btnAddSkill);
+		 
 
 		btnDeleteSkill = new JButton("Delete Skill");
 		btnDeleteSkill.setEnabled(false);
@@ -155,12 +166,13 @@ public class MyProfile1 extends JPanel {
 	}
 
 	private void populateSkills() {
-		ArrayList<RatedSkills> ratedSkills;
+		
 		transaction = new Transaction("getUserSkills", commonStuff.getLoggedOnUser().getUserID());
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 		ratedSkills = (ArrayList<RatedSkills>) transaction.getObject();
 
-		MyProfileRatedSkillTableModel myModel = new MyProfileRatedSkillTableModel(ratedSkills);
+		
+		myModel = new MyProfileRatedSkillTableModel(ratedSkills);
 
 		tableSkills = new JTable(myModel);
 		//tableSkills.setColumnSelectionAllowed(true);
@@ -178,10 +190,57 @@ public class MyProfile1 extends JPanel {
 		add(scrollPaneSkills);
 
 	}
+	private void refreshSkills() {
+		
+		transaction = new Transaction("getUserSkills", commonStuff.getLoggedOnUser().getUserID());
+		transaction = commonStuff.getClient().sendTransaction(transaction);
+		ratedSkills = (ArrayList<RatedSkills>) transaction.getObject();
+		myModel.fireTableDataChanged();
+
+		
+
+	}
+	
+	private void addUserSkill(){
+		//JOptionPane.showConfirmDialog(this, "TYEST");
+		Vector<String> allskills = new Vector<String>() ; 
+		for (Skill skill : commonStuff.getSkillsList()) {
+			allskills.add(skill.getSkillName() + "    ID_" + skill.getSkillID());
+		}
+		Collections.sort(allskills);
+		JComboBox<String> comboSkill = new JComboBox<String>(allskills);
+		//jcb.setEditable(true);
+		JOptionPane.showMessageDialog( this, comboSkill, "select a skill", JOptionPane.QUESTION_MESSAGE);
+		String selectedSkill = (String)comboSkill.getSelectedItem();
+		JComboBox<String> comboLevel = new JComboBox<String>();
+		comboLevel.addItem("1");
+		comboLevel.addItem("2");
+		comboLevel.addItem("3");
+		comboLevel.addItem("4");
+		comboLevel.addItem("5");
+		
+		JOptionPane.showMessageDialog( this, comboLevel,  "Select Level for Skill: " + selectedSkill , JOptionPane.QUESTION_MESSAGE);
+		
+		String selectedLevel = (String) comboLevel.getSelectedItem();
+		int selectedLevelInt = Integer.parseInt(selectedLevel);
+		int pos = selectedSkill.indexOf("ID_");
+		String strSelectedSkillId = selectedSkill.substring(pos + 3); 
+		
+		int skillID = Integer.parseInt(strSelectedSkillId) ; 
+		UserSkills newSkill = new UserSkills(commonStuff.getLoggedOnUser().getUserID(), skillID, selectedLevelInt);
+		Transaction transaction = new Transaction("SaveUserSkill", newSkill) ;
+		transaction = commonStuff.getClient().sendTransaction(transaction);
+		if((Boolean )transaction.getObject()) {
+			
+		}
+		
+		
+		
+	}
 
 	public void setUpLevelColumn(JTable table, TableColumn levelColumn) {
 		
-		JComboBox comboBox = new JComboBox();
+		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.addItem("1");
 		comboBox.addItem("2");
 		comboBox.addItem("3");
@@ -194,5 +253,14 @@ public class MyProfile1 extends JPanel {
 		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
 		renderer.setToolTipText("Click for combo box");
 		levelColumn.setCellRenderer(renderer);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object source = e.getSource() ; 
+		if(source == btnAddSkill) {
+			addUserSkill();
+		}
+		
 	}
 }
