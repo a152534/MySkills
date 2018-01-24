@@ -73,14 +73,14 @@ public class Colleague extends JPanel implements ActionListener
 		btnRequestEndorsement.setFont(fontButton);
 		btnRequestEndorsement.setBounds(190, 500, 243, 25);
 		add(btnRequestEndorsement);
-		btnRequestEndorsement.setVisible(false);
+		btnRequestEndorsement.setVisible(true);
 		
 		btnSave = new JButton("Save");
 		btnSave.setEnabled(false);
 		btnSave.setFont(fontButton);
 		btnSave.setBounds(620, 500, 90, 25);
 		add(btnSave);
-		btnSave.setVisible(false);
+		btnSave.setVisible(true);
 		
 		textSearch = new JTextField();
 		textSearch.setBounds(242, 25, 302, 22);
@@ -101,11 +101,10 @@ public class Colleague extends JPanel implements ActionListener
 		Object source = ae.getSource();
 		String searchName = null, searchID = null;
 		
-		
 		if(source == TestButton)
 		{
 			String displayName = null;
-			transaction = new Transaction("getUserList", null);
+			transaction = new Transaction("getUserList", textSearch.getText());
 			transaction = commonStuff.getClient().sendTransaction(transaction);
 			users = (ArrayList<User>) transaction.getObject();
 			if(users != null)
@@ -114,6 +113,7 @@ public class Colleague extends JPanel implements ActionListener
 				{
 					displayName = (users.get(pos).getSurName() + ", " + users.get(pos).getFirstName() + ": " + users.get(pos).getUserID());
 					comboBoxColleagueSearch.addItem(displayName);
+					comboBoxColleagueSearch.setVisible(true);
 					btnRequestEndorsement.setVisible(true);					
 				}
 			}
@@ -131,9 +131,10 @@ public class Colleague extends JPanel implements ActionListener
 			if(searchName != null)
 			{
 				int delimeter = searchName.indexOf(':');
-				searchID = searchName.substring(delimeter + 1);
-				transaction = new Transaction("getUserSkills", searchID);
-				ratedSkills = (ArrayList<RatedSkills>) transaction.getObject();
+				searchID = searchName.substring(delimeter + 2);
+				System.out.println(searchID);
+//				transaction = new Transaction("getUserSkills", searchID);
+//				ratedSkills = (ArrayList<RatedSkills>) transaction.getObject();
 			}
 			else
 			{
