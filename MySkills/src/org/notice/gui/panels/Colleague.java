@@ -18,10 +18,9 @@ import org.notice.tablemodel.ColleagueProfileSkillTableModel;
 public class Colleague extends JPanel implements ActionListener
 {
 	private JComboBox comboBoxColleagueSearch;
-	private JButton btnSearch;
 	private JScrollPane scrollPaneColleagueSkills;
 	private JTable tableColleagueSkills;
-	private JButton btnRequestEndorsement, btnSave;
+	private JButton btnRequestEndorsement, btnSave, btnSearch;
 	private Font fontButton, fontComboBox;
 	private JTextField textSearch;
 	private BusinessControl businessControl = null;
@@ -31,6 +30,7 @@ public class Colleague extends JPanel implements ActionListener
 	private ArrayList<User> users = null;
 	private ArrayList<RatedSkills> ratedSkills= null;
 	private ColleagueProfileSkillTableModel colleagueModel =  null;
+	private JButton TestButton;
 	
 	public Colleague(CommonStuff inCommonStuff)
 	{
@@ -87,6 +87,11 @@ public class Colleague extends JPanel implements ActionListener
 		add(textSearch);
 		textSearch.setColumns(10);
 		textSearch.addActionListener(this);
+		
+		TestButton = new JButton("Test");
+		TestButton.setBounds(552, 24, 97, 25);
+		TestButton.addActionListener(this);
+		add(TestButton);
 	}
 
 
@@ -96,7 +101,8 @@ public class Colleague extends JPanel implements ActionListener
 		Object source = ae.getSource();
 		String searchName = null, searchID = null;
 		
-		if(source == textSearch)
+		
+		if(source == TestButton)
 		{
 			String displayName = null;
 			transaction = new Transaction("getUserList", null);
@@ -108,6 +114,7 @@ public class Colleague extends JPanel implements ActionListener
 				{
 					displayName = (users.get(pos).getSurName() + ", " + users.get(pos).getFirstName() + ": " + users.get(pos).getUserID());
 					comboBoxColleagueSearch.addItem(displayName);
+					btnRequestEndorsement.setVisible(true);					
 				}
 			}
 			else
@@ -145,6 +152,18 @@ public class Colleague extends JPanel implements ActionListener
 			scrollPaneColleagueSkills.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 			scrollPaneColleagueSkills.setBounds(140, 120, 620, 250);
 			add(scrollPaneColleagueSkills);
+			btnSave.setVisible(true);
+		}
+		
+		if(source == btnRequestEndorsement)
+		{
+			int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to request an endorsement");
+			
+			if(option == JOptionPane.OK_OPTION)
+			{
+				
+			}
+			return;	
 		}
 	}
 }
