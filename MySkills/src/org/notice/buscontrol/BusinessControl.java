@@ -16,7 +16,7 @@ import org.notice.dao.MySkillsDAO;
 
 public class BusinessControl
 {
-    private String userId , skillName, endorsor, action;
+    private String userId , skillName, endorsor, action , firstName , surname;
     private MySkillsDAO skillsDB  = null;
     private ResultSet RS = null;
     private Transaction transaction = null;
@@ -31,7 +31,7 @@ public class BusinessControl
     private Endorsement endorse = null;
     private  EndorsementNomination endorseNom = null;
     private  ArrayList<EndorsementsPerSkill> skillReport = null;
-    private  ArrayList<RatedSkills> ratedSkillsList = null;
+    private  ArrayList<UserSkillEndorsements> ratedSkillsList = null;
     
    
     public BusinessControl()
@@ -491,10 +491,10 @@ public class BusinessControl
 	}
     
 
-    public ArrayList<RatedSkills> getUserEndorsementsPerSkill(int skillId)
+    public ArrayList<UserSkillEndorsements> getUserEndorsementsPerSkill(int skillId)
 	{
 		this.skillId = skillId;
-		ratedSkillsList = new ArrayList<RatedSkills>();
+		ratedSkillsList = new ArrayList<UserSkillEndorsements>();
 		
 		try
 		{
@@ -508,12 +508,15 @@ public class BusinessControl
 			int userSkillId = userResult.getInt("user_skill_id");
 			String userId = userResult.getString("user_id");
 			skillId = userResult.getInt("skill_id");
-			int level = userResult.getInt("level");
-			int numEndorsement = userResult.getInt("num_of_endorsements");
-			String skillName = userResult.getString("skill_name");
-			BigDecimal avgEndorsement = userResult.getBigDecimal("avg_endorsement");
-			ratedSkillsList.add(new RatedSkills(skillId, userSkillId, level, numEndorsement, userId,
-			skillName, avgEndorsement));
+			level = userResult.getInt("level");
+			numEndorsement = userResult.getInt("num_of_endorsements");
+			skillName = userResult.getString("skill_name");
+			firstName = userResult.getString("first_name");
+			surname = userResult.getString("surname");
+			avgEndorsement = userResult.getBigDecimal("avg_endorsement");
+			ratedSkillsList.add(new UserSkillEndorsements(firstName, surname, numEndorsement, avgEndorsement));
+			
+			
 			}
 		} catch (SQLException se)
 		{

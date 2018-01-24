@@ -1,15 +1,17 @@
 package org.notice.beans;
 
+import java.math.BigDecimal;
+
 public class UserSkillEndorsements
 {
 	String userId = null, firstName = null, surname = null, alias = null, eMail = null, phoneNum = null, skillName = null;
 	int userSkillId = 0, skillId = 0, level = 0;
-	long numOfEndorsements = 0L;
-	double avgEndorsement = 0.0;
+	Long numOfEndorsements = null;
+	BigDecimal avgEndorsement = null;
 	
 	public UserSkillEndorsements(String userId, String firstName, String surname, String alias, String eMail,
-			String phoneNum, String skillName, int userSkillId, int skillId, int level, long numOfEndorsements,
-			double avgEndorsement)
+			String phoneNum, String skillName, int userSkillId, int skillId, int level, Long numOfEndorsements,
+			BigDecimal avgEndorsement)
 	{
 		this.userId = userId;
 		this.firstName = firstName;
@@ -24,10 +26,19 @@ public class UserSkillEndorsements
 		this.numOfEndorsements = numOfEndorsements;
 		this.avgEndorsement = avgEndorsement;
 	}
+	
+	public UserSkillEndorsements( String firstName, String surname,  long numOfEndorsements,BigDecimal avgEndorsement)
+	{
+	
+	this.firstName = firstName;
+	this.surname = surname;
+	this.numOfEndorsements = numOfEndorsements;
+	this.avgEndorsement = avgEndorsement;
+	}
 
 	public UserSkillEndorsements(String userId)
 	{
-		this(userId, " ", " ", " ", " ", " ", " ", 0, 0, 0, 0L, 0.0);
+		this(userId, " ", " ", " ", " ", " ", " ", 0, 0, 0, 0L, null);
 	}
 
 	public String getUserId()
@@ -85,7 +96,7 @@ public class UserSkillEndorsements
 		return numOfEndorsements;
 	}
 
-	public double getAvgEndorsement()
+	public BigDecimal getAvgEndorsement()
 	{
 		return avgEndorsement;
 	}
@@ -145,7 +156,7 @@ public class UserSkillEndorsements
 		this.numOfEndorsements = numOfEndorsements;
 	}
 
-	public void setAvgEndorsement(double avgEndorsement)
+	public void setAvgEndorsement(BigDecimal avgEndorsement)
 	{
 		this.avgEndorsement = avgEndorsement;
 	}
