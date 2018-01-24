@@ -10,6 +10,7 @@ import javax.swing.table.*;
 import org.notice.beans.*;
 import org.notice.buscontrol.BusinessControl;
 import org.notice.client.Transaction;
+import org.notice.enums.Skill_Levels;
 import org.notice.tablemodel.ColleagueProfileSkillTableModel;
 
 
@@ -17,12 +18,12 @@ import org.notice.tablemodel.ColleagueProfileSkillTableModel;
 
 public class Colleague extends JPanel implements ActionListener
 {
-	private JComboBox comboBoxColleagueSearch;
+	private JComboBox comboBoxColleagueSearch = null;
 	private JScrollPane scrollPaneColleagueSkills;
-	private JTable tableColleagueSkills;
-	private JButton btnRequestEndorsement, btnSave, btnSearch, btnLookup;
-	private Font fontButton, fontComboBox;
-	private JTextField textSearch;
+	private JTable tableColleagueSkills = null, tableSetup = null;
+	private JButton btnRequestEndorsement = null, btnSave = null, btnSearch = null, btnLookup = null;
+	private Font fontButton = null, fontComboBox = null;
+	private JTextField textSearch = null;
 	private BusinessControl businessControl = null;
 	private int tableRows = 1, tableColumns = 3;
 	private CommonStuff commonStuff = null;
@@ -30,6 +31,9 @@ public class Colleague extends JPanel implements ActionListener
 	private ArrayList<User> users = null;
 	private ArrayList<RatedSkills> ratedSkills= null;
 	private ColleagueProfileSkillTableModel colleagueModel =  null;
+	private static final Skill_Levels Notice = null, Advanced_Beginner = null, Competent = null, Proficient = null,
+			Expert = null;
+	private JComboBox<Skill_Levels> endorseBox = null;
 	
 	
 	public Colleague(CommonStuff inCommonStuff)
@@ -39,6 +43,12 @@ public class Colleague extends JPanel implements ActionListener
 		
 		fontButton = (new Font("Arial", Font.BOLD, 18));
 		fontComboBox = (new Font("Arial", Font.PLAIN, 14));
+		
+		textSearch = new JTextField();
+		textSearch.setBounds(242, 25, 302, 22);
+		add(textSearch);
+		textSearch.setColumns(10);
+		textSearch.addActionListener(this);
 		
 		btnLookup = new JButton("Lookup");
 		btnLookup.setFont(fontButton);
@@ -64,16 +74,8 @@ public class Colleague extends JPanel implements ActionListener
 		scrollPaneColleagueSkills.setBounds(140, 150, 620, 320);
 		add(scrollPaneColleagueSkills);
 		
-		
-
-		
-//		tableColleagueSkills = new JTable(tableRows, tableColumns);
-//		tableColleagueSkills.setShowHorizontalLines(true);
-//		tableColleagueSkills.setShowVerticalLines(true);
-		scrollPaneColleagueSkills.setColumnHeaderView(tableColleagueSkills);
-		
-		
-		
+		tableSetup = new JTable();
+		scrollPaneColleagueSkills.setColumnHeaderView(tableSetup);
 		
 		btnRequestEndorsement = new JButton("Request Endorsement");
 		btnRequestEndorsement.setEnabled(false);
@@ -89,15 +91,52 @@ public class Colleague extends JPanel implements ActionListener
 		add(btnSave);
 		btnSave.setVisible(true);
 		
-		textSearch = new JTextField();
-		textSearch.setBounds(242, 25, 302, 22);
-		add(textSearch);
-		textSearch.setColumns(10);
-		textSearch.addActionListener(this);
+
 		
 
 	}
+	
+	public void setUpLevelColumn(JTable table, TableColumn levelColumn)
+	{	
+		endorseBox = new JComboBox<Skill_Levels>();
+		endorseBox.addItem(Notice);
+		endorseBox.addItem(Advanced_Beginner);
+		endorseBox.addItem(Competent);
+		endorseBox.addItem(Proficient);
+		endorseBox.addItem(Expert);
+		
+		levelColumn.setCellEditor(new DefaultCellEditor(endorseBox));
 
+		
+		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+		renderer.setToolTipText("Click to set endorsement level");
+		levelColumn.setCellRenderer(renderer);
+	}
+	
+	
+	public void populateColleague(String searchID)
+	{
+		transaction = new Transaction("getUserSkills", searchID);
+		transaction = commonStuff.getClient().sendTransaction(transaction);
+		ratedSkills = (ArrayList<RatedSkills>) transaction.getObject();
+		
+		colleagueModel = new ColleagueProfileSkillTableModel(ratedSkills);
+		tableColleagueSkills = new JTable(colleagueModel);
+		tableColleagueSkills.setCellSelectionEnabled(true);
+		tableColleagueSkills.setShowHorizontalLines(true);
+		tableColleagueSkills.setShowVerticalLines(true);
+		
+		setUpLevelColumn(tableColleagueSkills, tableColleagueSkills.getColumnModel().getColumn(2));
+		colleagueModel.fireTableDataChanged();
+		
+		scrollPaneColleagueSkills = new JScrollPane(tableColleagueSkills);
+		scrollPaneColleagueSkills.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPaneColleagueSkills.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPaneColleagueSkills.setBounds(140, 120, 620, 250);
+		add(scrollPaneColleagueSkills);
+		btnSave.setVisible(true);
+		btnRequestEndorsement.setVisible(true);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent ae)
@@ -118,7 +157,9 @@ public class Colleague extends JPanel implements ActionListener
 					displayName = (users.get(pos).getSurName() + ", " + users.get(pos).getFirstName() + ": " + users.get(pos).getUserID());
 					comboBoxColleagueSearch.addItem(displayName);
 					comboBoxColleagueSearch.setVisible(true);
-					btnRequestEndorsement.setVisible(true);					
+					btnSearch.setVisible(true);
+					textSearch.setVisible(false);
+					btnLookup.setVisible(false);
 				}
 			}
 			else
@@ -136,10 +177,8 @@ public class Colleague extends JPanel implements ActionListener
 			{
 				int delimeter = searchName.indexOf(':');
 				searchID = searchName.substring(delimeter + 2);
-				System.out.println(searchID);
-				transaction = new Transaction("getUserSkills", searchID);
-				transaction = commonStuff.getClient().sendTransaction(transaction);
-				ratedSkills = (ArrayList<RatedSkills>) transaction.getObject();
+				populateColleague(searchID);
+//				System.out.println(searchID);
 			}
 			else
 			{
@@ -147,18 +186,7 @@ public class Colleague extends JPanel implements ActionListener
 			}
 			
 
-			colleagueModel = new ColleagueProfileSkillTableModel(ratedSkills);
-			tableColleagueSkills = new JTable(colleagueModel);
-			tableColleagueSkills.setCellSelectionEnabled(true);
-			tableColleagueSkills.setShowHorizontalLines(true);
-			tableColleagueSkills.setShowVerticalLines(true);
-			
-			scrollPaneColleagueSkills.setColumnHeaderView(tableColleagueSkills);
-			scrollPaneColleagueSkills.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-			scrollPaneColleagueSkills.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-			scrollPaneColleagueSkills.setBounds(140, 120, 620, 250);
-			add(scrollPaneColleagueSkills);
-			btnSave.setVisible(true);
+
 		}
 		
 		if(source == btnRequestEndorsement)

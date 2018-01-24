@@ -18,12 +18,12 @@ import org.notice.enums.Skill_Levels;
 @SuppressWarnings("serial")
 public class ColleagueProfileSkillTableModel extends AbstractTableModel
 {
-	private static final Skill_Levels Notice = null, Advanced_Beginner = null, Competent = null, Proficient = null,
-			Expert = null;
+//	private static final Skill_Levels Notice = null, Advanced_Beginner = null, Competent = null, Proficient = null,
+//			Expert = null;
 	private boolean DEBUG = false;
 	private Transaction transaction = null;
 	private CommonStuff commonStuff = null;
-	private JComboBox<Skill_Levels> endorseBox = null;
+//	private JComboBox<Skill_Levels> endorseBox = null;
 	
 	ArrayList<RatedSkills> ratedSkills;
 	private String[] columnNames = { "Skill", "Level", "Endorse" };
@@ -34,12 +34,12 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 		this.ratedSkills = ratedSkills;
 		System.out.println("ColleagueProfileSkillTableModel :  rows in User Skills " + ratedSkills.size());
 		
-		endorseBox = new JComboBox<Skill_Levels>();
-		endorseBox.addItem(Notice);
-		endorseBox.addItem(Advanced_Beginner);
-		endorseBox.addItem(Competent);
-		endorseBox.addItem(Proficient);
-		endorseBox.addItem(Expert);
+//		endorseBox = new JComboBox<Skill_Levels>();
+//		endorseBox.addItem(Notice);
+//		endorseBox.addItem(Advanced_Beginner);
+//		endorseBox.addItem(Competent);
+//		endorseBox.addItem(Proficient);
+//		endorseBox.addItem(Expert);
 	}
 
 	@Override
@@ -106,7 +106,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 
 		if (columnIndex == 2)
 		{
-			return endorseBox;
+//			return endorseBox;
 		}
 
 		return "1";
