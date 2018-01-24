@@ -14,7 +14,7 @@ import javax.swing.table.TableColumn;
 import org.notice.beans.RatedSkills;
 
 /**
- * @author philip
+ * @author philip     
  *
  */
 @SuppressWarnings("serial")
@@ -22,7 +22,7 @@ public class MyProfileRatedSkillTableModel extends AbstractTableModel {
 	private boolean DEBUG = false;
 	
 	ArrayList<RatedSkills> ratedSkills;
-	private String[] columnNames = { "Skill", "My rating", "Number of endorsements", "Average endorsement" };
+	private String[] columnNames = { "Skill", "My rating", "Number of endorsements", "Average endorsement","Skill ID","UserSkillID" };
 
 	public MyProfileRatedSkillTableModel(ArrayList<RatedSkills> ratedSkills) {
 		super();
@@ -40,7 +40,7 @@ public class MyProfileRatedSkillTableModel extends AbstractTableModel {
 	@Override
 	public int getColumnCount() {
 		// TODO Auto-generated method stub
-		return 4;
+		return columnNames.length;
 	}
 
 	public String getColumnName(int col) {
@@ -92,6 +92,12 @@ public class MyProfileRatedSkillTableModel extends AbstractTableModel {
 			return ratedSkill.getAvgEndorsement();
 		}
 
+		if (columnIndex == 4) {
+			return ratedSkill.getSkillId();
+		}
+		if (columnIndex == 5) {
+			return ratedSkill.getUserSkillId();
+		}
 		return "1";
 	}
 
