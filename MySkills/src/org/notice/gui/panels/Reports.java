@@ -29,8 +29,9 @@ public class Reports extends JPanel implements ActionListener
 	private CommonStuff commonStuff;
 	private JTable tableSkillsReport;
 	
-	public Reports() 
+	public Reports(CommonStuff inCommonStuff)
 	{
+	    	commonStuff = inCommonStuff;
 		setLayout(null);
 		
 		fontButton = (new Font("Arial", Font.BOLD, 18));
@@ -76,7 +77,7 @@ public class Reports extends JPanel implements ActionListener
 		ReportsSkillsReportTableModel myModel = new ReportsSkillsReportTableModel(skillReport);
 
 		tableSkillsReport = new JTable(myModel);
-		//tableSkills.setColumnSelectionAllowed(true);
+		
 		tableSkillsReport.setCellSelectionEnabled(true);
 	
 		
@@ -85,14 +86,15 @@ public class Reports extends JPanel implements ActionListener
 		scrollPaneSkillsUsers = new JScrollPane(tableSkillsReport);
 		scrollPaneSkillsUsers.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPaneSkillsUsers.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPaneSkillsUsers.setBounds(140, 120, 620, 250);
+		scrollPaneSkillsUsers.setBounds(140, 120, 620, 450);
 		add(scrollPaneSkillsUsers);
 	        }
 	    
 	    if(source == btnUsers)
 
 	        {
-		transaction = new Transaction("getSkillsReport", null);
+		//skillName = 
+		transaction = new Transaction("getUsersPerSkill", null);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 		skillReport = (ArrayList<EndorsementsPerSkill>) transaction.getObject();
 
@@ -108,7 +110,7 @@ public class Reports extends JPanel implements ActionListener
 		scrollPaneSkillsUsers = new JScrollPane(tableSkillsReport);
 		scrollPaneSkillsUsers.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPaneSkillsUsers.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPaneSkillsUsers.setBounds(140, 120, 620, 250);
+		scrollPaneSkillsUsers.setBounds(140, 120, 620, 450);
 		add(scrollPaneSkillsUsers);
 	        }
 	    

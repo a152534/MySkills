@@ -1,13 +1,16 @@
 package org.notice.beans;
 
-public class EndorsementsPerSkill
+import java.io.Serializable;
+import java.math.BigDecimal;
+
+public class EndorsementsPerSkill implements Serializable
 {
 	int skillId = 0;
 	long numResources = 0L;
 	String skillName = null;
-	double numEndorsements = 0.0, avgEndorsement = 0.0;
+	BigDecimal numEndorsements = null, avgEndorsement = null;
 	
-	public EndorsementsPerSkill(int skillId, long numResources, String skillName, double numEndorsements, double avgEndorsement)
+	public EndorsementsPerSkill(int skillId, long numResources, String skillName, BigDecimal numEndorsements, BigDecimal avgEndorsement)
 	{
 		this.skillId = skillId;
 		this.numResources = numResources;
@@ -18,7 +21,7 @@ public class EndorsementsPerSkill
 	
 	public EndorsementsPerSkill(int skillId)
 	{
-		this(skillId, 0, " ", 0.0, 0.0);
+		this(skillId, 0, " ", null, null);
 	}
 
 	public int getSkillId()
@@ -36,12 +39,12 @@ public class EndorsementsPerSkill
 		return skillName;
 	}
 
-	public double getNumEndorsements()
+	public BigDecimal getNumEndorsements()
 	{
 		return numEndorsements;
 	}
 
-	public double getAvgEndorsement()
+	public BigDecimal getAvgEndorsement()
 	{
 		return avgEndorsement;
 	}
@@ -61,12 +64,12 @@ public class EndorsementsPerSkill
 		this.skillName = skillName;
 	}
 
-	public void setNumEndorsements(double numEndorsements)
+	public void setNumEndorsements(BigDecimal numEndorsements)
 	{
 		this.numEndorsements = numEndorsements;
 	}
 
-	public void setAvgEndorsement(double avgEndorsement)
+	public void setAvgEndorsement(BigDecimal avgEndorsement)
 	{
 		this.avgEndorsement = avgEndorsement;
 	}
