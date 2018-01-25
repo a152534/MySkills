@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Vector;
 
 import org.notice.beans.*;
 import org.notice.buscontrol.*;
@@ -19,14 +21,15 @@ import java.awt.Button;
 
 public class Admin extends JPanel implements ActionListener
 {
-	private JComboBox comboBox;
+	private JComboBox<String> comboBox = null;
 	private JTable tableSkills;
 	private JComboBox<String> skillsList = null;
 	private JScrollPane scrollPaneSkills;
+	private JButton btnSearch;
 	private JButton btnAdd;
 	private JButton btnDelete;
-	private Font fontComboBox;
 	private Font fontButton;
+	private Font fontTextArea;
 	private CommonStuff commonStuff; 
 	private Transaction transaction;
 	private static JButton btnYes;
@@ -35,21 +38,36 @@ public class Admin extends JPanel implements ActionListener
 	private String deleteSkill;
 	private int skillID;
 	private String dulicateSkill;
-	private Button btnSearch;
+	private JScrollPane scrollPane;
+	private JTable table;
+	private JTextArea textAreaSearch;
+	
 	
 	public Admin(CommonStuff inCommonStuff)  
 	{
 		commonStuff = inCommonStuff ; 
 		
 		setLayout(null);
+	
+		fontButton = (new Font("Arial", Font.BOLD, 18));
+		fontTextArea = (new Font("Arial", Font.PLAIN, 14));
 		
-		fontComboBox = (new Font("Arial", Font.PLAIN, 14));
-		fontButton = (new Font("Arial", Font.BOLD, 18));		
+		textAreaSearch = new JTextArea();
+		textAreaSearch.setBounds(184, 75, 371, 25);
+		textAreaSearch.setFont(fontButton);
+		add(textAreaSearch);
 		
-		comboBox = new JComboBox();
-		comboBox.setBounds(300, 50, 300, 25);
-		comboBox.setFont(fontComboBox);
-		add(comboBox);
+		btnSearch = new JButton("Search");
+		btnSearch.setBounds(565, 75, 110, 25);
+		btnSearch.setFont(fontButton);
+		add(btnSearch);
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(184, 107, 491, 302);
+		add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setRowHeaderView(table);
 		
 		btnAdd = new JButton("Add");
 		btnAdd.setEnabled(false);
@@ -69,90 +87,109 @@ public class Admin extends JPanel implements ActionListener
 		btnDelete.setFont(fontButton);
 		btnDelete.setBounds(535, 451, 100, 25);
 		add(btnDelete);
-		
-		btnSearch = new Button("Search");
-		btnSearch.setBounds(605, 50, 70, 25);
-		btnSearch.setFont(fontButton);
-		add(btnSearch);
-		
-		populateSkillsInfo();
-				
+			
+		populateSkillsInfo();	
 	}
 	
 	private void populateSkillsInfo() 
 	{
-		//comboBox.getToolTipText(commonStuff.getLoggedOnUser());
-		
-		ArrayList<Skill> skillsList = new ArrayList<Skill>();
-		businessControl = new BusinessControl();
-		
-		transaction = new Transaction("getSkillList", null);
- 		transaction = commonStuff.getClient().sendTransaction(transaction);
-		
- 		skillsList = (ArrayList<Skill>)transaction.getObject();
- 		
-		for(int pos = 0; pos < skillsList.size() -1 ; pos++)
+		Vector<String> allskills = new Vector<String>() ; 
+		for (Skill skill : commonStuff.getSkillsList()) 
 		{
-			System.out.println("In for loop");
+			allskills.add(skill.getSkillName() + "    ID_" + skill.getSkillID());
 		}
- 		
-		populateSkillsInfo();
+		Collections.sort(allskills);
+		JComboBox<String> comboSkill = new JComboBox<String>(allskills);
 		
-		scrollPaneSkills = new JScrollPane(tableSkills);
-		scrollPaneSkills.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPaneSkills.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPaneSkills.setBounds(300, 75, 300, 250);
-		add(scrollPaneSkills);
+		JOptionPane.showMessageDialog( this, comboSkill, "select a skill", JOptionPane.QUESTION_MESSAGE);
+		String selectedSkill = (String)comboSkill.getSelectedItem();
+		JComboBox<String> comboLevel = new JComboBox<String>();
+		comboLevel.addItem("1");
+		comboLevel.addItem("2");
+		comboLevel.addItem("3");
+		comboLevel.addItem("4");
+		comboLevel.addItem("5");
+		comboLevel.addItem("6");
+		comboLevel.addItem("7");
+		comboLevel.addItem("8");
+		
+		
+		
+//		//comboBox.getToolTipText(commonStuff.getLoggedOnUser());
+//		
+////		ArrayList<Skill> skillsList = new ArrayList<Skill>();
+////		businessControl = new BusinessControl();
+////		
+////		transaction = new Transaction("getSkillList", null);
+//// 		transaction = commonStuff.getClient().sendTransaction(transaction);
+////		
+//// 		skillsList = (ArrayList<Skill>)transaction.getObject();
+//// 		
+////		for(int pos = 0; pos < skillsList.size() -1 ; pos++)
+////		{
+////			comboBox.addItem(skillsList.get(pos).getSkillName());
+////			System.out.println("In for loop");
+////		}
+// 		
+//		//populateSkillsInfo();
+//		
+//		scrollPaneSkills = new JScrollPane(tableSkills);
+//		scrollPaneSkills.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+//		scrollPaneSkills.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+//		scrollPaneSkills.setBounds(300, 75, 300, 250);
+//		add(scrollPaneSkills);
 
 	}
-	
-	public void setUpLevelColumn(JTable table, TableColumn levelColumn) 
-	{
-		
-		JComboBox comboBox = new JComboBox();
-		comboBox.addItem("1");
-		comboBox.addItem("2");
-		comboBox.addItem("3");
-		comboBox.addItem("4");
-		comboBox.addItem("5");
-		comboBox.addItem("6");
-		comboBox.addItem("7");
-		comboBox.addItem("8");
-		comboBox.addItem("9");
-		comboBox.addItem("10");
-		
-		levelColumn.setCellEditor(new DefaultCellEditor(comboBox));
 
-		
-		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-		renderer.setToolTipText("Click for combo box");
-		levelColumn.setCellRenderer(renderer);
-	}
+
 	
+//	public void setUpLevelColumn(JTable table, TableColumn levelColumn) 
+//	{
+//		
+//		JComboBox comboBox = new JComboBox();
+//		comboBox.addItem("1");
+//		comboBox.addItem("2");
+//		comboBox.addItem("3");
+//		comboBox.addItem("4");
+//		comboBox.addItem("5");
+//		comboBox.addItem("6");
+//		comboBox.addItem("7");
+//		comboBox.addItem("8");
+//		comboBox.addItem("9");
+//		comboBox.addItem("10");
+//		
+//		levelColumn.setCellEditor(new DefaultCellEditor(comboBox));
+//
+//		
+//		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+//		renderer.setToolTipText("Click for combo box");
+//		levelColumn.setCellRenderer(renderer);
+//	}
+//	
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		Object source = e.getSource();
-		if(source == btnDelete) 
-		{
-			int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete skill?");
-			
-			if(dialogResult == JOptionPane.YES_NO_OPTION)
-			{
-				transaction = new Transaction(deleteSkill, skillID);
-			}
-			
-			int dialogResult2 = JOptionPane.showConfirmDialog(null, "Skill is already in use, so cannot be deleted?");
-			
-			//if(dialogResult2 == dulicateSkill)
-			{
-				
-			}
-		}
-		
-		if(source ==btnAdd)
-		{
-			populateSkillsInfo();
-		}
+//		Object source = e.getSource();
+//		if(source == btnDelete) 
+//		{
+//			int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete skill?");
+//			
+//			if(dialogResult == JOptionPane.YES_NO_OPTION)
+//			{
+//				transaction = new Transaction(deleteSkill, skillID);
+//			}
+//			
+//			int dialogResult2 = JOptionPane.showConfirmDialog(null, "Skill is already in use, so cannot be deleted?");
+//			
+//			//if(dialogResult2 == dulicateSkill)
+//			{
+//				
+//			}
+//		}
+//		
+//		if(source ==btnAdd)
+//		{
+//			populateSkillsInfo();
+//		}
 	}
 }
