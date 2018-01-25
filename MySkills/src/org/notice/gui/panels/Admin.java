@@ -23,7 +23,6 @@ public class Admin extends JPanel implements ActionListener
 {
 	private JComboBox<String> comboBox = null;
 	private JTable tableSkills;
-	private JComboBox<String> skillsList = null;
 	private JScrollPane scrollPaneSkills;
 	private JButton btnSearch;
 	private JButton btnAdd;
@@ -115,7 +114,7 @@ public class Admin extends JPanel implements ActionListener
 		
 		
 		
-//		//comboBox.getToolTipText(commonStuff.getLoggedOnUser());
+//			comboBox.getToolTipText(commonStuff.getLoggedOnUser());
 //		
 ////		ArrayList<Skill> skillsList = new ArrayList<Skill>();
 ////		businessControl = new BusinessControl();

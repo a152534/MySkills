@@ -234,6 +234,7 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		
 		JOptionPane.showMessageDialog( this, comboSkill, "select a skill", JOptionPane.QUESTION_MESSAGE);
 		String selectedSkill = (String)comboSkill.getSelectedItem();
+		
 		JComboBox<String> comboLevel = new JComboBox<String>();
 		comboLevel.addItem("1");
 		comboLevel.addItem("2");
