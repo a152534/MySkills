@@ -35,7 +35,8 @@ public class Colleague extends JPanel implements ActionListener
 			Expert = null;
 	private JComboBox<Skill_Levels> endorseBox = null; 
 	private int loggedOnUserSkillId;
-	private boolean endorsementRequested = false;
+	private boolean endorsementRequested = false, endorsementRequestResult = false, endorsementAdded = false,
+			endorsementAddedResult = false;
 
 	
 	
@@ -150,7 +151,7 @@ public class Colleague extends JPanel implements ActionListener
 	}
 	
 	
-	public int getLoggedOnUserDetails()
+	public int getLoggedOnUserSkillId()
 	{
 		transaction = new Transaction("getUserSkills", commonStuff.getLoggedOnUser().getUserID());
 		transaction = commonStuff.getClient().sendTransaction(transaction);
@@ -169,10 +170,26 @@ public class Colleague extends JPanel implements ActionListener
 	
 	public boolean populateEndorsementRequest()
 	{
-		transaction = new Transaction("endorseNomination", getLoggedOnUserDetails());
+		transaction = new Transaction("endorseNomination", this.getLoggedOnUserSkillId());
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 		endorsementRequested = (boolean)transaction.getObject();
 		return endorsementRequested;
+	}
+	
+	public ArrayList<Endorsement> saveEndorsement()
+	{
+		ArrayList<Endorsement> endorsement = new ArrayList<Endorsement>();
+		int selectedLevel = (int)endorseBox.getSelectedItem();
+		endorsement.add(new Endorsement(this.getLoggedOnUserSkillId(), commonStuff.getLoggedOnUser().getUserID(), selectedLevel));
+		return endorsement;
+	}
+	
+	public boolean addEndorsement()
+	{
+		transaction = new Transaction("createEndorsement", this.saveEndorsement());
+		transaction = commonStuff.getClient().sendTransaction(transaction);
+		endorsementAdded = (boolean)transaction.getObject();
+		return endorsementAdded;
 	}
 
 	@Override
@@ -242,8 +259,12 @@ public class Colleague extends JPanel implements ActionListener
 			
 			if(option == JOptionPane.OK_OPTION)
 			{
-				populateEndorsementRequest();
-				System.out.println("Endorsement requested");
+				endorsementRequestResult = populateEndorsementRequest();
+				if (endorsementRequestResult == false)
+				{
+					JOptionPane.showMessageDialog(null, "An error has occurred - Your endorsement request has not been saved");
+					System.out.println("Error - endorsement request not saved.");
+				}
 			}
 			return;	
 		}
@@ -254,7 +275,12 @@ public class Colleague extends JPanel implements ActionListener
 			
 			if(option == JOptionPane.OK_OPTION)
 			{
-				System.out.println("Endorsements have been saved");
+				endorsementAddedResult = addEndorsement();
+				if (endorsementAddedResult == false)
+				{
+					JOptionPane.showMessageDialog(null, "An error has occurred - Your endorsement has not been added");
+					System.out.println("Error - endorsement not added.");
+				}
 			}
 			return;	
 		}
