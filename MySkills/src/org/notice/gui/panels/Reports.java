@@ -24,7 +24,6 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 	private JButton btnSkills;
 	private JButton btnUsers;
 	private JScrollPane scrollPaneSkillsUsers;
-	private JTable tableSkillsUsers;
 	private Font fontButton;
 	private  ArrayList<EndorsementsPerSkill> skillReport = null;
 	private  ArrayList<UserSkillEndorsements> userSkillReport = null;
@@ -55,8 +54,8 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 		scrollPaneSkillsUsers.setBounds(140, 150, 620, 320);
 		add(scrollPaneSkillsUsers);
 		
-		tableSkillsUsers = new JTable();
-		scrollPaneSkillsUsers.setViewportView(tableSkillsUsers);
+		tableSkillsReport = new JTable();
+		scrollPaneSkillsUsers.setViewportView(tableSkillsReport);
 		
 		
 		
@@ -83,7 +82,8 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 
 		tableSkillsReport = new JTable(myModel);
 		tableSkillsReport.getSelectionModel().addListSelectionListener(this);
-		tableSkillsReport.setCellSelectionEnabled(true);
+		//tableSkillsReport.setCellSelectionEnabled(true);
+		tableSkillsReport.setRowSelectionAllowed(true);
 	
 		
 		myModel.fireTableDataChanged();
@@ -109,8 +109,11 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 		SkillsRatedTableModel myModelUser = new SkillsRatedTableModel(userSkillReport);
 
 		tableSkillsReport = new JTable(myModelUser);
-		//tableSkills.setColumnSelectionAllowed(true);
+		tableSkillsReport.setColumnSelectionAllowed(true);
 		tableSkillsReport.setCellSelectionEnabled(true);
+		tableSkillsReport.setRowSelectionAllowed(true);
+		tableSkillsReport.getSelectionModel().addListSelectionListener(this);
+		
 	
 		
 		myModelUser.fireTableDataChanged();
@@ -129,7 +132,7 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 	@Override
 	public void valueChanged(ListSelectionEvent e)
 	{
-	    tableSkillsReport.getCellSelectionEnabled();
+	    System.out.println("selected row");
 	    
 	    
 	}
