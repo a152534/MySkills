@@ -54,7 +54,7 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 		scrollPaneSkillsUsers.setBounds(140, 150, 620, 320);
 		add(scrollPaneSkillsUsers);
 		
-	
+		tableSkillsReport = new JTable();
 		scrollPaneSkillsUsers.setViewportView(tableSkillsReport);
 		
 		
@@ -82,7 +82,8 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 
 		tableSkillsReport = new JTable(myModel);
 		tableSkillsReport.getSelectionModel().addListSelectionListener(this);
-		tableSkillsReport.setCellSelectionEnabled(true);
+		//tableSkillsReport.setCellSelectionEnabled(true);
+		tableSkillsReport.setRowSelectionAllowed(true);
 	
 		
 		myModel.fireTableDataChanged();
@@ -110,6 +111,7 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 		tableSkillsReport = new JTable(myModelUser);
 		tableSkillsReport.setColumnSelectionAllowed(true);
 		tableSkillsReport.setCellSelectionEnabled(true);
+		tableSkillsReport.setRowSelectionAllowed(true);
 		tableSkillsReport.getSelectionModel().addListSelectionListener(this);
 		
 	
@@ -130,7 +132,7 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 	@Override
 	public void valueChanged(ListSelectionEvent e)
 	{
-	    tableSkillsReport.getCellSelectionEnabled();
+	    System.out.println("selected row");
 	    
 	    
 	}
