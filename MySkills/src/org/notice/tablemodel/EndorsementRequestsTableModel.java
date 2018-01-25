@@ -18,13 +18,13 @@ import org.notice.beans.RatedSkills;
  *
  */
 @SuppressWarnings("serial")
-public class MyProfileRatedSkillTableModel extends AbstractTableModel {
+public class EndorsementRequestsTableModel extends AbstractTableModel {
 	private boolean DEBUG = false;
 	
 	ArrayList<RatedSkills> ratedSkills;
 	private String[] columnNames = { "Skill", "My rating", "Number of endorsements", "Average endorsement","Skill ID","UserSkillID" };
 
-	public MyProfileRatedSkillTableModel(ArrayList<RatedSkills> ratedSkills) {
+	public EndorsementRequestsTableModel(ArrayList<RatedSkills> ratedSkills) {
 		super();
 		this.ratedSkills = ratedSkills;
 		System.out.println("MyProfileRatedSkillTableModel :  rows in rated skills " + ratedSkills.size());
@@ -57,13 +57,20 @@ public class MyProfileRatedSkillTableModel extends AbstractTableModel {
 		}
 	}
 	public void setValueAt(Object value, int row, int col) {
-        
+        if (DEBUG) {
+            System.out.println("Setting value at " + row + "," + col
+                               + " to " + value
+                               + " (an instance of "
+                               + value.getClass() + ")");
+        }
+
         ratedSkills.get(row).setLevel(Integer.parseInt((String)value));
-     
-        
         fireTableCellUpdated(row, col);
 
-        
+        if (DEBUG) {
+            System.out.println("New value of data:");
+         
+        }
     }
 
 	@Override
