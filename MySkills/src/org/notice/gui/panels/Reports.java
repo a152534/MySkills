@@ -24,7 +24,6 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 	private JButton btnSkills;
 	private JButton btnUsers;
 	private JScrollPane scrollPaneSkillsUsers;
-	private JTable tableSkillsUsers;
 	private Font fontButton;
 	private  ArrayList<EndorsementsPerSkill> skillReport = null;
 	private  ArrayList<UserSkillEndorsements> userSkillReport = null;
@@ -55,8 +54,8 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 		scrollPaneSkillsUsers.setBounds(140, 150, 620, 320);
 		add(scrollPaneSkillsUsers);
 		
-		tableSkillsUsers = new JTable();
-		scrollPaneSkillsUsers.setViewportView(tableSkillsUsers);
+	
+		scrollPaneSkillsUsers.setViewportView(tableSkillsReport);
 		
 		
 		
@@ -109,8 +108,10 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 		SkillsRatedTableModel myModelUser = new SkillsRatedTableModel(userSkillReport);
 
 		tableSkillsReport = new JTable(myModelUser);
-		//tableSkills.setColumnSelectionAllowed(true);
+		tableSkillsReport.setColumnSelectionAllowed(true);
 		tableSkillsReport.setCellSelectionEnabled(true);
+		tableSkillsReport.getSelectionModel().addListSelectionListener(this);
+		
 	
 		
 		myModelUser.fireTableDataChanged();
