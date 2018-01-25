@@ -58,6 +58,7 @@ public class SkillSelector extends JPanel implements ListSelectionListener {
 				// System.out.println("change update filter");
 				newFilter();
 			}
+			
 		});
 
 		SkillsUtilTableModel skillModel = new SkillsUtilTableModel(skills);
@@ -82,6 +83,7 @@ public class SkillSelector extends JPanel implements ListSelectionListener {
 		rf = RowFilter.regexFilter("(?i)" + txtSearch.getText());
 
 		sorter.setRowFilter(rf);
+		selectedSkill = new Skill(-1, txtSearch.getText());
 	}
 
 	public Skill getSelectedSkill() {
