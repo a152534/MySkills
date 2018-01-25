@@ -68,16 +68,16 @@ public class Admin extends JPanel implements ActionListener
 		add(comboBoxSearch);
 		
 		btnDelete = new JButton("Delete");
-		btnDelete.setEnabled(true);
-		//btnDelete.setEnabled(false);
+		//btnDelete.setEnabled(true);
+		btnDelete.setEnabled(false);
 		btnDelete.addActionListener(this);
 		btnDelete.setFont(fontButton);
 		btnDelete.setBounds(535, 451, 100, 25);
 		add(btnDelete);
 		
 		btnAdd = new JButton("Add");
-		btnAdd.setEnabled(true);
-		//btnAdd.setEnabled(false);
+		//btnAdd.setEnabled(true);
+		btnAdd.setEnabled(false);
 		btnAdd.addActionListener(this);
 
 		btnAdd.setFont(fontButton);
@@ -94,36 +94,33 @@ public class Admin extends JPanel implements ActionListener
 		populateSkillsList();	
 	}
 
-		private void populateSkillsList() 
-		{
-			ArrayList<Skill> skillsList = new ArrayList<Skill> ();
-
-			transaction = new Transaction("getSkillList", null);
-	 		transaction = commonStuff.getClient().sendTransaction(transaction);
-
-	 		skillsList = (ArrayList<Skill>)transaction.getObject();
-			 
-			for(int pos = 0; pos < skillsList.size() -1 ; pos++)
-			{
-				comboBoxSearch.addItem(skillsList.get(pos).getSkillName());
-			}
-			
-		}
-		
-//		
-	@Override
-		public void actionPerformed(ActionEvent e)
+	private void populateSkillsList() 
 	{
+		ArrayList<Skill> skillsList = new ArrayList<Skill> ();
+
+		transaction = new Transaction("getSkillList", null);
+ 		transaction = commonStuff.getClient().sendTransaction(transaction);
+
+ 		skillsList = (ArrayList<Skill>)transaction.getObject();
+		 
+		for(int pos = 0; pos < skillsList.size() -1 ; pos++)
+		{
+			comboBoxSearch.addItem(skillsList.get(pos).getSkillName());
+		}	
+	}
 		
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
 		Object source = e.getSource();
-		boolean success = false;
+		boolean successful = false;
 		if(source == btnSearch) 
 		{
 			System.out.println("in action performed");
 			populateSkillsList();
 		}
 		
-		if(source == btnDelete) 
+		if(source == btnDelete)
 		{
 			int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete skill? " + skillID );
 			
@@ -131,14 +128,13 @@ public class Admin extends JPanel implements ActionListener
 			{
 				transaction = new Transaction("DeleteSkill", skillID); //setup transaction
 				transaction = commonStuff.getClient().sendTransaction(transaction); //sent transaction
-				success = (boolean) transaction.getObject();
+				successful = (boolean) transaction.getObject();
 			} 
 			
-			if(!success)
+			if(!successful)
 			{
-				int dialogResult2 = JOptionPane.showConfirmDialog(null,"Skill is already in use, so cannot be deleted?");
-				dialogResult2 = JOptionPane.OK_OPTION; //duplicateSkill
-				}
+				JOptionPane.showMessageDialog(null,"Skill is already in use, so cannot be deleted?");
+			}
 		}
 		
 		if(source ==btnAdd)
@@ -149,18 +145,17 @@ public class Admin extends JPanel implements ActionListener
 			{
 				transaction = new Transaction("AddSkill", skillName); //setup transaction
 				transaction = commonStuff.getClient().sendTransaction(transaction); //sent transaction
-				success = (boolean) transaction.getObject();
+				successful = (boolean) transaction.getObject();
 			} 
 			
-			if(!success)
+			if(!successful)
 			{
-				int dialogResult2 = JOptionPane.showConfirmDialog(null, "Error - Please contact Help Desk");
-				dialogResult2 = JOptionPane.OK_OPTION; //duplicateSkill
+				JOptionPane.showMessageDialog(null, "Error - Please contact Help Desk");
 				
 			}
 			else
 			{
-				int dialogResult2 = JOptionPane.showConfirmDialog(null, "Skill successfully added");
+				JOptionPane.showMessageDialog(null, "Skill successfully added");
 			}
 		}
 	}
