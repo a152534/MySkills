@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.notice.beans.CommonStuff;
 import org.notice.beans.*;
@@ -17,7 +19,7 @@ import org.notice.client.Transaction;
 import org.notice.tablemodel.*;
 
 
-public class Reports extends JPanel implements ActionListener
+public class Reports extends JPanel implements ActionListener, ListSelectionListener
 {
 	private JButton btnSkills;
 	private JButton btnUsers;
@@ -80,7 +82,7 @@ public class Reports extends JPanel implements ActionListener
 		ReportsSkillsReportTableModel myModel = new ReportsSkillsReportTableModel(skillReport);
 
 		tableSkillsReport = new JTable(myModel);
-		
+		tableSkillsReport.getSelectionModel().addListSelectionListener(this);
 		tableSkillsReport.setCellSelectionEnabled(true);
 	
 		
@@ -91,7 +93,7 @@ public class Reports extends JPanel implements ActionListener
 		scrollPaneSkillsUsers.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPaneSkillsUsers.setBounds(140, 120, 620, 450);
 		add(scrollPaneSkillsUsers);
-	        
+	        }
 	    
 	    if(source == btnUsers)
 
@@ -116,7 +118,15 @@ public class Reports extends JPanel implements ActionListener
 		scrollPaneSkillsUsers.setBounds(140, 120, 620, 450);
 		add(scrollPaneSkillsUsers);
 	        }
-		}
+		
+	    
+	}
+
+
+	@Override
+	public void valueChanged(ListSelectionEvent e)
+	{
+	    // TODO Auto-generated method stub
 	    
 	}
 

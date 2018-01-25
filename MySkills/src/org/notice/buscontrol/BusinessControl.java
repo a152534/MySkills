@@ -403,7 +403,7 @@ public class BusinessControl
 	this.skillName = skillName;
 	try
         {
-    		skillsDB.updateDB("insert into skills values(null, skillName)");
+    		skillsDB.updateDB("insert into skills values(null,'" + skillName + "')");
     	    	
         } 
         catch (Exception e)
