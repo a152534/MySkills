@@ -14,14 +14,14 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class TestSkillUtil extends JPanel implements ActionListener {
-	SkillsUtil sk ; 
+	SkillSelector sk ; 
 	JPanel panel  ;
 	public TestSkillUtil(CommonStuff inCommonStuff)  {
 		
 		JButton btnNewButton = new JButton("New button");
 		add(btnNewButton);
 		btnNewButton.addActionListener(this);
-		sk = new SkillsUtil(inCommonStuff.getSkillsList());
+		sk = new SkillSelector(inCommonStuff.getSkillsList());
 		sk.setPreferredSize(new Dimension(500, 500));
 		
 		panel = new JPanel(new GridBagLayout());

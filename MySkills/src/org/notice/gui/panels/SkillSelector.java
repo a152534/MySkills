@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import javax.swing.JTable;
 import java.awt.FlowLayout;
 
-public class SkillsUtil extends JPanel implements ListSelectionListener {
+public class SkillSelector extends JPanel implements ListSelectionListener {
 	private JTextField txtSearch;
 	private JTable skillTable;
 	private Skill selectedSkill;
@@ -29,7 +29,7 @@ public class SkillsUtil extends JPanel implements ListSelectionListener {
 	/**
 	 * Create the panel.
 	 */
-	public SkillsUtil(ArrayList<Skill> skills) {
+	public SkillSelector(ArrayList<Skill> skills) {
 		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		// setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -76,7 +76,7 @@ public class SkillsUtil extends JPanel implements ListSelectionListener {
 	}
 
 	private void newFilter() {
-		System.out.println("In newFilter");
+		//System.out.println("In newFilter");
 		RowFilter<? super SkillsUtilTableModel, ? super Integer> rf = null;
 
 		rf = RowFilter.regexFilter("(?i)" + txtSearch.getText());
@@ -95,7 +95,10 @@ public class SkillsUtil extends JPanel implements ListSelectionListener {
 			String skillName = (String) skillTable.getValueAt(skillTable.getSelectedRow(), 0);
 			selectedSkill = new Skill(skillId, skillName);
 			System.out.println("SkillUtil Selected Skill" + selectedSkill.getSkillName());
+		} else {
+			selectedSkill = new Skill(-1, txtSearch.getText());
 		}
+			
 	}
 
 }
