@@ -378,7 +378,7 @@ public class BusinessControl
 	this.skillId = skillId;
 	try
         {
-	    RS = skillsDB.queryDB("select * from skill_id = '" + skillId + "'");
+	    RS = skillsDB.queryDB("select * from skills where skill_id = '" + skillId + "'");
 	    if (!RS.next())
 	    {
     		skillsDB.updateDB("delete from skills where skill_id = " + skillId);
