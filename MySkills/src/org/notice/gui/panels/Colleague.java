@@ -18,12 +18,12 @@ import org.notice.tablemodel.ColleagueProfileSkillTableModel;
 
 public class Colleague extends JPanel implements ActionListener
 {
-	private JComboBox comboBoxColleagueSearch = null;
-	private JScrollPane scrollPaneColleagueSkills;
+	private JComboBox<String> comboBoxColleagueSearch = null;
+	private JScrollPane scrollPaneColleagueSkills = null;
 	private JTable tableColleagueSkills = null, tableSetup = null;
 	private JButton btnRequestEndorsement = null, btnSave = null, btnSearch = null, btnLookup = null;
 	private Font fontButton = null, fontComboBox = null;
-	private JTextField textSearch = null;
+	private JTextField textSearch = null, textDisplaySelectedName = null;
 	private BusinessControl businessControl = null;
 	private int tableRows = 1, tableColumns = 3;
 	private CommonStuff commonStuff = null;
@@ -33,7 +33,11 @@ public class Colleague extends JPanel implements ActionListener
 	private ColleagueProfileSkillTableModel colleagueModel =  null;
 	private static final Skill_Levels Notice = null, Advanced_Beginner = null, Competent = null, Proficient = null,
 			Expert = null;
-	private JComboBox<Skill_Levels> endorseBox = null;
+	private JComboBox<Skill_Levels> endorseBox = null; 
+	private int loggedOnUserSkillId;
+	private boolean endorsementRequested = false;
+
+	
 	
 	
 	public Colleague(CommonStuff inCommonStuff)
@@ -57,7 +61,7 @@ public class Colleague extends JPanel implements ActionListener
 		add(btnLookup);		
 		
 		setLayout(null);
-		comboBoxColleagueSearch = new JComboBox();
+		comboBoxColleagueSearch = new JComboBox<String>();
 		comboBoxColleagueSearch.setFont(fontComboBox);
 		comboBoxColleagueSearch.setBounds(242, 51, 302, 25);
 		comboBoxColleagueSearch.setVisible(false);
@@ -69,6 +73,13 @@ public class Colleague extends JPanel implements ActionListener
 		btnSearch.setVisible(false);
 		btnSearch.addActionListener(this);
 		add(btnSearch);
+		
+		textDisplaySelectedName = new JTextField();
+		textDisplaySelectedName.setColumns(10);
+		textDisplaySelectedName.setBounds(242, 78, 302, 22);
+		add(textDisplaySelectedName);
+		textDisplaySelectedName.setEnabled(false);
+		textDisplaySelectedName.setVisible(false);
 		
 		scrollPaneColleagueSkills = new JScrollPane();
 		scrollPaneColleagueSkills.setBounds(140, 150, 620, 320);
@@ -82,32 +93,30 @@ public class Colleague extends JPanel implements ActionListener
 		btnRequestEndorsement.setFont(fontButton);
 		btnRequestEndorsement.setBounds(190, 500, 243, 25);
 		add(btnRequestEndorsement);
-		btnRequestEndorsement.setVisible(true);
+		btnRequestEndorsement.addActionListener(this);
 		
 		btnSave = new JButton("Save");
 		btnSave.setEnabled(false);
 		btnSave.setFont(fontButton);
 		btnSave.setBounds(620, 500, 90, 25);
 		add(btnSave);
-		btnSave.setVisible(true);
+		btnSave.addActionListener(this);
 		
 
-		
 
 	}
 	
 	public void setUpLevelColumn(JTable table, TableColumn levelColumn)
 	{	
-		endorseBox = new JComboBox<Skill_Levels>();
-		endorseBox.addItem(Notice);
-		endorseBox.addItem(Advanced_Beginner);
-		endorseBox.addItem(Competent);
-		endorseBox.addItem(Proficient);
-		endorseBox.addItem(Expert);
+		endorseBox = new JComboBox<Skill_Levels>(Skill_Levels.values());
+//		endorseBox.addItem(Notice);
+//		endorseBox.addItem(Advanced_Beginner);
+//		endorseBox.addItem(Competent);
+//		endorseBox.addItem(Proficient);
+//		endorseBox.addItem(Expert);
 		
 		levelColumn.setCellEditor(new DefaultCellEditor(endorseBox));
 
-		
 		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
 		renderer.setToolTipText("Click to set endorsement level");
 		levelColumn.setCellRenderer(renderer);
@@ -135,7 +144,35 @@ public class Colleague extends JPanel implements ActionListener
 		scrollPaneColleagueSkills.setBounds(140, 120, 620, 250);
 		add(scrollPaneColleagueSkills);
 		btnSave.setVisible(true);
+		btnSave.setEnabled(true);
 		btnRequestEndorsement.setVisible(true);
+		btnRequestEndorsement.setEnabled(true);
+	}
+	
+	
+	public int getLoggedOnUserDetails()
+	{
+		transaction = new Transaction("getUserSkills", commonStuff.getLoggedOnUser().getUserID());
+		transaction = commonStuff.getClient().sendTransaction(transaction);
+		ratedSkills = (ArrayList<RatedSkills>) transaction.getObject();
+		
+		for(int pos = 0; pos < ratedSkills.size(); pos++)
+		{
+			if((commonStuff.getLoggedOnUser().getUserID()).equals(ratedSkills.get(pos).getUserId()))
+			{
+				loggedOnUserSkillId =  ratedSkills.get(pos).getUserSkillId();
+			}
+		}
+		return loggedOnUserSkillId;
+	}
+
+	
+	public boolean populateEndorsementRequest()
+	{
+		transaction = new Transaction("endorseNomination", getLoggedOnUserDetails());
+		transaction = commonStuff.getClient().sendTransaction(transaction);
+		endorsementRequested = (boolean)transaction.getObject();
+		return endorsementRequested;
 	}
 
 	@Override
@@ -160,11 +197,12 @@ public class Colleague extends JPanel implements ActionListener
 					btnSearch.setVisible(true);
 					textSearch.setVisible(false);
 					btnLookup.setVisible(false);
+					tableColleagueSkills.clearSelection();
 				}
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(null, "No Data For Selection");
+				JOptionPane.showMessageDialog(this, "No Data For Selection");
 			}
 		}
 		
@@ -178,6 +216,15 @@ public class Colleague extends JPanel implements ActionListener
 				int delimeter = searchName.indexOf(':');
 				searchID = searchName.substring(delimeter + 2);
 				populateColleague(searchID);
+				textDisplaySelectedName.setText(searchName);
+				textDisplaySelectedName.setVisible(true);
+				textSearch.setVisible(true);
+				textSearch.setText(null);
+				btnLookup.setVisible(true);
+				btnSearch.setVisible(false);
+				comboBoxColleagueSearch.setVisible(false);
+				comboBoxColleagueSearch.removeAllItems();
+				
 //				System.out.println(searchID);
 			}
 			else
@@ -195,7 +242,19 @@ public class Colleague extends JPanel implements ActionListener
 			
 			if(option == JOptionPane.OK_OPTION)
 			{
-				
+				populateEndorsementRequest();
+				System.out.println("Endorsement requested");
+			}
+			return;	
+		}
+		
+		if(source == btnSave)
+		{
+			int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to save the endorsements you have made?");
+			
+			if(option == JOptionPane.OK_OPTION)
+			{
+				System.out.println("Endorsements have been saved");
 			}
 			return;	
 		}

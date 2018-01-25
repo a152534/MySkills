@@ -63,7 +63,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 	{
 		// Note that the data/cell address is constant,
 		// no matter where the cell appears on screen.
-		if (col == 1)
+		if (col == 2)
 		{
 			return true ;
 		}
@@ -106,7 +106,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 
 		if (columnIndex == 2)
 		{
-//			return endorseBox;
+			return ratedSkill.getNumEndorsement();
 		}
 
 		return "1";
