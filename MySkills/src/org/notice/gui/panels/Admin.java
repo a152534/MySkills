@@ -96,7 +96,7 @@ public class Admin extends JPanel implements ActionListener
 			System.out.println("In for loop");
 		}
  		
-		populateSkillsInfo();
+		//populateSkillsInfo();
 		
 		scrollPaneSkills = new JScrollPane(tableSkills);
 		scrollPaneSkills.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
