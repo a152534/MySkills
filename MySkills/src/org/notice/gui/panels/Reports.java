@@ -68,7 +68,7 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 	public void actionPerformed(ActionEvent e)
 	{
 	    Object source = e.getSource();
-	    String skilName = null;
+	    String skillName = null;
 	    int skillId = 0;
 	    
 	    if(source == btnSkills)
@@ -98,12 +98,15 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 	    if(source == btnUsers)
 
 	        {
-		//skillid = skillReport.skillName
+		skillId = 4321;
+		int colId =tableSkillsReport.getSelectedColumn();
+		skillName = tableSkillsReport.getValueAt(1, colId).toString();
+		
 		transaction = new Transaction("getUserEndorsementsPerSkill", skillId);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 		userSkillReport = (ArrayList<UserSkillEndorsements>) transaction.getObject();
 
-		ReportsUserReportTableModel myModelUser = new ReportsUserReportTableModel(userSkillReport);
+		SkillsRatedTableModel myModelUser = new SkillsRatedTableModel(userSkillReport);
 
 		tableSkillsReport = new JTable(myModelUser);
 		//tableSkills.setColumnSelectionAllowed(true);
@@ -126,7 +129,8 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 	@Override
 	public void valueChanged(ListSelectionEvent e)
 	{
-	    // TODO Auto-generated method stub
+	    tableSkillsReport.getCellSelectionEnabled();
+	    
 	    
 	}
 

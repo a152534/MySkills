@@ -116,6 +116,7 @@ public class BusinessControl
              case "DeleteSkill" : 
              {
          	skillId =  Integer.parseInt(transaction.getObject().toString());
+         	System.out.println("in case delete "  + skillId);
                 transaction.setObject(this.deleteSkill(skillId));
                 transaction.setDescription("DeleteSkill");
          	break;
@@ -382,6 +383,7 @@ public class BusinessControl
 	    if (!RS.next())
 	    {
     		skillsDB.updateDB("delete from skills where skill_id = " + skillId);
+    		System.out.println("BC  after DB delete");
 	    }	
 	    else
 	    {
