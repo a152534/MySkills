@@ -27,8 +27,7 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 		admin = new Admin(commonStuff);
 		skillsSearch = new SkillsSearch(commonStuff);
 		
-		SkillsUtil sku = new SkillsUtil(commonStuff.getSkillsList());
-		TestSkillUtil tsku = new TestSkillUtil(commonStuff);
+
 		
 		skillsAdmin = new JPanel();
 		reports = new Reports(commonStuff);
@@ -44,8 +43,7 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 		this.addTab("Skills Search", skillsSearch);
 		this.addTab("Reports", reports);
 		this.addTab("Admin", admin);
-		this.addTab("test", tsku );
-		this.addTab("test2", sku );
+
 
 	}
 
