@@ -25,13 +25,12 @@ public class Admin extends JPanel implements ActionListener
 {
 	private JTable tableSkills;
 	private JScrollPane scrollPaneSkills;
-	private JButton btnSearch;
 	private JButton btnAdd;
 	private JButton btnDelete;
 	private Font fontButton;
 	private Font fontTextArea;
 	private Font fontComboBoxSearch;
-	private CommonStuff commonStuff; 
+	private CommonStuff commonStuff;
 	private Transaction transaction;
 	private static JButton btnYes;
 	private JButton btnNo;
@@ -39,123 +38,115 @@ public class Admin extends JPanel implements ActionListener
 	private String deleteSkill;
 	private int skillID;
 	private String dulicateSkill;
-	private JScrollPane scrollPane;
-	private JTable table;
 	private JComboBox<String> comboBoxSearch = null;
 	private String skillName;
-	
-	
+	private SkillSelector skillSelector;
+
 	public Admin(CommonStuff inCommonStuff)
 	{
-		skillName = ("PetraTest");
-		skillID = 51517; 
-		
-		commonStuff = inCommonStuff ; 
-		
+		// skillName = ("PetraTest");
+		// skillID = 51517;
+
+		commonStuff = inCommonStuff;
+
 		setLayout(null);
-	
+
 		fontButton = (new Font("Arial", Font.BOLD, 18));
 		fontTextArea = (new Font("Arial", Font.PLAIN, 14));
 		fontComboBoxSearch = (new Font("Arial", Font.PLAIN, 14));
-		
-		btnSearch = new JButton("Search");
-		btnSearch.setBounds(565, 75, 110, 25);
-		btnSearch.setFont(fontButton);
-		add(btnSearch);
-		
-		comboBoxSearch = new JComboBox();
-		comboBoxSearch.setBounds(184, 79, 371, 20);
-		add(comboBoxSearch);
-		
+
+		skillSelector = new SkillSelector(commonStuff.getSkillsList());
+		skillSelector.setBounds(100, 32, 620, 500);
+		add(skillSelector);
+
 		btnDelete = new JButton("Delete");
-		//btnDelete.setEnabled(true);
-		btnDelete.setEnabled(false);
+		btnDelete.setEnabled(true);
+		// btnDelete.setEnabled(false);
 		btnDelete.addActionListener(this);
 		btnDelete.setFont(fontButton);
-		btnDelete.setBounds(535, 451, 100, 25);
+		btnDelete.setBounds(574, 532, 100, 25);
 		add(btnDelete);
-		
+
 		btnAdd = new JButton("Add");
-		//btnAdd.setEnabled(true);
-		btnAdd.setEnabled(false);
+		btnAdd.setEnabled(true);
+		// btnAdd.setEnabled(false);
 		btnAdd.addActionListener(this);
 
 		btnAdd.setFont(fontButton);
-		btnAdd.setBounds(220, 451, 100, 25);
+		btnAdd.setBounds(259, 532, 100, 25);
 		add(btnAdd);
-		
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(184, 107, 491, 302);
-		add(scrollPane);
-		
-		table = new JTable();
-		scrollPane.setRowHeaderView(table);
-			
-		populateSkillsList();	
+
+		// populateSkillsList();
 	}
 
-	private void populateSkillsList() 
+	private void populateSkillsList()
 	{
-		ArrayList<Skill> skillsList = new ArrayList<Skill> ();
-
+		// ArrayList<Skill> skillsList = new ArrayList<Skill> ();
+		//
 		transaction = new Transaction("getSkillList", null);
- 		transaction = commonStuff.getClient().sendTransaction(transaction);
+		transaction = commonStuff.getClient().sendTransaction(transaction);
 
- 		skillsList = (ArrayList<Skill>)transaction.getObject();
-		 
-		for(int pos = 0; pos < skillsList.size() -1 ; pos++)
-		{
-			comboBoxSearch.addItem(skillsList.get(pos).getSkillName());
-		}	
+		commonStuff.setSkillsList((ArrayList<Skill>) transaction.getObject());
+		//
+		// for(int pos = 0; pos < skillsList.size() -1 ; pos++)
+		// {
+		// comboBoxSearch.addItem(skillsList.get(pos).getSkillName());
+		// }
 	}
-		
+
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		Object source = e.getSource();
 		boolean successful = false;
-		if(source == btnSearch) 
+
+		if (source == btnDelete)
 		{
-			System.out.println("in action performed");
-			populateSkillsList();
-		}
+			Skill removeSkill = skillSelector.getSelectedSkill();
 		
-		if(source == btnDelete)
-		{
-			int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete skill? " + skillID );
-			
-			if(dialogResult == JOptionPane.YES_NO_OPTION)
+			int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete skill? " + removeSkill.getSkillName());
+
+			if (dialogResult == JOptionPane.YES_OPTION)
 			{
-				transaction = new Transaction("DeleteSkill", skillID); //setup transaction
-				transaction = commonStuff.getClient().sendTransaction(transaction); //sent transaction
+				transaction = new Transaction("DeleteSkill", removeSkill.getSkillID()); // setup
+																		// transaction
+				transaction = commonStuff.getClient().sendTransaction(transaction); // sent
+																					// transaction
 				successful = (boolean) transaction.getObject();
-			} 
-			
-			if(!successful)
+			}
+
+			if (!successful)
 			{
-				JOptionPane.showMessageDialog(null,"Skill is already in use, so cannot be deleted?");
+				JOptionPane.showMessageDialog(null, "Skill is already in use, so cannot be deleted?");
 			}
 		}
-		
-		if(source ==btnAdd)
+
+		if (source == btnAdd)
 		{
-			int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to add skill?" + skillName);
-			
-			if(dialogResult == JOptionPane.YES_NO_OPTION)
+			Skill newSkill = skillSelector.getSelectedSkill();
+			if (newSkill.getSkillID() == -1)
 			{
-				transaction = new Transaction("AddSkill", skillName); //setup transaction
-				transaction = commonStuff.getClient().sendTransaction(transaction); //sent transaction
-				successful = (boolean) transaction.getObject();
-			} 
-			
-			if(!successful)
-			{
-				JOptionPane.showMessageDialog(null, "Error - Please contact Help Desk");
-				
-			}
-			else
-			{
-				JOptionPane.showMessageDialog(null, "Skill successfully added");
+
+				int dialogResult = JOptionPane.showConfirmDialog(null,
+						"Are you sure you want to add skill?" + newSkill.getSkillName());
+
+				if (dialogResult == JOptionPane.YES_NO_OPTION)
+				{
+					transaction = new Transaction("AddSkill", newSkill.getSkillName()); // setup
+					// transaction
+					transaction = commonStuff.getClient().sendTransaction(transaction); // sent
+																						// transaction
+					successful = (boolean) transaction.getObject();
+				}
+
+				if (!successful)
+				{
+					JOptionPane.showMessageDialog(null, "Error - Please contact Help Desk");
+
+				} else
+				{
+					JOptionPane.showMessageDialog(null, "Skill successfully added");
+				}
 			}
 		}
 	}
