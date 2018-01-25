@@ -113,6 +113,22 @@ public class BusinessControl
          	break;
              }
              
+             case "DeleteSkill" : 
+             {
+         	skillId =  Integer.parseInt(transaction.getObject().toString());
+                transaction.setObject(this.deleteSkill(skillId));
+                transaction.setDescription("DeleteSkill");
+         	break;
+             }
+             
+             case "AddSkill" : 
+             {
+        	skillName = transaction.getObject().toString();
+         	transaction.setObject(this.addSkill(skillName));
+                transaction.setDescription("AddSkill");
+         	break;
+             }
+             
              case "createEndorsement" : 
              {
         	endorse =(Endorsement)transaction.getObject();
@@ -356,6 +372,49 @@ public class BusinessControl
 		}
 		return skillList;
 	}
+    
+    public boolean deleteSkill(int skillId)
+    {
+	this.skillId = skillId;
+	try
+        {
+	    RS = skillsDB.queryDB("select * from skills where skill_id = '" + skillId + "'");
+	    if (!RS.next())
+	    {
+    		skillsDB.updateDB("delete from skills where skill_id = " + skillId);
+	    }	
+	    else
+	    {
+		return false;
+	    }
+        } 
+        catch (Exception e)
+        {
+    	e.printStackTrace();
+    	return false;
+        } 
+       
+        return true;
+	
+    }
+    
+    public boolean addSkill(String skillName)
+    {
+	this.skillName = skillName;
+	try
+        {
+    		skillsDB.updateDB("insert into skills values(null,'" + skillName + "')");
+    	    	
+        } 
+        catch (Exception e)
+        {
+    	e.printStackTrace();
+    	return false;
+        } 
+       
+        return true;
+	
+    }
     
     
     public boolean endorseNomination(int userSkillId, String userId)
