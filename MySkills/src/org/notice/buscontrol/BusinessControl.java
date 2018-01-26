@@ -318,12 +318,14 @@ public class BusinessControl {
 	public boolean deleteSkill(int skillId) {
 		this.skillId = skillId;
 		try {
-			RS = skillsDB.queryDB("select * from skills where skill_id = '" + skillId + "'");
-			if (RS.next()) {
+			RS = skillsDB.queryDB("select * from user_skill where skill_id = '" + skillId + "'");
+			if (!RS.next()) {
 				skillsDB.updateDB("delete from skills where skill_id = " + skillId);
 				System.out.println("BC  after DB delete");
 			} else {
+			    System.out.println("BC   no RS next");
 				return false;
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
