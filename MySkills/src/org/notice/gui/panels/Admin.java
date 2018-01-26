@@ -110,9 +110,17 @@ public class Admin extends JPanel implements ActionListener
 			{
 				transaction = new Transaction("DeleteSkill", removeSkill.getSkillID()); // setup
 																		// transaction
+				System.out.println("Delete SkillID: " + removeSkill.getSkillID());
 				transaction = commonStuff.getClient().sendTransaction(transaction); // sent
 																					// transaction
 				successful = (boolean) transaction.getObject();
+				
+				if(successful)
+				{
+					JOptionPane.showMessageDialog(null, "Skill has been successfully deleted");
+					populateSkillsList();
+					skillSelector.getSkillModel().fireTableDataChanged();
+				}
 			}
 
 			if (!successful)
@@ -142,11 +150,15 @@ public class Admin extends JPanel implements ActionListener
 				if (!successful)
 				{
 					JOptionPane.showMessageDialog(null, "Error - Please contact Help Desk");
-
-				} else
+				} 
+				else
 				{
 					JOptionPane.showMessageDialog(null, "Skill successfully added");
+					
+					populateSkillsList();
+					skillSelector.getSkillModel().fireTableDataChanged();
 				}
+
 			}
 		}
 	}
