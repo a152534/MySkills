@@ -30,6 +30,7 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 	private Transaction transaction = null;
 	private CommonStuff commonStuff;
 	private JTable tableSkillsReport;
+	private int skillId = 0 , rowId =0;
 	
 	public Reports(CommonStuff inCommonStuff)
 	{
@@ -68,8 +69,8 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 	public void actionPerformed(ActionEvent e)
 	{
 	    Object source = e.getSource();
-	    String skillName = null;
-	    int skillId = 0;
+	   
+	    
 	    
 	    if(source == btnSkills)
 
@@ -82,10 +83,10 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 		ReportsSkillsReportTableModel myModel = new ReportsSkillsReportTableModel(skillReport);
 
 		tableSkillsReport = new JTable(myModel);
-		tableSkillsReport.getSelectionModel().addListSelectionListener(this);
-		//tableSkillsReport.setCellSelectionEnabled(true);
 		tableSkillsReport.setRowSelectionAllowed(true);
-	
+		tableSkillsReport.getSelectionModel().addListSelectionListener(this);
+		
+		
 		
 		myModel.fireTableDataChanged();
 
@@ -99,8 +100,10 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 	    if(source == btnUsers)
 
 	        {
-	
-		int rowId =tableSkillsReport.getSelectedRow();
+		tableSkillsReport.setRowSelectionAllowed(true);
+		tableSkillsReport.getSelectionModel().addListSelectionListener(this);
+		rowId =tableSkillsReport.getSelectedRow();
+		System.out.println("rowId " + rowId);
 		skillId = Integer.parseInt(tableSkillsReport.getValueAt(rowId, 1).toString());
 		transaction = new Transaction("getUserEndorsementsPerSkill", skillId);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
