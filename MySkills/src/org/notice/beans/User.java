@@ -28,6 +28,7 @@ public class User implements Serializable
 		this.surName = surName; 
 		this.aliasName = aliasName;
 		this.email = email;
+		this.phoneNumber = phoneNumber ; 
 	}
 	public String getAliasName()
 	{

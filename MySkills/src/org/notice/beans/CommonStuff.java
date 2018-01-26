@@ -13,6 +13,7 @@ public class CommonStuff {
 	private ArrayList<Skill> skillsList;
 	private JTabbedPane tabbedPane;
 	private User colleague ; 
+	private Skill skill ; 
 	
 	public CommonStuff(User loggedOnUser, SkillClient client, ArrayList<Skill> skillsList) {
 		super();
@@ -65,6 +66,14 @@ public class CommonStuff {
 
 	public void setColleague(User colleague) {
 		this.colleague = colleague;
+	}
+
+	public Skill getSkill() {
+		return skill;
+	}
+
+	public void setSkill(Skill skill) {
+		this.skill = skill;
 	}
 
 }

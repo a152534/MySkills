@@ -130,6 +130,7 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		// scrollPaneSkills.add(tableSkills);
 
 		btnSave = new JButton("Save");
+		btnSave.addActionListener(this);
 		btnSave.setFont(fontButton);
 		btnSave.setBounds(780, 80, 90, 25);
 		add(btnSave);
