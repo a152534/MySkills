@@ -122,12 +122,12 @@ public class BusinessControl {
 			break;
 		}
 
-//		case "getEndorseNominations": {
-//			userId = (String) transaction.getObject();
-//			transaction.setObject(this.getEndorseNominations(userId));
-//			transaction.setDescription("getEndorseNominations");
-//			break;
-//		}
+		case "getEndorseNominations": {
+			userId = (String) transaction.getObject();
+			transaction.setObject(this.getEndorseNominations(userId));
+			transaction.setDescription("getEndorseNominations");
+			break;
+		}
 
 		case "getSkillsReport": {
 			transaction.setObject(this.getSkillsReport());
@@ -323,9 +323,9 @@ public class BusinessControl {
 				skillsDB.updateDB("delete from skills where skill_id = " + skillId);
 				System.out.println("BC  after DB delete");
 			} else {
-			    System.out.println("BC   no RS next");
+				System.out.println("BC   no RS next");
 				return false;
-				
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -451,7 +451,8 @@ public class BusinessControl {
 				numOfEndorsements = skillResult.getBigDecimal("num_of_endorsements");
 				numOfResources = skillResult.getLong("num_of_resources");
 
-				skillReport.add(new EndorsementsPerSkill(skillId, numOfResources, skillName, numOfEndorsements,	avgEndorsement));
+				skillReport.add(new EndorsementsPerSkill(skillId, numOfResources, skillName, numOfEndorsements,
+						avgEndorsement));
 			} // End while
 		} catch (SQLException se) {
 			System.out.println("ERROR: " + se.getMessage());
@@ -481,7 +482,8 @@ public class BusinessControl {
 				firstName = userResult.getString("first_name");
 				surname = userResult.getString("surname");
 				avgEndorsement = userResult.getBigDecimal("avg_endorsement");
-				ratedSkillsList.add(new UserSkillEndorsements(firstName, surname, numEndorsement, avgEndorsement,skillName ));
+				ratedSkillsList
+						.add(new UserSkillEndorsements(firstName, surname, numEndorsement, avgEndorsement, skillName));
 
 			}
 		} catch (SQLException se) {
@@ -490,4 +492,24 @@ public class BusinessControl {
 		}
 		return ratedSkillsList;
 	}
+
+	private Object getEndorseNominations(String userId2) {
+		ArrayList<EndorsementNomination> nominations = new ArrayList<EndorsementNomination>();
+		String selectString = "SELECT * FROM myskills.v_expanded_endorsement_nomination where nominated_endorsee = '"+ userId2 + "'";
+
+		try {
+			userResult = skillsDB.queryDB(selectString);
+			while (userResult.next()) {
+				nominations.add(new EndorsementNomination(userResult.getInt("endorsement_nomination_id"),
+						userResult.getString("user_id"), userResult.getString("fullname"),
+						userResult.getString("nominated_endorsee")));
+			}
+		} catch (SQLException se) {
+			System.out.println("ERROR: " + se.getMessage());
+			return null;
+		}
+
+		return nominations;
+	}
+
 }

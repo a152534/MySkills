@@ -11,11 +11,13 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import org.notice.beans.CommonStuff;
+import org.notice.beans.EndorsementNomination;
 import org.notice.beans.RatedSkills;
 import org.notice.beans.Skill;
 import org.notice.beans.User;
 import org.notice.beans.UserSkills;
 import org.notice.client.Transaction;
+import org.notice.tablemodel.EndorseNominationModel;
 import org.notice.tablemodel.MyProfileRatedSkillTableModel;
 
 import java.awt.Component;
@@ -57,6 +59,7 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 	private Transaction transaction;
 	private ArrayList<RatedSkills> ratedSkills;
 	private MyProfileRatedSkillTableModel myModel;
+	private EndorseNominationModel nominatioModel ; 
 	private SkillSelector skillSelector;
 
 	/**
@@ -149,15 +152,12 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		btnDeleteSkill.setBounds(535, 392, 145, 25);
 		add(btnDeleteSkill);
 
-		scrollPaneEndorsementRequests = new JScrollPane();
-		scrollPaneEndorsementRequests.setBounds(140, 440, 620, 132);
-		add(scrollPaneEndorsementRequests);
-
-		tableEndorsementRequests = new JTable();
-		scrollPaneEndorsementRequests.setColumnHeaderView(tableEndorsementRequests);
+	
 
 		populateUserInfo();
 		populateSkills();
+		populateNominatioins() ;
+		
 	}
 
 	private void populateUserInfo() {
@@ -202,6 +202,7 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		add(scrollPaneSkills);
 
 	}
+	
 
 	private void refreshSkills() {
 
@@ -221,6 +222,27 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		System.out.println("skills refreshed");
 
 	}
+	
+	private void populateNominatioins() 
+	{
+		transaction = new Transaction("getEndorseNominations", commonStuff.getLoggedOnUser().getUserID());
+		transaction = commonStuff.getClient().sendTransaction(transaction);
+		 
+		ArrayList<EndorsementNomination> nominations  = (ArrayList<EndorsementNomination>) transaction.getObject();
+		nominatioModel = new EndorseNominationModel(nominations);
+		
+		tableEndorsementRequests = new JTable(nominatioModel);
+		scrollPaneEndorsementRequests = new JScrollPane(tableEndorsementRequests);
+		scrollPaneEndorsementRequests.setBounds(140, 440, 620, 132);
+		add(scrollPaneEndorsementRequests);
+
+		
+		//scrollPaneEndorsementRequests.setColumnHeaderView(tableEndorsementRequests);
+		
+		
+		
+	}
+	
 
 	public void setUpLevelColumn(JTable table, TableColumn levelColumn) {
 
