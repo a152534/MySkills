@@ -142,12 +142,15 @@ public class BusinessControl {
 			break;
 		}
 
-		case "getUserEndorsementsPerSkill": {
-			skillId = Integer.parseInt(transaction.getObject().toString());
-			transaction.setObject(this.getUserEndorsementsPerSkill(skillId));
-			transaction.setDescription("getUserEndorsementPerSkill");
-			break;
-		}
+        case "getUserEndorsementsPerSkill" : 
+        {
+       	 ArrayList<Skill> skills = (ArrayList<Skill>)transaction.getObject();
+//   	skillId = Integer.parseInt(transaction.getObject().toString());
+     	transaction.setObject(this.getUserEndorsementsPerSkill(skills));
+           transaction.setDescription("getUserEndorsementPerSkill");
+    	break;
+        }
+
 
 		default:
 			System.out.println("Incorrect selection");
@@ -461,37 +464,61 @@ public class BusinessControl {
 		return skillReport;
 	}
 
-	public ArrayList<UserSkillEndorsements> getUserEndorsementsPerSkill(int skillId) {
-		this.skillId = skillId;
+	public ArrayList<UserSkillEndorsements> getUserEndorsementsPerSkill(ArrayList<Skill> skillList)
+	{
+		this.skillList = skillList;
 		ratedSkillsList = new ArrayList<UserSkillEndorsements>();
-
-		try {
-			// Fetch from database
-
-			userResult = skillsDB.queryDB("Select user_id, first_name, surname,  user_skill_id, skill_id, level, "
-					+ "num_of_endorsements, avg_endorsement, skill_name from v_user_skill_endorsements where skill_id = '"
-					+ skillId + "'");
-
-			while (userResult.next()) {
-				int userSkillId = userResult.getInt("user_skill_id");
-				String userId = userResult.getString("user_id");
-				skillId = userResult.getInt("skill_id");
-				level = userResult.getInt("level");
-				numEndorsement = userResult.getInt("num_of_endorsements");
-				skillName = userResult.getString("skill_name");
-				firstName = userResult.getString("first_name");
-				surname = userResult.getString("surname");
-				avgEndorsement = userResult.getBigDecimal("avg_endorsement");
-				ratedSkillsList
-						.add(new UserSkillEndorsements(firstName, surname, numEndorsement, avgEndorsement, skillName));
-
+		
+		try
+ 
+		{
+			String userIdList = null;
+			for(int pos = 0; pos < skillList.size(); pos++)
+			{
+				System.out.println("pos" + pos);
+				if(pos == 0)
+				{
+					userIdList = "" + skillList.get(pos).getSkillID() ;
+				}
+				else
+				{
+					userIdList = userIdList + ", " + skillList.get(pos).getSkillID() ;
+				}
+				System.out.println("Array  Length " + skillList.size() );
 			}
-		} catch (SQLException se) {
+					
+			String sQL = null;
+			sQL = "SELECT  * FROM myskills.v_user_skill_endorsements a, (SELECT user_id FROM myskills.user_skill WHERE skill_id IN (" +
+			     userIdList + ") GROUP BY user_id HAVING COUNT(*) = " + skillList.size() + 
+			     " ) b WHERE skill_id IN (" + userIdList + ") AND b.user_id = a.user_id;";
+					{
+	 					userResult = skillsDB.queryDB(sQL);
+			
+			while (userResult.next())
+			{
+			int userSkillId = userResult.getInt("user_skill_id");
+			String userId = userResult.getString("user_id");
+			skillId = userResult.getInt("skill_id");
+			level = userResult.getInt("level");
+			numEndorsement = userResult.getInt("num_of_endorsements");
+			skillName = userResult.getString("skill_name");
+			firstName = userResult.getString("first_name");
+			surname = userResult.getString("surname");
+			avgEndorsement = userResult.getBigDecimal("avg_endorsement");
+			ratedSkillsList.add(new UserSkillEndorsements(firstName, surname, numEndorsement, avgEndorsement, skillName));
+			
+			}
+			}
+		} catch (SQLException se)
+		{
 			System.out.println("ERROR: " + se.getMessage());
 			return null;
 		}
 		return ratedSkillsList;
 	}
+ 
+
+
 
 	private Object getEndorseNominations(String userId2) {
 		ArrayList<EndorsementNomination> nominations = new ArrayList<EndorsementNomination>();
