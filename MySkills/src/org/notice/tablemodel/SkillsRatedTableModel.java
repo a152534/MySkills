@@ -13,7 +13,7 @@ public class SkillsRatedTableModel extends AbstractTableModel {
 	private boolean DEBUG = false;
 	
 	ArrayList<UserSkillEndorsements> userSkillEndorsements;
-	private String[] columnNames = { "Name", "Number of endorsements", "Endorsement Average" };
+	private String[] columnNames = { "Name", "Skill", "Number of endorsements", "Endorsement Average" };
 
 	public SkillsRatedTableModel(ArrayList<UserSkillEndorsements> userSkillEndorsements) {
 		super();
@@ -31,7 +31,7 @@ public class SkillsRatedTableModel extends AbstractTableModel {
 	@Override
 	public int getColumnCount() {
 		// TODO Auto-generated method stub
-		return 3;
+		return 4;
 	}
 
 	public String getColumnName(int col) {
@@ -47,39 +47,45 @@ public class SkillsRatedTableModel extends AbstractTableModel {
 			return false;
 //		}
 	}
-/*	public void setValueAt(Object value, int row, int col) {
-       if (DEBUG) {
-           System.out.println("Setting value at " + row + "," + col
-                              + " to " + value
-                              + " (an instance of "
-                              + value.getClass() + ")");
-       }
+	public void setValueAt(Object value, int row, int col) {
+		System.out.println("In setvalueat");
+        if (DEBUG) {
+            System.out.println("Setting value at " + row + "," + col
+                               + " to " + value
+                               + " (an instance of "
+                               + value.getClass() + ")");
+        }
 
-       ratedSkills.get(row).setLevel(Integer.parseInt((String)value));
-       fireTableCellUpdated(row, col);
+        userSkillEndorsements.get(row).setLevel(Integer.parseInt((String)value));
+        fireTableCellUpdated(row, col);
 
-       if (DEBUG) {
-           System.out.println("New value of data:");
-        
-       }
-   } */
+        if (DEBUG) {
+            System.out.println("New value of data:");
+         
+        }
+    }
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		// System.out.println("MyProfileRatedSkillTableModel getValueAt ");
-	
-		UserSkillEndorsements ratedSkills = userSkillEndorsements.get(rowIndex);
+		
+			UserSkillEndorsements ratedSkills = userSkillEndorsements.get(rowIndex);
+			System.out.println("GET VALUE AT " + ratedSkills );
 		if (columnIndex == 0) {
-			return (ratedSkills.getSurname() + ", " + ratedSkills.getSkillName());
-		}
+			return (ratedSkills.getSurname() + ", " + ratedSkills.getFirstName());
+			}
 
 			if (columnIndex == 1) {
-			
-			return ratedSkills.getNumOfEndorsements();
+			System.out.print("SKILL NAME***************" + ratedSkills.getSkillName());
+			return ratedSkills.getSkillName();
 		}
 		if (columnIndex == 2) {
 			return ratedSkills.getAvgEndorsement();
 		}
+		if (columnIndex == 3) {
+			return ratedSkills.getNumOfEndorsements();
+		}
+		
 
 		return "1";
 	}
