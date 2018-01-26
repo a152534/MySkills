@@ -35,8 +35,20 @@ public class UserSkillEndorsements implements Serializable
 	this.surname = surname;
 	this.numOfEndorsements = numOfEndorsements;
 	this.avgEndorsement = avgEndorsement;
+
 	}
 
+	public UserSkillEndorsements( String firstName, String surname,  long numOfEndorsements,BigDecimal avgEndorsement,String skillName)
+	{
+	
+	this.firstName = firstName;
+	this.surname = surname;
+	this.numOfEndorsements = numOfEndorsements;
+	this.avgEndorsement = avgEndorsement;
+	this.skillName = skillName;
+	}
+
+	
 	public UserSkillEndorsements(String userId)
 	{
 		this(userId, " ", " ", " ", " ", " ", " ", 0, 0, 0, 0L, null);

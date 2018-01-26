@@ -13,6 +13,7 @@ import javax.swing.table.TableColumnModel;
 import org.notice.beans.CommonStuff;
 import org.notice.beans.RatedSkills;
 import org.notice.beans.Skill;
+import org.notice.beans.User;
 import org.notice.beans.UserSkills;
 import org.notice.client.Transaction;
 import org.notice.tablemodel.MyProfileRatedSkillTableModel;
@@ -43,7 +44,7 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 	private JTextField txtEmail;
 	private JScrollPane scrollPaneSkills;
 	private JTable tableSkills;
-	private JButton btnSave;
+	//private JButton btnSave;
 	private JButton btnAddSkill;
 	private JButton btnDeleteSkill;
 	private JScrollPane scrollPaneEndorsementRequests;
@@ -129,11 +130,11 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		// tableSkills.setBounds(0, 0, 1, 1);
 		// scrollPaneSkills.add(tableSkills);
 
-		btnSave = new JButton("Save");
-		btnSave.addActionListener(this);
-		btnSave.setFont(fontButton);
-		btnSave.setBounds(780, 80, 90, 25);
-		add(btnSave);
+//		btnSave = new JButton("Save");
+//		btnSave.addActionListener(this);
+//		btnSave.setFont(fontButton);
+//		btnSave.setBounds(780, 80, 90, 25);
+//		add(btnSave);
 
 		btnAddSkill = new JButton("Add Skill");
 		btnAddSkill.addActionListener(this);
@@ -221,66 +222,6 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 
 	}
 
-	private void addUserSkill() {
-
-		Vector<String> allskills = new Vector<String>();
-		for (Skill skill : commonStuff.getSkillsList()) {
-			allskills.add(skill.getSkillName() + "    ID_" + skill.getSkillID());
-		}
-		Collections.sort(allskills);
-		JComboBox<String> comboSkill = new JComboBox<String>(allskills);
-
-		skillSelector = new SkillSelector(commonStuff.getSkillsList());
-
-		int result =JOptionPane.showConfirmDialog(null, skillSelector, "Select a skill ", JOptionPane.OK_CANCEL_OPTION,
-				JOptionPane.PLAIN_MESSAGE);
-		if (result == JOptionPane.CANCEL_OPTION) {
-			System.out.println("MyProfile Selected Cancel ");
-			return ;
-		} 
-		if (result == JOptionPane.OK_OPTION) {
-			System.out.println("MyProfile Selected Ok ");
-		} 
-		
-		Skill SelectedSkill = skillSelector.getSelectedSkill();
-
-
-
-		JComboBox<String> comboLevel = new JComboBox<String>();
-		comboLevel.addItem("1");
-		comboLevel.addItem("2");
-		comboLevel.addItem("3");
-		comboLevel.addItem("4");
-		comboLevel.addItem("5");
-
-		result = JOptionPane.showConfirmDialog(this, comboLevel, "Select Level for Skill: " + SelectedSkill.getSkillName(),
-				JOptionPane.OK_CANCEL_OPTION);
-		
-		if (result == JOptionPane.CANCEL_OPTION) {
-			System.out.println("MyProfile Selected Cancel ");
-			return ;
-		} 
-		if (result == JOptionPane.OK_OPTION) {
-			System.out.println("MyProfile Selected Ok ");
-		} 
-		
-		
-		System.out.println("result = " + result + "\n" );
-		String selectedLevel = (String) comboLevel.getSelectedItem();
-		int selectedLevelInt = Integer.parseInt(selectedLevel);
-	
-		
-		UserSkills newSkill = new UserSkills(commonStuff.getLoggedOnUser().getUserID(), SelectedSkill.getSkillID(), selectedLevelInt);
-		Transaction transaction = new Transaction("SaveUserSkill", newSkill);
-		transaction = commonStuff.getClient().sendTransaction(transaction);
-		if ((Boolean) transaction.getObject()) {
-
-		}
-
-		refreshSkills();
-
-	}
-
 	public void setUpLevelColumn(JTable table, TableColumn levelColumn) {
 
 		JComboBox<String> comboBox = new JComboBox<String>();
@@ -306,6 +247,68 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		if (source == btnDeleteSkill) {
 			deleteUserSkill();
 		}
+//		if (source == btnSave) {
+//			saveUser();
+//		}
+
+	}
+
+
+
+	private void addUserSkill() {
+
+		Vector<String> allskills = new Vector<String>();
+		for (Skill skill : commonStuff.getSkillsList()) {
+			allskills.add(skill.getSkillName() + "    ID_" + skill.getSkillID());
+		}
+		Collections.sort(allskills);
+		JComboBox<String> comboSkill = new JComboBox<String>(allskills);
+
+		skillSelector = new SkillSelector(commonStuff.getSkillsList());
+
+		int result = JOptionPane.showConfirmDialog(null, skillSelector, "Select a skill ", JOptionPane.OK_CANCEL_OPTION,
+				JOptionPane.PLAIN_MESSAGE);
+		if (result == JOptionPane.CANCEL_OPTION) {
+			System.out.println("MyProfile Selected Cancel ");
+			return;
+		}
+		if (result == JOptionPane.OK_OPTION) {
+			System.out.println("MyProfile Selected Ok ");
+		}
+
+		Skill SelectedSkill = skillSelector.getSelectedSkill();
+
+		JComboBox<String> comboLevel = new JComboBox<String>();
+		comboLevel.addItem("1");
+		comboLevel.addItem("2");
+		comboLevel.addItem("3");
+		comboLevel.addItem("4");
+		comboLevel.addItem("5");
+
+		result = JOptionPane.showConfirmDialog(this, comboLevel,
+				"Select Level for Skill: " + SelectedSkill.getSkillName(), JOptionPane.OK_CANCEL_OPTION);
+
+		if (result == JOptionPane.CANCEL_OPTION) {
+			System.out.println("MyProfile Selected Cancel ");
+			return;
+		}
+		if (result == JOptionPane.OK_OPTION) {
+			System.out.println("MyProfile Selected Ok ");
+		}
+
+		System.out.println("result = " + result + "\n");
+		String selectedLevel = (String) comboLevel.getSelectedItem();
+		int selectedLevelInt = Integer.parseInt(selectedLevel);
+
+		UserSkills newSkill = new UserSkills(commonStuff.getLoggedOnUser().getUserID(), SelectedSkill.getSkillID(),
+				selectedLevelInt);
+		Transaction transaction = new Transaction("SaveUserSkill", newSkill);
+		transaction = commonStuff.getClient().sendTransaction(transaction);
+		if ((Boolean) transaction.getObject()) {
+
+		}
+
+		refreshSkills();
 
 	}
 
