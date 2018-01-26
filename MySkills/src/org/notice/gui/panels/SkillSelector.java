@@ -25,6 +25,7 @@ public class SkillSelector extends JPanel implements ListSelectionListener {
 	private JTable skillTable;
 	private Skill selectedSkill;
 	private TableRowSorter<SkillsUtilTableModel> sorter;
+	private SkillsUtilTableModel skillModel ; 
 
 	/**
 	 * Create the panel.
@@ -61,7 +62,7 @@ public class SkillSelector extends JPanel implements ListSelectionListener {
 
 		});
 
-		SkillsUtilTableModel skillModel = new SkillsUtilTableModel(skills);
+		skillModel = new SkillsUtilTableModel(skills);
 		skillTable = new JTable(skillModel);
 		skillTable.getSelectionModel().addListSelectionListener(this);
 
@@ -102,5 +103,23 @@ public class SkillSelector extends JPanel implements ListSelectionListener {
 		}
 
 	}
+
+	public JTable getSkillTable() {
+		return skillTable;
+	}
+
+	public void setSkillTable(JTable skillTable) {
+		this.skillTable = skillTable;
+	}
+
+	public SkillsUtilTableModel getSkillModel() {
+		return skillModel;
+	}
+
+	public void setSkillModel(SkillsUtilTableModel skillModel) {
+		this.skillModel = skillModel;
+	}
+	
+	
 
 }

@@ -47,7 +47,7 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 	private JScrollPane scrollPaneSkills;
 	private JTable tableSkills;
 	//private JButton btnSave;
-	private JButton btnAddSkill;
+	private JButton btnAddSkill, btnEndorse;
 	private JButton btnDeleteSkill;
 	private JScrollPane scrollPaneEndorsementRequests;
 	private JTable tableEndorsementRequests;
@@ -235,6 +235,11 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		scrollPaneEndorsementRequests = new JScrollPane(tableEndorsementRequests);
 		scrollPaneEndorsementRequests.setBounds(140, 440, 620, 132);
 		add(scrollPaneEndorsementRequests);
+		
+		btnEndorse = new JButton("Endorse");
+		btnEndorse.setBounds(221, 595, 145, 25);
+		btnEndorse.setEnabled(false); 
+		add(btnEndorse);
 
 		
 		//scrollPaneEndorsementRequests.setColumnHeaderView(tableEndorsementRequests);
@@ -357,7 +362,14 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		btnDeleteSkill.setEnabled(true);
-
+		System.out.println(e.getSource().toString());
+		if(e.getSource()== tableSkills) {
+			btnDeleteSkill.setEnabled(true);
+		}
+		if(e.getSource() == tableEndorsementRequests) {
+			
+			commonStuff.getColleague().setUserID((String)tableEndorsementRequests.getValueAt(tableEndorsementRequests.getSelectedRow(), 1));
+			btnEndorse.setEnabled(true); 
+		}
 	}
 }
