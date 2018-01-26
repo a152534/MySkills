@@ -118,6 +118,8 @@ public class Admin extends JPanel implements ActionListener
 				if(successful)
 				{
 					JOptionPane.showMessageDialog(null, "Skill has been successfully deleted");
+					populateSkillsList();
+					skillSelector.getSkillModel().fireTableDataChanged();
 				}
 			}
 
@@ -148,11 +150,15 @@ public class Admin extends JPanel implements ActionListener
 				if (!successful)
 				{
 					JOptionPane.showMessageDialog(null, "Error - Please contact Help Desk");
-
-				} else
+				} 
+				else
 				{
 					JOptionPane.showMessageDialog(null, "Skill successfully added");
+					
+					populateSkillsList();
+					skillSelector.getSkillModel().fireTableDataChanged();
 				}
+
 			}
 		}
 	}
