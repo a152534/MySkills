@@ -380,7 +380,7 @@ public class BusinessControl
 	try
         {
 	    RS = skillsDB.queryDB("select * from skills where skill_id = '" + skillId + "'");
-	    if (!RS.next())
+	    if (RS.next())
 	    {
     		skillsDB.updateDB("delete from skills where skill_id = " + skillId);
     		System.out.println("BC  after DB delete");

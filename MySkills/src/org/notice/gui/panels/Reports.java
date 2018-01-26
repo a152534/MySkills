@@ -13,7 +13,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.notice.beans.CommonStuff;
 import org.notice.beans.*;
 import org.notice.client.Transaction;
 import org.notice.tablemodel.*;
@@ -27,6 +26,7 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 	private Font fontButton;
 	private  ArrayList<EndorsementsPerSkill> skillReport = null;
 	private  ArrayList<UserSkillEndorsements> userSkillReport = null;
+	private ArrayList<Skill> skillList = null;
 	private Transaction transaction = null;
 	private CommonStuff commonStuff;
 	private JTable tableSkillsReport;
@@ -63,6 +63,7 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 	}
 	
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
@@ -98,10 +99,9 @@ public class Reports extends JPanel implements ActionListener, ListSelectionList
 	    if(source == btnUsers)
 
 	        {
-		skillId = 4321;
-		int colId =tableSkillsReport.getSelectedColumn();
-		skillName = tableSkillsReport.getValueAt(1, colId).toString();
-		
+	
+		int rowId =tableSkillsReport.getSelectedRow();
+		skillId = Integer.parseInt(tableSkillsReport.getValueAt(rowId, 1).toString());
 		transaction = new Transaction("getUserEndorsementsPerSkill", skillId);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 		userSkillReport = (ArrayList<UserSkillEndorsements>) transaction.getObject();

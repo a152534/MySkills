@@ -12,7 +12,7 @@ public class ReportsSkillsReportTableModel extends AbstractTableModel
 	private boolean DEBUG = false;
 	
 	ArrayList<EndorsementsPerSkill> skillReport;
-	private String[] columnNames = { "Skills",  "Number of endorsements", "Average endorsement", "Number of Resources" };
+	private String[] columnNames = { "Skills", "Skill ID", "Number of endorsements", "Average endorsement", "Number of Resources" };
 
 	public ReportsSkillsReportTableModel(ArrayList<EndorsementsPerSkill> skillReport) 
 	{
@@ -39,13 +39,10 @@ public class ReportsSkillsReportTableModel extends AbstractTableModel
 	}
 
 	public boolean isCellEditable(int row, int col) {
-		// Note that the data/cell address is constant,
-		// no matter where the cell appears onscreen.
-		if (col == 1) {
+		
+		
 			return true ;
-		} else {
-			return false;
-		}
+		
 	}
 	
 
@@ -56,15 +53,19 @@ public class ReportsSkillsReportTableModel extends AbstractTableModel
 		if (columnIndex == 0) {
 			return skillsReport.getSkillName();
 		}
-
+		
 		if (columnIndex == 1) {
+			return skillsReport.getSkillId();
+		}
+		
+		if (columnIndex == 2) {
 			return skillsReport.getNumEndorsements();
 		}
 
-		if (columnIndex == 2) {
+		if (columnIndex == 3) {
 			return skillsReport.getAvgEndorsement();
 		}
-		if (columnIndex == 3) {
+		if (columnIndex == 4) {
 			return skillsReport.getNumResources();
 		}
 
