@@ -1,8 +1,9 @@
 package org.notice.beans;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class EndorsementNomination {
+public class EndorsementNomination implements Serializable  {
 
 	// SELECT * FROM myskills.v_expanded_endorsement_nomination where
 	// nominated_endorsee =
