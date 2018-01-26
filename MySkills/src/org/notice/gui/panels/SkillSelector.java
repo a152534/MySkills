@@ -58,7 +58,7 @@ public class SkillSelector extends JPanel implements ListSelectionListener {
 				// System.out.println("change update filter");
 				newFilter();
 			}
-			
+
 		});
 
 		SkillsUtilTableModel skillModel = new SkillsUtilTableModel(skills);
@@ -77,7 +77,7 @@ public class SkillSelector extends JPanel implements ListSelectionListener {
 	}
 
 	private void newFilter() {
-		//System.out.println("In newFilter");
+		// System.out.println("In newFilter");
 		RowFilter<? super SkillsUtilTableModel, ? super Integer> rf = null;
 
 		rf = RowFilter.regexFilter("(?i)" + txtSearch.getText());
@@ -100,7 +100,7 @@ public class SkillSelector extends JPanel implements ListSelectionListener {
 		} else {
 			selectedSkill = new Skill(-1, txtSearch.getText());
 		}
-			
+
 	}
 
 }
