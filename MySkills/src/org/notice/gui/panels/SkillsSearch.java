@@ -58,13 +58,14 @@ public class SkillsSearch extends JPanel implements ActionListener
 		skillSelector.setBounds(100, 32, 620, 400);
 	//	add(skillSelector);
 		
-		btnSearch = new JButton("Execute Query");
-		btnSearch.setBounds(328, 118, 139, 25);
+		btnSearch = new JButton("Search on Skills");
+		btnSearch.setBounds(370, 115, 168, 24);
 		add(btnSearch);
 		btnSearch.addActionListener(this);
 		
-		btnQuery = new JButton("Build Query");
-		btnQuery.setBounds(60, 118, 106, 24);
+		btnQuery = new JButton("Select Skills to Search");
+		btnQuery.setBounds(10, 115, 168, 24);
+	 
 		add(btnQuery);
 		btnQuery.addActionListener(this);
 		
@@ -73,8 +74,8 @@ public class SkillsSearch extends JPanel implements ActionListener
 		 
 		add(textArea);
 		
-		btnClear = new JButton("Clear Query");
-		btnClear.setBounds(195, 118, 106, 24);
+		btnClear = new JButton("Clear Search Skills");
+		btnClear.setBounds(190, 115, 168, 24);
 		add(btnClear);
 		btnClear.addActionListener(this);
 		
