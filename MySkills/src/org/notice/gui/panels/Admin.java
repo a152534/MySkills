@@ -110,9 +110,15 @@ public class Admin extends JPanel implements ActionListener
 			{
 				transaction = new Transaction("DeleteSkill", removeSkill.getSkillID()); // setup
 																		// transaction
+				System.out.println("Delete SkillID: " + removeSkill.getSkillID());
 				transaction = commonStuff.getClient().sendTransaction(transaction); // sent
 																					// transaction
 				successful = (boolean) transaction.getObject();
+				
+				if(successful)
+				{
+					JOptionPane.showMessageDialog(null, "Skill has been successfully deleted");
+				}
 			}
 
 			if (!successful)
