@@ -42,7 +42,7 @@ public class Admin extends JPanel implements ActionListener
 	private JComboBox<String> comboBoxSearch = null;
 	private String skillName;
 	private SkillSelector skillSelector;
-	private ArrayList<Skills> skills;
+	private ArrayList<Skill> skills;
 	private MyProfileRatedSkillTableModel myModel;
 
 	public Admin(CommonStuff inCommonStuff)
@@ -102,10 +102,10 @@ public class Admin extends JPanel implements ActionListener
 	{
 		transaction = new Transaction("getUserSkills", commonStuff.getLoggedOnUser().getUserID());
 		transaction = commonStuff.getClient().sendTransaction(transaction);
-		ArrayList<Skills> skillsList = (ArrayList<Skills>) transaction.getObject();
+		ArrayList<Skill> skillsList = (ArrayList<Skill>) transaction.getObject();
 
 		skills.clear();
-		for (Skills skill : skillsList)
+		for (Skill skill : skillsList)
 		{
 			skills.add(skill);
 		}
