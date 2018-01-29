@@ -37,6 +37,7 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 	private CommonStuff commonStuff;
 	private JTable tableSkillsReport = null , tableUserSkillsReport = null;
 	private int skillId = 0 ,  rowId = 0;   
+	ReportsSkillsReportTableModel myModel = null;
 
     /**
      * Create the panel.
@@ -82,7 +83,15 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
     	btnSkills.addActionListener(this);
     	btnUsersForSelected.addActionListener(this);
     	
-    	tableSkillsReport = new JTable();
+    	//tableSkillsReport = new JTable();
+    	transaction = new Transaction("getSkillsReport", null);
+	transaction = commonStuff.getClient().sendTransaction(transaction);
+	skillReport = (ArrayList<EndorsementsPerSkill>) transaction.getObject();
+    	ReportsSkillsReportTableModel myModel = new ReportsSkillsReportTableModel(skillReport);
+
+	tableSkillsReport = new JTable(myModel);
+	tableSkillsReport.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	tableSkillsReport.getSelectionModel().addListSelectionListener(this);
     	scrollPane.setViewportView(tableSkillsReport);
     	setLayout(groupLayout);
 
@@ -107,23 +116,23 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 
 	        {
 		
-		transaction = new Transaction("getSkillsReport", null);
-		transaction = commonStuff.getClient().sendTransaction(transaction);
-		skillReport = (ArrayList<EndorsementsPerSkill>) transaction.getObject();
+//		transaction = new Transaction("getSkillsReport", null);
+//		transaction = commonStuff.getClient().sendTransaction(transaction);
+//		skillReport = (ArrayList<EndorsementsPerSkill>) transaction.getObject();
 
-		ReportsSkillsReportTableModel myModel = new ReportsSkillsReportTableModel(skillReport);
-
-		tableSkillsReport = new JTable(myModel);
-		tableSkillsReport.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tableSkillsReport.getSelectionModel().addListSelectionListener(this);
+//		ReportsSkillsReportTableModel myModel = new ReportsSkillsReportTableModel(skillReport);
+//
+//		tableSkillsReport = new JTable(myModel);
+//		tableSkillsReport.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//		tableSkillsReport.getSelectionModel().addListSelectionListener(this);
 			
 		myModel.fireTableDataChanged();
 
-		scrollPane = new JScrollPane(tableSkillsReport);
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPane.setBounds(140, 120, 620, 450);
-		add(scrollPane);
+//		scrollPane = new JScrollPane(tableSkillsReport);
+//		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+//		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+//		scrollPane.setBounds(140, 120, 620, 450);
+//		add(scrollPane);
 	        }
 	    
 	    if(source == btnUsersForSelected)

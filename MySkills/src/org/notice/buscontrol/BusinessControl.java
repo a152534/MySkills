@@ -121,6 +121,14 @@ public class BusinessControl {
 			transaction.setDescription("createEndorsement");
 			break;
 		}
+		
+		case "createEndorsementNomination": {
+			endorseNom = (EndorsementNomination) transaction.getObject();
+			transaction.setObject(
+					this.createEndorseNomination(endorseNom.getUserID(), endorseNom.getEndorserUserID()));
+			transaction.setDescription("createEndorsement");
+			break;
+		}
 
 		case "getEndorseNominations": {
 			userId = (String) transaction.getObject();
@@ -353,8 +361,8 @@ public class BusinessControl {
 
 	}
 
-	public boolean endorseNomination(int userSkillId, String userId) {
-		this.userSkillId = userSkillId;
+	public boolean createEndorseNomination(String  userId , String endorserId) {
+		this.endorsor = endorserId;
 		this.userId = userId;
 		try {
 			skillsDB.updateDB(
