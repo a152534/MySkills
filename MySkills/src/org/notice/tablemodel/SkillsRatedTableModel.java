@@ -18,7 +18,6 @@ public class SkillsRatedTableModel extends AbstractTableModel {
 	public SkillsRatedTableModel(ArrayList<UserSkillEndorsements> userSkillEndorsements) {
 		super();
 		this.userSkillEndorsements = userSkillEndorsements;
-		System.out.println("SkillsRatedTableModel :  rows in rated skills " + userSkillEndorsements.size());
 	}
 
 	@Override
@@ -48,8 +47,7 @@ public class SkillsRatedTableModel extends AbstractTableModel {
 //		}
 	}
 	public void setValueAt(Object value, int row, int col) {
-		System.out.println("In setvalueat");
-        if (DEBUG) {
+		if (DEBUG) {
             System.out.println("Setting value at " + row + "," + col
                                + " to " + value
                                + " (an instance of "
@@ -67,16 +65,13 @@ public class SkillsRatedTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		// System.out.println("MyProfileRatedSkillTableModel getValueAt ");
+		UserSkillEndorsements ratedSkills = userSkillEndorsements.get(rowIndex);
 		
-			UserSkillEndorsements ratedSkills = userSkillEndorsements.get(rowIndex);
-			System.out.println("GET VALUE AT " + ratedSkills );
 		if (columnIndex == 0) {
 			return (ratedSkills.getSurname() + ", " + ratedSkills.getFirstName());
 			}
 
 			if (columnIndex == 1) {
-			System.out.print("SKILL NAME***************" + ratedSkills.getSkillName());
 			return ratedSkills.getSkillName();
 		}
 		if (columnIndex == 2) {
@@ -86,7 +81,6 @@ public class SkillsRatedTableModel extends AbstractTableModel {
 			return ratedSkills.getNumOfEndorsements();
 		}
 		
-
 		return "1";
 	}
 

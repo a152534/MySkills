@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.event.*;
 import java.util.ArrayList;
 import org.notice.beans.CommonStuff;
+import org.notice.beans.RatedSkills;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -39,28 +41,28 @@ public class SkillsSearch extends JPanel implements ActionListener
 	private TextArea textArea;
 	private JButton btnClear;
 	private ArrayList<Skill> skillList;
+	private  ArrayList<UserSkillEndorsements> userSkillEndorsements;
+	private Skill skillSelected;
 	 
 	 
 	
 	public SkillsSearch(CommonStuff inCommonStuff) 
 	{
-		System.out.println("In Skills Search");
+		
 		commonStuff = inCommonStuff;
 		setLayout(null);
 		skillList = new ArrayList<Skill>();
 
-	//	mediaCatalogue = new ArrayList<Media>();
-		
 		fontButton = (new Font("Arial", Font.BOLD, 18));
 		fontComboBox = (new Font("Arial", Font.PLAIN, 14));
 		
 		skillSelector = new SkillSelector(commonStuff.getSkillsList());
 		skillSelector.setBounds(100, 32, 620, 400);
-	//	add(skillSelector);
 		
 		btnSearch = new JButton("Search on Skills");
 		btnSearch.setBounds(370, 115, 168, 24);
 		add(btnSearch);
+		btnSearch.setEnabled(false);
 		btnSearch.addActionListener(this);
 		
 		btnQuery = new JButton("Select Skills to Search");
@@ -71,24 +73,23 @@ public class SkillsSearch extends JPanel implements ActionListener
 		
 		textArea = new TextArea();
 		textArea.setBounds(10, 10, 587, 102);
-		 
+		textArea.setEditable(false);; 
 		add(textArea);
 		
 		btnClear = new JButton("Clear Search Skills");
 		btnClear.setBounds(190, 115, 168, 24);
 		add(btnClear);
+		btnClear.setEnabled(false);
 		btnClear.addActionListener(this);
 		
+		populateSkillPerUser();
+			
 	}
 	private void populateSkillPerUser() {
-
+		
 		int skill = 0;
-		Skill skillSelected = skillSelector.getSelectedSkill();
+		skillSelected = skillSelector.getSelectedSkill();
 	 
-		 
-	    ArrayList<UserSkillEndorsements> userSkillEndorsements;
-	    
-	 //   transaction = new Transaction("getUserEndorsementsPerSkill", skillSelected.getSkillID());
 	    transaction = new Transaction("getUserEndorsementsPerSkill", skillList);
  		
 	    
@@ -102,6 +103,7 @@ public class SkillsSearch extends JPanel implements ActionListener
  		tableSkillsSearch = new JTable(myModel);
 		tableSkillsSearch.setCellSelectionEnabled(true);
 		tableSkillsSearch.setAutoCreateRowSorter(true);
+		
 	
 		myModel.fireTableDataChanged();
 
@@ -109,13 +111,32 @@ public class SkillsSearch extends JPanel implements ActionListener
 		scrollPaneSkillsSearch.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPaneSkillsSearch.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPaneSkillsSearch.setBounds(80, 180, 800, 450);
-		 
+			 
 		add(scrollPaneSkillsSearch);
 		
 	}
-	public void setUpLevelColumn(JTable table, TableColumn levelColumn) {
+	
+	private void refreshSkillPerUser() {
 		
-		System.out.println("In setuplevelcolumn");
+		skillSelected = skillSelector.getSelectedSkill();
+	    transaction = new Transaction("getUserEndorsementsPerSkill", skillList);
+ 		
+	    transaction = commonStuff.getClient().sendTransaction(transaction);
+ 		
+ 	    ArrayList<UserSkillEndorsements> newUserSkillEndorsements = (ArrayList<UserSkillEndorsements>)transaction.getObject();
+ 		
+ 		userSkillEndorsements.clear();
+		for (UserSkillEndorsements skill : newUserSkillEndorsements) {
+			userSkillEndorsements.add(skill);
+
+		}		
+	
+		myModel.fireTableDataChanged();
+		
+	}
+	
+	
+	public void setUpLevelColumn(JTable table, TableColumn levelColumn) {
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.addItem("1");
@@ -135,10 +156,11 @@ public class SkillsSearch extends JPanel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		
 		Object source = e.getSource();
 		if (source == btnQuery)
 		{
+			btnSearch.setEnabled(true);
+			btnClear.setEnabled(true);
 			add(skillSelector);
 			int result =JOptionPane.showConfirmDialog(null, skillSelector, "Select a skill ", JOptionPane.OK_CANCEL_OPTION,
 			JOptionPane.PLAIN_MESSAGE);
@@ -149,7 +171,6 @@ public class SkillsSearch extends JPanel implements ActionListener
 			if (result == JOptionPane.OK_OPTION) {
 			 
 				Skill skillSelected = skillSelector.getSelectedSkill();
-				System.out.println("Skill " + skillSelected);
 				
 				String text =  null;
 				text = skillSelected.getSkillName();
@@ -158,18 +179,14 @@ public class SkillsSearch extends JPanel implements ActionListener
 			 
 				skillList.add(new Skill(skillSelected.getSkillID(), skillSelected.getSkillName())); 
 			}
+			
 		}
 		if (source == btnSearch)
 		{
-			populateSkillPerUser();
-			for(int pos = 0; pos < skillList.size(); pos++)
-			{
-				System.out.println("Array List LOOP" + skillList.get(pos).getSkillID());
-				System.out.println("Array List LOOP" + skillList.get(pos).getSkillName());
-			 
-			}
-			
+			System.out.println("IN BUTTON SEARCH");
+			refreshSkillPerUser();
 		}
+
 		if (source == btnClear)
 		{
 			textArea.setText(null);
