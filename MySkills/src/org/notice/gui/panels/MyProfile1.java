@@ -46,7 +46,7 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 	private JTextField txtEmail;
 	private JScrollPane scrollPaneSkills;
 	private JTable tableSkills;
-	//private JButton btnSave;
+	// private JButton btnSave;
 	private JButton btnAddSkill, btnEndorse;
 	private JButton btnDeleteSkill;
 	private JScrollPane scrollPaneEndorsementRequests;
@@ -59,7 +59,7 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 	private Transaction transaction;
 	private ArrayList<RatedSkills> ratedSkills;
 	private MyProfileRatedSkillTableModel myModel;
-	private EndorseNominationModel nominatioModel ; 
+	private EndorseNominationModel nominatioModel;
 	private SkillSelector skillSelector;
 
 	/**
@@ -133,11 +133,11 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		// tableSkills.setBounds(0, 0, 1, 1);
 		// scrollPaneSkills.add(tableSkills);
 
-//		btnSave = new JButton("Save");
-//		btnSave.addActionListener(this);
-//		btnSave.setFont(fontButton);
-//		btnSave.setBounds(780, 80, 90, 25);
-//		add(btnSave);
+		// btnSave = new JButton("Save");
+		// btnSave.addActionListener(this);
+		// btnSave.setFont(fontButton);
+		// btnSave.setBounds(780, 80, 90, 25);
+		// add(btnSave);
 
 		btnAddSkill = new JButton("Add Skill");
 		btnAddSkill.addActionListener(this);
@@ -152,12 +152,11 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		btnDeleteSkill.setBounds(535, 392, 145, 25);
 		add(btnDeleteSkill);
 
-	
-
 		populateUserInfo();
 		populateSkills();
-		populateNominatioins() ;
-		
+		setColumnWidths(); 
+		populateNominatioins();
+
 	}
 
 	private void populateUserInfo() {
@@ -178,7 +177,8 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		myModel = new MyProfileRatedSkillTableModel(ratedSkills);
 
 		tableSkills = new JTable(myModel);
-		tableSkills.getSelectionModel().addListSelectionListener(this);
+		mySkillLestenr ml = new mySkillLestenr();
+		tableSkills.getSelectionModel().addListSelectionListener(ml);
 
 		// tableSkills.setColumnSelectionAllowed(true);
 		tableSkills.setCellSelectionEnabled(true);
@@ -202,7 +202,6 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		add(scrollPaneSkills);
 
 	}
-	
 
 	private void refreshSkills() {
 
@@ -219,35 +218,34 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 
 		}
 		myModel.fireTableDataChanged();
-		System.out.println("skills refreshed");
 
 	}
-	
-	private void populateNominatioins() 
-	{
+
+	private void populateNominatioins() {
 		transaction = new Transaction("getEndorseNominations", commonStuff.getLoggedOnUser().getUserID());
 		transaction = commonStuff.getClient().sendTransaction(transaction);
-		 
-		ArrayList<EndorsementNomination> nominations  = (ArrayList<EndorsementNomination>) transaction.getObject();
+
+		ArrayList<EndorsementNomination> nominations = (ArrayList<EndorsementNomination>) transaction.getObject();
 		nominatioModel = new EndorseNominationModel(nominations);
-		
+
 		tableEndorsementRequests = new JTable(nominatioModel);
 		scrollPaneEndorsementRequests = new JScrollPane(tableEndorsementRequests);
 		scrollPaneEndorsementRequests.setBounds(140, 440, 620, 132);
 		add(scrollPaneEndorsementRequests);
-		
+
 		btnEndorse = new JButton("Endorse");
 		btnEndorse.setBounds(221, 595, 145, 25);
-		btnEndorse.setEnabled(false); 
+		btnEndorse.setEnabled(false);
 		add(btnEndorse);
 
-		
-		//scrollPaneEndorsementRequests.setColumnHeaderView(tableEndorsementRequests);
-		
-		
-		
+		// scrollPaneEndorsementRequests.setColumnHeaderView(tableEndorsementRequests);
+
 	}
-	
+
+	public void setColumnWidths() {
+		tableSkills.removeColumn(tableSkills.getColumnModel().getColumn(5));
+		tableSkills.removeColumn(tableSkills.getColumnModel().getColumn(4));
+	}
 
 	public void setUpLevelColumn(JTable table, TableColumn levelColumn) {
 
@@ -274,13 +272,11 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		if (source == btnDeleteSkill) {
 			deleteUserSkill();
 		}
-//		if (source == btnSave) {
-//			saveUser();
-//		}
+		// if (source == btnSave) {
+		// saveUser();
+		// }
 
 	}
-
-
 
 	private void addUserSkill() {
 
@@ -296,11 +292,11 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		int result = JOptionPane.showConfirmDialog(null, skillSelector, "Select a skill ", JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.PLAIN_MESSAGE);
 		if (result == JOptionPane.CANCEL_OPTION) {
-			System.out.println("MyProfile Selected Cancel ");
+
 			return;
 		}
 		if (result == JOptionPane.OK_OPTION) {
-			System.out.println("MyProfile Selected Ok ");
+
 		}
 
 		Skill SelectedSkill = skillSelector.getSelectedSkill();
@@ -316,27 +312,24 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 				"Select Level for Skill: " + SelectedSkill.getSkillName(), JOptionPane.OK_CANCEL_OPTION);
 
 		if (result == JOptionPane.CANCEL_OPTION) {
-			System.out.println("MyProfile Selected Cancel ");
+
 			return;
 		}
 		if (result == JOptionPane.OK_OPTION) {
-			System.out.println("MyProfile Selected Ok ");
+
+			String selectedLevel = (String) comboLevel.getSelectedItem();
+			int selectedLevelInt = Integer.parseInt(selectedLevel);
+
+			UserSkills newSkill = new UserSkills(commonStuff.getLoggedOnUser().getUserID(), SelectedSkill.getSkillID(),
+					selectedLevelInt);
+			Transaction transaction = new Transaction("SaveUserSkill", newSkill);
+			transaction = commonStuff.getClient().sendTransaction(transaction);
+			if ((Boolean) transaction.getObject()) {
+
+			}
+
+			refreshSkills();
 		}
-
-		System.out.println("result = " + result + "\n");
-		String selectedLevel = (String) comboLevel.getSelectedItem();
-		int selectedLevelInt = Integer.parseInt(selectedLevel);
-
-		UserSkills newSkill = new UserSkills(commonStuff.getLoggedOnUser().getUserID(), SelectedSkill.getSkillID(),
-				selectedLevelInt);
-		Transaction transaction = new Transaction("SaveUserSkill", newSkill);
-		transaction = commonStuff.getClient().sendTransaction(transaction);
-		if ((Boolean) transaction.getObject()) {
-
-		}
-
-		refreshSkills();
-
 	}
 
 	private void deleteUserSkill() {
@@ -344,7 +337,9 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		if (rowId < 0) {
 			rowId = 0;
 		}
-		int userSkillId = (int) tableSkills.getValueAt(rowId, 5);
+		//int userSkillId = (int) tableSkills.getValueAt(rowId, 5);
+		int userSkillId = (int) myModel.getValueAt(rowId, 5);
+		
 		String selectedSkill = (String) tableSkills.getValueAt(rowId, 0);
 
 		if (JOptionPane.showConfirmDialog(this, "Delete " + selectedSkill + "? ", "WARNING",
@@ -362,14 +357,26 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		System.out.println(e.getSource().toString());
-		if(e.getSource()== tableSkills) {
+
+		if (e.getSource() == tableSkills) {
 			btnDeleteSkill.setEnabled(true);
 		}
-		if(e.getSource() == tableEndorsementRequests) {
-			
-			commonStuff.getColleague().setUserID((String)tableEndorsementRequests.getValueAt(tableEndorsementRequests.getSelectedRow(), 1));
-			btnEndorse.setEnabled(true); 
+		
+	}
+
+	class mySkillLestenr implements ListSelectionListener {
+		public void valueChanged(ListSelectionEvent e) {
+			btnDeleteSkill.setEnabled(true);
 		}
 	}
+
+	class nominationLestenr implements ListSelectionListener {
+		public void valueChanged(ListSelectionEvent e) {
+			commonStuff.getColleague().setUserID(
+					(String) tableEndorsementRequests.getValueAt(tableEndorsementRequests.getSelectedRow(), 1));
+			btnEndorse.setEnabled(true);
+
+		}
+	}
+
 }

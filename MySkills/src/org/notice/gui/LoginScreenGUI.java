@@ -74,16 +74,15 @@ public class LoginScreenGUI extends JPanel implements ActionListener {
 		// loginButton.setFont(loginFont);
 		loginButton.addActionListener(this);
 		this.add(loginButton);
-		
+
 		Transaction transaction = new Transaction("getSkillList", null);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
-	 
-		if(transaction.getObject() == null) {
+
+		if (transaction.getObject() == null) {
 			System.out.println("LoginScreenGui skillslist == null ");
-			
+
 		} else {
-			commonStuff.setSkillsList((ArrayList<Skill>)transaction.getObject());
-			System.out.println("LoginScreenGui skillslist size " + commonStuff.getSkillsList().size());
+			commonStuff.setSkillsList((ArrayList<Skill>) transaction.getObject());
 		}
 
 	}
@@ -126,13 +125,7 @@ public class LoginScreenGUI extends JPanel implements ActionListener {
 			this.basePanel.repaint();
 
 		}
-		
-			
-		 
-	 
-		
-		
-		
+
 	}
 
 }

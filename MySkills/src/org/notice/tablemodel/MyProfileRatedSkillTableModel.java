@@ -59,8 +59,7 @@ public class MyProfileRatedSkillTableModel extends AbstractTableModel {
 	public void setValueAt(Object value, int row, int col) {
         
         ratedSkills.get(row).setLevel(Integer.parseInt((String)value));
-     
-        
+            
         fireTableCellUpdated(row, col);
 
         
