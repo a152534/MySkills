@@ -117,6 +117,7 @@ public class LoginScreenGUI extends JPanel implements ActionListener {
 			// JOptionPane.showConfirmDialog(this, "Logged on " +
 			// loggedOnUser.getFirstName());
 			skillsMainScreen = new MySkillsTabbedPane(basePanel, commonStuff);
+			commonStuff.setTabbedPane(skillsMainScreen);
 			this.basePanel.removeAll();
 			this.basePanel.validate();
 			this.basePanel.repaint();

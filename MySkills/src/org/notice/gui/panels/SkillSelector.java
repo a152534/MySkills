@@ -16,6 +16,7 @@ import org.notice.tablemodel.SkillsUtilTableModel;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.JTable;
 import java.awt.FlowLayout;
@@ -31,6 +32,7 @@ public class SkillSelector extends JPanel implements ListSelectionListener {
 	 * Create the panel.
 	 */
 	public SkillSelector(ArrayList<Skill> skills) {
+		
 		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		// setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
