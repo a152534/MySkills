@@ -55,6 +55,9 @@ public class Colleague extends JPanel implements ActionListener
 		textSearch.setColumns(10);
 		textSearch.addActionListener(this);
 		
+		
+		
+		
 		btnLookup = new JButton("Lookup");
 		btnLookup.setFont(fontButton);
 		btnLookup.setBounds(552, 24, 108, 25);
@@ -82,13 +85,6 @@ public class Colleague extends JPanel implements ActionListener
 		textDisplaySelectedName.setEnabled(false);
 		textDisplaySelectedName.setVisible(false);
 		
-		scrollPaneColleagueSkills = new JScrollPane();
-		scrollPaneColleagueSkills.setBounds(140, 150, 620, 320);
-		add(scrollPaneColleagueSkills);
-		
-		tableSetup = new JTable();
-		scrollPaneColleagueSkills.setColumnHeaderView(tableSetup);
-		
 		btnRequestEndorsement = new JButton("Request Endorsement");
 		btnRequestEndorsement.setEnabled(false);
 		btnRequestEndorsement.setFont(fontButton);
@@ -102,6 +98,8 @@ public class Colleague extends JPanel implements ActionListener
 		btnSave.setBounds(620, 500, 90, 25);
 		add(btnSave);
 		btnSave.addActionListener(this);
+		
+		this.populateColleagueWhoRequestedEndorsement(commonStuff.getColleague());
 		
 
 
@@ -153,7 +151,7 @@ public class Colleague extends JPanel implements ActionListener
 		scrollPaneColleagueSkills = new JScrollPane(tableColleagueSkills);
 		scrollPaneColleagueSkills.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPaneColleagueSkills.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPaneColleagueSkills.setBounds(140, 120, 620, 250);
+		scrollPaneColleagueSkills.setBounds(150, 150, 620, 320);
 		add(scrollPaneColleagueSkills);
 		btnSave.setVisible(true);
 		btnSave.setEnabled(true);
@@ -161,6 +159,30 @@ public class Colleague extends JPanel implements ActionListener
 		btnRequestEndorsement.setEnabled(true);
 	}
 	
+	public String setupColleagueSelection(ArrayList<User> users)
+	{
+		String displayName = null;
+		for(int pos = 0; pos < users.size(); pos++)
+		{
+			displayName = (users.get(pos).getSurName() + ", " + users.get(pos).getFirstName() + ": " + users.get(pos).getUserID());
+			comboBoxColleagueSearch.addItem(displayName);
+			comboBoxColleagueSearch.setVisible(true);
+			btnSearch.setVisible(true);
+			textSearch.setVisible(false);
+			btnLookup.setVisible(false);
+			if(tableColleagueSkills != null)
+			{
+				tableColleagueSkills.clearSelection(); //Tony - Get a null pointer here, not sure why?
+			}
+		}
+		return displayName;
+	}
+	
+	public void populateColleagueWhoRequestedEndorsement(User userIn)
+	{
+		ArrayList<User> user = new ArrayList<User>();
+		this.setupColleagueSelection(user);
+	}
 	
 	public int getLoggedOnUserSkillId()
 	{
@@ -224,25 +246,26 @@ public class Colleague extends JPanel implements ActionListener
 			}
 			else
 			{
-				String displayName = null;
+//				String displayName = null;
 				transaction = new Transaction("getUserList", textSearch.getText());
 				transaction = commonStuff.getClient().sendTransaction(transaction);
 				users = (ArrayList<User>) transaction.getObject();
 				if(users != null)
 				{
-					for(int pos = 0; pos < users.size(); pos++)
-					{
-						displayName = (users.get(pos).getSurName() + ", " + users.get(pos).getFirstName() + ": " + users.get(pos).getUserID());
-						comboBoxColleagueSearch.addItem(displayName);
-						comboBoxColleagueSearch.setVisible(true);
-						btnSearch.setVisible(true);
-						textSearch.setVisible(false);
-						btnLookup.setVisible(false);
-						if(tableColleagueSkills != null)
-						{
-							tableColleagueSkills.clearSelection(); //Tony - Get a null pointer here, not sure why?
-						}
-					}
+					setupColleagueSelection(users);
+//					for(int pos = 0; pos < users.size(); pos++)
+//					{
+//						displayName = (users.get(pos).getSurName() + ", " + users.get(pos).getFirstName() + ": " + users.get(pos).getUserID());
+//						comboBoxColleagueSearch.addItem(displayName);
+//						comboBoxColleagueSearch.setVisible(true);
+//						btnSearch.setVisible(true);
+//						textSearch.setVisible(false);
+//						btnLookup.setVisible(false);
+//						if(tableColleagueSkills != null)
+//						{
+//							tableColleagueSkills.clearSelection(); //Tony - Get a null pointer here, not sure why?
+//						}
+//					}
 				}
 				else
 				{
@@ -262,8 +285,8 @@ public class Colleague extends JPanel implements ActionListener
 				searchID = searchName.substring(delimeter + 2);
 				if(searchID.equals(commonStuff.getLoggedOnUser().getUserID()))
 				{
-					JOptionPane.showMessageDialog(this, "Moenie 'n moegoe wees nie! May not select yourself as a colleague.");
-					System.out.println("ERROR - Cannot rate yourself as colleague you moegoe.");
+					JOptionPane.showMessageDialog(this, "May not select yourself as a colleague.");
+					System.out.println("ERROR - Cannot rate yourself as colleague.");
 					textSearch.setVisible(true);
 					textSearch.setText(null);
 					btnLookup.setVisible(true);
@@ -273,7 +296,16 @@ public class Colleague extends JPanel implements ActionListener
 				}
 				else
 				{
+					ArrayList<User> user = new ArrayList<User>();
 					populateColleague(searchID);
+					transaction = new Transaction("getUser", searchID);
+					transaction = commonStuff.getClient().sendTransaction(transaction);
+					user = (ArrayList<User>) transaction.getObject();
+					for(int pos = 0; pos < user.size(); pos++)
+					{
+						commonStuff.setColleague(new User(searchID, user.get(pos).getFirstName(), user.get(pos).getSurName(), user.get(pos).getAliasName(),
+								user.get(pos).getEmail(), user.get(pos).getPhoneNumber()));
+					}
 					textDisplaySelectedName.setText(searchName);
 					textDisplaySelectedName.setVisible(true);
 					textSearch.setVisible(true);
@@ -283,8 +315,6 @@ public class Colleague extends JPanel implements ActionListener
 					comboBoxColleagueSearch.setVisible(false);
 					comboBoxColleagueSearch.removeAllItems();
 				}
-				
-//				System.out.println(searchID);
 			}
 			else
 			{
