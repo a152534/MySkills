@@ -14,4 +14,9 @@ public enum Skill_Levels
 	{
 		this.value = value;
 	}
+	
+	public int getValue()
+	{
+		return value;
+	}
 }

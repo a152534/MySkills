@@ -23,6 +23,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 	private boolean DEBUG = false;
 	private Transaction transaction = null;
 	private CommonStuff commonStuff = null;
+
 //	private JComboBox<Skill_Levels> endorseBox = null;
 	
 	ArrayList<RatedSkills> ratedSkills;
@@ -74,13 +75,24 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 	}
 	public void setValueAt(Object value, int row, int col) 
 	{
+		int sl =0;
         if (DEBUG)
         {
             System.out.println("Setting value at " + row + "," + col + " to " + value + " (an instance of "
                               + value.getClass() + ")");
         }
 
-        ratedSkills.get(row).setLevel(Integer.parseInt((String)value));
+      ratedSkills.get(row).setLevel(Integer.parseInt((String)value)); //Tony - issue casting to string, with enums.
+        
+//		for(Skill_Levels skillLevel : Skill_Levels.values())
+//		{
+//			sl = skillLevel.getValue();
+//		}
+//		
+//        ratedSkills.get(row).setLevel(sl);
+
+        		
+        		
         fireTableCellUpdated(row, col);
 
         if (DEBUG)

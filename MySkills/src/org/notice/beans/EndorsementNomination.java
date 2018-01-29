@@ -32,6 +32,12 @@ public class EndorsementNomination implements Serializable  {
 		this.endorserUserID = endorserUserID;
 
 	}
+	
+	//Overload added by Tony to facilitate creation of object to align with endorsementNomination method in Business Control.
+	public EndorsementNomination(int endorsementNominationId, String userID)
+	{
+		this(endorsementNominationId, userID, " ", " ");
+	}
 
 	public int getEndorsementNominationId() {
 		return endorsementNominationId;

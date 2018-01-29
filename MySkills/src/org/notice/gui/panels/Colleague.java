@@ -18,7 +18,7 @@ import org.notice.tablemodel.ColleagueProfileSkillTableModel;
 
 public class Colleague extends JPanel implements ActionListener
 {
-	private JComboBox<String> comboBoxColleagueSearch = null;
+	private JComboBox<String> comboBoxColleagueSearch = null, comboBox = null;
 	private JScrollPane scrollPaneColleagueSkills = null;
 	private JTable tableColleagueSkills = null, tableSetup = null;
 	private JButton btnRequestEndorsement = null, btnSave = null, btnSearch = null, btnLookup = null;
@@ -34,7 +34,7 @@ public class Colleague extends JPanel implements ActionListener
 	private static final Skill_Levels Notice = null, Advanced_Beginner = null, Competent = null, Proficient = null,
 			Expert = null;
 	private JComboBox<Skill_Levels> endorseBox = null; 
-	private int loggedOnUserSkillId;
+	private int loggedOnUserSkillId, selectedLevel;
 	private boolean endorsementRequested = false, endorsementRequestResult = false, endorsementAdded = false,
 			endorsementAddedResult = false;
 
@@ -107,19 +107,30 @@ public class Colleague extends JPanel implements ActionListener
 
 	}
 	
-	public void setUpLevelColumn(JTable table, TableColumn levelColumn)
-	{	
-		endorseBox = new JComboBox<Skill_Levels>(Skill_Levels.values());
-//		endorseBox.addItem(Notice);
-//		endorseBox.addItem(Advanced_Beginner);
-//		endorseBox.addItem(Competent);
-//		endorseBox.addItem(Proficient);
-//		endorseBox.addItem(Expert);
-		
-		levelColumn.setCellEditor(new DefaultCellEditor(endorseBox));
+//	public void setUpLevelColumn(JTable table, TableColumn levelColumn)
+//	{	
+//		endorseBox = new JComboBox<Skill_Levels>(Skill_Levels.values());
+//	
+//		levelColumn.setCellEditor(new DefaultCellEditor(endorseBox));
+//
+//		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+//		renderer.setToolTipText("Click to set endorsement level");
+//		levelColumn.setCellRenderer(renderer);
+//	}
+	
+	public void setUpLevelColumn(JTable table, TableColumn levelColumn) {
+
+		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox.addItem("1");
+		comboBox.addItem("2");
+		comboBox.addItem("3");
+		comboBox.addItem("4");
+		comboBox.addItem("5");
+
+		levelColumn.setCellEditor(new DefaultCellEditor(comboBox));
 
 		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-		renderer.setToolTipText("Click to set endorsement level");
+		renderer.setToolTipText("Click for combo box");
 		levelColumn.setCellRenderer(renderer);
 	}
 	
@@ -170,16 +181,23 @@ public class Colleague extends JPanel implements ActionListener
 	
 	public boolean populateEndorsementRequest()
 	{
-		transaction = new Transaction("endorseNomination", this.getLoggedOnUserSkillId());
+		ArrayList<EndorsementNomination> endorseNom = new ArrayList<EndorsementNomination>();
+		endorseNom.add(new EndorsementNomination(this.getLoggedOnUserSkillId(), commonStuff.getLoggedOnUser().getUserID()));
+		
+		transaction = new Transaction("endorseNomination", endorseNom);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
-		endorsementRequested = (boolean)transaction.getObject();
+		endorsementRequested = Boolean.parseBoolean((String)transaction.getObject());
 		return endorsementRequested;
 	}
 	
 	public ArrayList<Endorsement> saveEndorsement()
 	{
+		
 		ArrayList<Endorsement> endorsement = new ArrayList<Endorsement>();
-		int selectedLevel = (int)endorseBox.getSelectedItem();
+		
+		System.out.println("I selected: " + (String) comboBox.getSelectedItem());
+		
+		selectedLevel = Integer.parseInt((String)comboBox.getSelectedItem());
 		endorsement.add(new Endorsement(this.getLoggedOnUserSkillId(), commonStuff.getLoggedOnUser().getUserID(), selectedLevel));
 		return endorsement;
 	}
@@ -200,26 +218,36 @@ public class Colleague extends JPanel implements ActionListener
 		
 		if(source == btnLookup)
 		{
-			String displayName = null;
-			transaction = new Transaction("getUserList", textSearch.getText());
-			transaction = commonStuff.getClient().sendTransaction(transaction);
-			users = (ArrayList<User>) transaction.getObject();
-			if(users != null)
+			if((textSearch.getText()) == null)
 			{
-				for(int pos = 0; pos < users.size(); pos++)
-				{
-					displayName = (users.get(pos).getSurName() + ", " + users.get(pos).getFirstName() + ": " + users.get(pos).getUserID());
-					comboBoxColleagueSearch.addItem(displayName);
-					comboBoxColleagueSearch.setVisible(true);
-					btnSearch.setVisible(true);
-					textSearch.setVisible(false);
-					btnLookup.setVisible(false);
-					tableColleagueSkills.clearSelection();
-				}
+				JOptionPane.showMessageDialog(this, "Invalid Selection. Please type a search Name, Surname or User ID");
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(this, "No Data For Selection");
+				String displayName = null;
+				transaction = new Transaction("getUserList", textSearch.getText());
+				transaction = commonStuff.getClient().sendTransaction(transaction);
+				users = (ArrayList<User>) transaction.getObject();
+				if(users != null)
+				{
+					for(int pos = 0; pos < users.size(); pos++)
+					{
+						displayName = (users.get(pos).getSurName() + ", " + users.get(pos).getFirstName() + ": " + users.get(pos).getUserID());
+						comboBoxColleagueSearch.addItem(displayName);
+						comboBoxColleagueSearch.setVisible(true);
+						btnSearch.setVisible(true);
+						textSearch.setVisible(false);
+						btnLookup.setVisible(false);
+						if(tableColleagueSkills != null)
+						{
+							tableColleagueSkills.clearSelection(); //Tony - Get a null pointer here, not sure why?
+						}
+					}
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(this, "No Data For Selection");
+				}
 			}
 		}
 		
@@ -232,21 +260,35 @@ public class Colleague extends JPanel implements ActionListener
 			{
 				int delimeter = searchName.indexOf(':');
 				searchID = searchName.substring(delimeter + 2);
-				populateColleague(searchID);
-				textDisplaySelectedName.setText(searchName);
-				textDisplaySelectedName.setVisible(true);
-				textSearch.setVisible(true);
-				textSearch.setText(null);
-				btnLookup.setVisible(true);
-				btnSearch.setVisible(false);
-				comboBoxColleagueSearch.setVisible(false);
-				comboBoxColleagueSearch.removeAllItems();
+				if(searchID.equals(commonStuff.getLoggedOnUser().getUserID()))
+				{
+					JOptionPane.showMessageDialog(this, "Moenie 'n moegoe wees nie! May not select yourself as a colleague.");
+					System.out.println("ERROR - Cannot rate yourself as colleague you moegoe.");
+					textSearch.setVisible(true);
+					textSearch.setText(null);
+					btnLookup.setVisible(true);
+					btnSearch.setVisible(false);
+					comboBoxColleagueSearch.setVisible(false);
+					comboBoxColleagueSearch.removeAllItems();
+				}
+				else
+				{
+					populateColleague(searchID);
+					textDisplaySelectedName.setText(searchName);
+					textDisplaySelectedName.setVisible(true);
+					textSearch.setVisible(true);
+					textSearch.setText(null);
+					btnLookup.setVisible(true);
+					btnSearch.setVisible(false);
+					comboBoxColleagueSearch.setVisible(false);
+					comboBoxColleagueSearch.removeAllItems();
+				}
 				
 //				System.out.println(searchID);
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(null, "Invalid Selection");	
+				JOptionPane.showMessageDialog(this, "Invalid Selection");	
 			}
 			
 
@@ -262,7 +304,7 @@ public class Colleague extends JPanel implements ActionListener
 				endorsementRequestResult = populateEndorsementRequest();
 				if (endorsementRequestResult == false)
 				{
-					JOptionPane.showMessageDialog(null, "An error has occurred - Your endorsement request has not been saved");
+					JOptionPane.showMessageDialog(this, "An error has occurred - Your endorsement request has not been saved");
 					System.out.println("Error - endorsement request not saved.");
 				}
 			}
@@ -278,7 +320,7 @@ public class Colleague extends JPanel implements ActionListener
 				endorsementAddedResult = addEndorsement();
 				if (endorsementAddedResult == false)
 				{
-					JOptionPane.showMessageDialog(null, "An error has occurred - Your endorsement has not been added");
+					JOptionPane.showMessageDialog(this, "An error has occurred - Your endorsement has not been added");
 					System.out.println("Error - endorsement not added.");
 				}
 			}
