@@ -78,7 +78,7 @@ public class SkillSelector extends JPanel implements ListSelectionListener {
 	}
 
 	private void newFilter() {
-		// System.out.println("In newFilter");
+		 
 		RowFilter<? super SkillsUtilTableModel, ? super Integer> rf = null;
 
 		rf = RowFilter.regexFilter("(?i)" + txtSearch.getText());

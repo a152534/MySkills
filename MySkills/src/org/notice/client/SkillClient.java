@@ -38,7 +38,7 @@ public class SkillClient {
 				System.out.println("Did not recieve transaction back from server on transaction request");
 				 
 			} else {
-				//System.out.println("recieved transaction back from server ");
+				
 				outTrans = (Transaction)fromServer ; 
 			}
 		} catch (ClassNotFoundException e) {

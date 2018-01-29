@@ -52,7 +52,7 @@ public class SkillsServerWorkerThread implements Runnable
 		Transaction fromClient;
 		try {
 			while ((fromClient =(Transaction) in.readObject()) != null) {
-					System.out.println("SkillServerWorkerThread: recieved transaction");
+					
 					handleTransaction((Transaction) fromClient);
 			}
 		}
@@ -72,12 +72,12 @@ public class SkillsServerWorkerThread implements Runnable
 	
 	
 	private void handleTransaction(Transaction fromClient) {
-		System.out.println("SkillServerWorkerThread: before call bc,handleTransaction");
+		
 		Transaction fromServer = bc.handleTransaction(fromClient);
-		System.out.println("SkillServerWorkerThread: After call bc.handleTransaction");
+		
 		try {
 			out.writeObject(fromClient);
-			System.out.println("SkillServerWorkerThread: After write to socket");
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
