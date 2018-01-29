@@ -13,7 +13,7 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 	private JPanel basePanel = null,  skillsAdmin = null,  logOff = null;
 	private MyProfile1  myProfile = null; 
 	private SkillsSearch skillsSearch = null;
-	private Reports reports = null;
+	private Reports2 reports = null;
 	private JButton logoffButton = null;
 	private Colleague colleague;
 	private Admin admin;
@@ -30,7 +30,7 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 
 		
 		skillsAdmin = new JPanel();
-		reports = new Reports(commonStuff);
+		reports = new Reports2(commonStuff);
 		logOff = new JPanel();
 		
 		logoffButton = new JButton("Log Off");

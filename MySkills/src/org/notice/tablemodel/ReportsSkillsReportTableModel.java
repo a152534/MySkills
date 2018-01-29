@@ -31,19 +31,14 @@ public class ReportsSkillsReportTableModel extends AbstractTableModel
 	@Override
 	public int getColumnCount() {
 		// TODO Auto-generated method stub
-		return 4;
+		return 5;
 	}
 
 	public String getColumnName(int col) {
 		return columnNames[col];
 	}
 
-	public boolean isCellEditable(int row, int col) {
-		
-		
-			return true ;
-		
-	}
+	
 	
 
 	@Override
