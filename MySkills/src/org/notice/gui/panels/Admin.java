@@ -1,6 +1,7 @@
 package org.notice.gui.panels;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
@@ -41,6 +42,8 @@ public class Admin extends JPanel implements ActionListener
 	private JComboBox<String> comboBoxSearch = null;
 	private String skillName;
 	private SkillSelector skillSelector;
+	private ArrayList<Skills> skills;
+	private MyProfileRatedSkillTableModel myModel;
 
 	public Admin(CommonStuff inCommonStuff)
 	{
@@ -61,7 +64,7 @@ public class Admin extends JPanel implements ActionListener
 
 		btnDelete = new JButton("Delete");
 		btnDelete.setEnabled(true);
-		// btnDelete.setEnabled(false);
+		//btnDelete.setEnabled(false);
 		btnDelete.addActionListener(this);
 		btnDelete.setFont(fontButton);
 		btnDelete.setBounds(574, 532, 100, 25);
@@ -93,17 +96,38 @@ public class Admin extends JPanel implements ActionListener
 		// comboBoxSearch.addItem(skillsList.get(pos).getSkillName());
 		// }
 	}
+	
+
+	private void refreshSkills()
+	{
+		transaction = new Transaction("getUserSkills", commonStuff.getLoggedOnUser().getUserID());
+		transaction = commonStuff.getClient().sendTransaction(transaction);
+		ArrayList<Skills> skillsList = (ArrayList<Skills>) transaction.getObject();
+
+		skills.clear();
+		for (Skills skill : skillsList)
+		{
+			skills.add(skill);
+		}
+		myModel.fireTableDataChanged();
+		
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		Object source = e.getSource();
 		boolean successful = false;
+		
+		if(e.getSource()== tableSkills) 
+		{
+			btnDelete.setEnabled(true);
+		}
 
 		if (source == btnDelete)
 		{
 			Skill removeSkill = skillSelector.getSelectedSkill();
-		
+			
 			int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete skill? " + removeSkill.getSkillName());
 
 			if (dialogResult == JOptionPane.YES_OPTION)
@@ -120,6 +144,7 @@ public class Admin extends JPanel implements ActionListener
 					JOptionPane.showMessageDialog(null, "Skill has been successfully deleted");
 					populateSkillsList();
 					skillSelector.getSkillModel().fireTableDataChanged();
+					refreshSkills();
 				}
 			}
 
@@ -157,6 +182,7 @@ public class Admin extends JPanel implements ActionListener
 					
 					populateSkillsList();
 					skillSelector.getSkillModel().fireTableDataChanged();
+					refreshSkills();
 				}
 
 			}
