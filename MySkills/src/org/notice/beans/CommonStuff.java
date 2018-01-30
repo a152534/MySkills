@@ -28,11 +28,11 @@ public class CommonStuff
 		this.client = client;
 		this.skillsList = skillsList;
 		
-		fontLabel = (new Font("Arial", Font.BOLD, 14));
-		fontButton = (new Font("Arial", Font.BOLD, 18));
-		fontTextArea = (new Font("Arial", Font.PLAIN, 14));
-		fontTextBox = (new Font("Arial", Font.PLAIN, 12));
-		fontComboBox = (new Font("Arial", Font.PLAIN, 14));
+		this.fontLabel = (new Font("Arial", Font.BOLD, 14));
+		this.fontButton = (new Font("Arial", Font.BOLD, 18));
+		this.fontTextArea = (new Font("Arial", Font.PLAIN, 14));
+		this.fontTextBox = (new Font("Arial", Font.PLAIN, 12));
+		this.fontComboBox = (new Font("Arial", Font.PLAIN, 14));
 		
 	}
 
