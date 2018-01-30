@@ -104,7 +104,6 @@ public class Admin extends JPanel implements ActionListener
 		// comboBoxSearch.addItem(skillsList.get(pos).getSkillName());
 		// }
 	}
-	
 
 	private void refreshSkills()
 	{
@@ -140,11 +139,9 @@ public class Admin extends JPanel implements ActionListener
 
 			if (dialogResult == JOptionPane.YES_OPTION)
 			{
-				transaction = new Transaction("DeleteSkill", removeSkill.getSkillID()); // setup
-																		// transaction
+				transaction = new Transaction("DeleteSkill", removeSkill.getSkillID()); // setup transaction
 				System.out.println("Delete SkillID: " + removeSkill.getSkillID());
-				transaction = commonStuff.getClient().sendTransaction(transaction); // sent
-																					// transaction
+				transaction = commonStuff.getClient().sendTransaction(transaction); // sent transaction
 				successful = (boolean) transaction.getObject();
 				
 				if(successful)
@@ -173,10 +170,8 @@ public class Admin extends JPanel implements ActionListener
 
 				if (dialogResult == JOptionPane.YES_NO_OPTION)
 				{
-					transaction = new Transaction("AddSkill", newSkill.getSkillName()); // setup
-					// transaction
-					transaction = commonStuff.getClient().sendTransaction(transaction); // sent
-																						// transaction
+					transaction = new Transaction("AddSkill", newSkill.getSkillName()); // setup transaction
+					transaction = commonStuff.getClient().sendTransaction(transaction); // sent transaction
 					successful = (boolean) transaction.getObject();
 				}
 
