@@ -187,7 +187,6 @@ public class Admin extends JPanel implements ActionListener
 					skillSelector.getSkillModel().fireTableDataChanged();
 					refreshSkills();
 				}
-
 			}
 		}
 	}
