@@ -8,7 +8,7 @@ import org.notice.beans.RatedSkills;
 import org.notice.beans.Skill;
 
 public class SkillsUtilTableModel extends AbstractTableModel {
-	ArrayList<Skill> skills ;
+	private ArrayList<Skill> skills ;
 	private String[] columnNames = { "Skill", "Skill ID" };
 	
 	public SkillsUtilTableModel(ArrayList<Skill> inSkills) {
@@ -43,6 +43,16 @@ public class SkillsUtilTableModel extends AbstractTableModel {
 		}
 
 		return null;
+	}
+
+	public ArrayList<Skill> getSkills()
+	{
+		return skills;
+	}
+
+	public void setSkills(ArrayList<Skill> skills)
+	{
+		this.skills = skills;
 	}
 
 }
