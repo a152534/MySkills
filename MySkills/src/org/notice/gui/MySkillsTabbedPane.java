@@ -17,7 +17,7 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 	private JButton logoffButton = null;
 	private Colleague colleague;
 	private Admin admin;
-	private Graphs graphs ;
+	//private Graphs graphs ;
 	
 	public MySkillsTabbedPane(JPanel basePanel, CommonStuff commonStuff)
 	{
