@@ -30,8 +30,6 @@ public class SkillsSearch extends JPanel implements ActionListener
 	private JComboBox<String> comboBoxSkillsSearch = null;
 	private JScrollPane scrollPaneSkillsSearch;
 	private JTable tableSkillsSearch;
-	private Font fontButton;
-	private Font fontComboBox;
 	private Transaction transaction ; 
 	private CommonStuff commonStuff;
 	private SkillsRatedTableModel myModel ;
@@ -43,18 +41,27 @@ public class SkillsSearch extends JPanel implements ActionListener
 	private ArrayList<Skill> skillList;
 	private  ArrayList<UserSkillEndorsements> userSkillEndorsements;
 	private Skill skillSelected;
-	 
-	 
+	
+	private Font fontLabel;
+	private Font fontButton;
+	private Font fontTextArea;
+	private Font fontTextBox;
+	private Font fontComboBox;
 	
 	public SkillsSearch(CommonStuff inCommonStuff) 
 	{
+		fontLabel = commonStuff.getFontLabel();
+		fontButton = commonStuff.getFontButton();
+		fontTextArea = commonStuff.getFontTextArea();
+		fontTextBox = commonStuff.getFontTextBox();
+		fontComboBox = commonStuff.getFontComboBox();
 		
 		commonStuff = inCommonStuff;
 		setLayout(null);
 		skillList = new ArrayList<Skill>();
 
-		fontButton = (new Font("Arial", Font.BOLD, 18));
-		fontComboBox = (new Font("Arial", Font.PLAIN, 14));
+//		fontButton = (new Font("Arial", Font.BOLD, 18));
+//		fontComboBox = (new Font("Arial", Font.PLAIN, 14));
 		
 		skillSelector = new SkillSelector(commonStuff.getSkillsList());
 		skillSelector.setBounds(100, 32, 620, 400);
