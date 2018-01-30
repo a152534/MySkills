@@ -5,6 +5,8 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.notice.beans.CommonStuff;
 import org.notice.beans.Skill;
@@ -114,10 +116,24 @@ public class LoginScreenGUI extends JPanel implements ActionListener {
 			ArrayList<User> users = (ArrayList<User>) transaction.getObject();
 			User loggedOnUser = users.get(0);
 			commonStuff.setLoggedOnUser(loggedOnUser);
-			// JOptionPane.showConfirmDialog(this, "Logged on " +
-			// loggedOnUser.getFirstName());
+			
+			
+			
+			
+			
 			skillsMainScreen = new MySkillsTabbedPane(basePanel, commonStuff);
 			commonStuff.setTabbedPane(skillsMainScreen);
+			
+			skillsMainScreen.addChangeListener(new ChangeListener() {
+		        
+
+				@Override
+				public void stateChanged(ChangeEvent e) {
+					System.out.println("Tab: " + skillsMainScreen.getSelectedIndex());
+					
+				}
+		    });
+			
 			this.basePanel.removeAll();
 			this.basePanel.validate();
 			this.basePanel.repaint();

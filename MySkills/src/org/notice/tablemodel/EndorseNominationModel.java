@@ -9,12 +9,16 @@ import org.notice.beans.RatedSkills;
 import org.notice.beans.Skill;
 
 public class EndorseNominationModel extends AbstractTableModel {
-	ArrayList<EndorsementNomination> nominations ;
+	ArrayList<EndorsementNomination> nominations;
 	private String[] columnNames = { "User", "User ID" };
-	
+
 	public EndorseNominationModel(ArrayList<EndorsementNomination> inNominations) {
-		this.nominations = inNominations ; 
-		System.out.println("Skills list size " + this.nominations.size());
+		this.nominations = inNominations;
+		if (this.nominations == null) {
+			System.out.println("No nominations");
+		} else {
+			System.out.println("Skills list size " + this.nominations.size());
+		}
 	}
 
 	@Override
@@ -28,10 +32,10 @@ public class EndorseNominationModel extends AbstractTableModel {
 		// TODO Auto-generated method stub
 		return 2;
 	}
+
 	public String getColumnName(int col) {
 		return columnNames[col];
 	}
-
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {

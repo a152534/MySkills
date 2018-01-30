@@ -7,6 +7,7 @@ import java.util.*;
 public class MySkillsDAO
 {
     String url = "jdbc:mysql://192.168.1.101:3306/myskills";
+    //String url = "jdbc:mysql://localhost:3306/myskills";
     String user = "dbuser", uName, password, sql;
     String passwd = "password";
     Connection con = null;

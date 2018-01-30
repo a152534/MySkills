@@ -13,7 +13,7 @@ public class SkillsRatedTableModel extends AbstractTableModel {
 	private boolean DEBUG = false;
 	
 	ArrayList<UserSkillEndorsements> userSkillEndorsements;
-	private String[] columnNames = { "Name", "Skill", "Number of endorsements", "Endorsement Average" };
+	private String[] columnNames = { "Name", "Skill", "Endorsement Average" , "Number of endorsements"};
 
 	public SkillsRatedTableModel(ArrayList<UserSkillEndorsements> userSkillEndorsements) {
 		super();
