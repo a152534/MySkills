@@ -34,9 +34,9 @@ public class EndorsementNomination implements Serializable  {
 	}
 	
 	//Overload added by Tony to facilitate creation of object to align with endorsementNomination method in Business Control.
-	public EndorsementNomination(int endorsementNominationId, String userID)
+	public EndorsementNomination(String userID, String endorserUserID)
 	{
-		this(endorsementNominationId, userID, " ", " ");
+		this(0, userID, " ", endorserUserID);
 	}
 
 	public int getEndorsementNominationId() {

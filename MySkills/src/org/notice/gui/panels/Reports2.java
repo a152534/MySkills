@@ -83,13 +83,13 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
     	btnSkills.addActionListener(this);
     	btnUsersForSelected.addActionListener(this);
     	
-    	//tableSkillsReport = new JTable();
+    
     	transaction = new Transaction("getSkillsReport", null);
 	transaction = commonStuff.getClient().sendTransaction(transaction);
 	skillReport = (ArrayList<EndorsementsPerSkill>) transaction.getObject();
-    	ReportsSkillsReportTableModel myModel = new ReportsSkillsReportTableModel(skillReport);
+	myModel = new ReportsSkillsReportTableModel(skillReport);
 
-	tableSkillsReport = new JTable(myModel);
+	tableSkillsReport = new JTable();
 	tableSkillsReport.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	tableSkillsReport.getSelectionModel().addListSelectionListener(this);
     	scrollPane.setViewportView(tableSkillsReport);
@@ -100,7 +100,7 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
     @Override
     public void valueChanged(ListSelectionEvent e)
     {
-	 System.out.println("selected row listselection");
+	
 	 rowId =tableSkillsReport.getSelectedRow();
 	 
     }
@@ -125,7 +125,7 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 //		tableSkillsReport = new JTable(myModel);
 //		tableSkillsReport.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 //		tableSkillsReport.getSelectionModel().addListSelectionListener(this);
-			
+		tableSkillsReport.setModel(myModel);
 		myModel.fireTableDataChanged();
 
 //		scrollPane = new JScrollPane(tableSkillsReport);
@@ -138,27 +138,28 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 	    if(source == btnUsersForSelected)
 
 	        {
-		//tableSkillsReport.clearSelection();
-		//rowId =tableSkillsReport.getSelectedRow();
+		
 		System.out.println("rowId " + rowId);
 		skillId = Integer.parseInt(tableSkillsReport.getValueAt(rowId, 1).toString());
 		System.out.println("SKILL ID " + skillId);
 		skillList = new ArrayList<Skill>(skillId);
+		
 		transaction = new Transaction("getUserEndorsementsPerSkill", skillList);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 		userSkillReport = (ArrayList<UserSkillEndorsements>) transaction.getObject();
 
 		SkillsRatedTableModel myModelUser = new SkillsRatedTableModel(userSkillReport);
 
-		tableUserSkillsReport = new JTable(myModelUser);
-				
+		//tableUserSkillsReport = new JTable(myModelUser);
+		
+		tableSkillsReport.setModel(myModelUser);		
 		myModelUser.fireTableDataChanged();
 
-		scrollPane = new JScrollPane(tableUserSkillsReport);
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPane.setBounds(140, 120, 620, 450);
-		add(scrollPane);
+//		scrollPane = new JScrollPane(tableUserSkillsReport);
+//		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+//		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+//		scrollPane.setBounds(140, 120, 620, 450);
+//		add(scrollPane);
 	        }
 		
 	
