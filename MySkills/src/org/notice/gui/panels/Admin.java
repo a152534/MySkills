@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Vector;
 
 import org.notice.beans.*;
@@ -164,7 +165,6 @@ public class Admin extends JPanel implements ActionListener
 			Skill newSkill = skillSelector.getSelectedSkill();
 			if (newSkill.getSkillID() == -1)
 			{
-
 				int dialogResult = JOptionPane.showConfirmDialog(null,
 						"Are you sure you want to add skill?" + newSkill.getSkillName());
 
@@ -190,4 +190,18 @@ public class Admin extends JPanel implements ActionListener
 			}
 		}
 	}
+	
+//	public static boolean checkDuplicate(ArrayList list) 
+//	{
+//		 HashSet set = new HashSet();
+//		 for (int i = 0; i < list.size(); i++)
+//		 {
+//		  boolean value = set.add(list.get(i));
+//		  if (value == false)
+//			  {
+//			  	return value;
+//			  }
+//		 }
+//		 return true;
+//		}
 }
