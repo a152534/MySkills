@@ -2,6 +2,7 @@ package org.notice.gui.panels;
 
 import javax.swing.JPanel;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -37,7 +38,9 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 	private CommonStuff commonStuff;
 	private JTable tableSkillsReport = null , tableUserSkillsReport = null;
 	private int skillId = 0 ,  rowId = 0;   
-	ReportsSkillsReportTableModel myModel = null;
+	private String skillName;
+	private ReportsSkillsReportTableModel myModel = null;
+	private Skill skillobj = null;
 
     /**
      * Create the panel.
@@ -66,7 +69,7 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
     						.addComponent(btnUsersForSelected))
     					.addGroup(groupLayout.createSequentialGroup()
     						.addGap(129)
-    						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 497, GroupLayout.PREFERRED_SIZE)))
+    						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 650, GroupLayout.PREFERRED_SIZE)))
     				.addContainerGap(131, Short.MAX_VALUE))
     	);
     	groupLayout.setVerticalGroup(
@@ -77,7 +80,7 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
     					.addComponent(btnSkills)
     					.addComponent(btnUsersForSelected))
     				.addPreferredGap(ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
-    				.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 267, GroupLayout.PREFERRED_SIZE)
+    				.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
     				.addGap(68))
     	);
     	btnSkills.addActionListener(this);
@@ -116,50 +119,36 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 
 	        {
 		
-//		transaction = new Transaction("getSkillsReport", null);
-//		transaction = commonStuff.getClient().sendTransaction(transaction);
-//		skillReport = (ArrayList<EndorsementsPerSkill>) transaction.getObject();
-
-//		ReportsSkillsReportTableModel myModel = new ReportsSkillsReportTableModel(skillReport);
-//
-//		tableSkillsReport = new JTable(myModel);
-//		tableSkillsReport.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//		tableSkillsReport.getSelectionModel().addListSelectionListener(this);
+		
 		tableSkillsReport.setModel(myModel);
 		myModel.fireTableDataChanged();
 
-//		scrollPane = new JScrollPane(tableSkillsReport);
-//		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-//		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-//		scrollPane.setBounds(140, 120, 620, 450);
-//		add(scrollPane);
+
 	        }
 	    
 	    if(source == btnUsersForSelected)
 
 	        {
 		
-		System.out.println("rowId " + rowId);
+		
 		skillId = Integer.parseInt(tableSkillsReport.getValueAt(rowId, 1).toString());
-		System.out.println("SKILL ID " + skillId);
-		skillList = new ArrayList<Skill>(skillId);
+		skillName = tableSkillsReport.getValueAt(rowId, 0).toString();
+		
+		skillList = new ArrayList<Skill>();
+		skillList.add(new Skill(skillId,skillName));
 		
 		transaction = new Transaction("getUserEndorsementsPerSkill", skillList);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 		userSkillReport = (ArrayList<UserSkillEndorsements>) transaction.getObject();
-
+		
 		SkillsRatedTableModel myModelUser = new SkillsRatedTableModel(userSkillReport);
 
-		//tableUserSkillsReport = new JTable(myModelUser);
+		
 		
 		tableSkillsReport.setModel(myModelUser);		
 		myModelUser.fireTableDataChanged();
 
-//		scrollPane = new JScrollPane(tableUserSkillsReport);
-//		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-//		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-//		scrollPane.setBounds(140, 120, 620, 450);
-//		add(scrollPane);
+		
 	        }
 		
 	
