@@ -20,12 +20,12 @@ public class Colleague extends JPanel implements ActionListener
 {
 	private JComboBox<String> comboBoxColleagueSearch = null, comboBox = null;
 	private JScrollPane scrollPaneColleagueSkills = null;
-	private JTable tableColleagueSkills = null, tableSetup = null;
+	private JTable tableColleagueSkills = null;
 	private JButton btnRequestEndorsement = null, btnSave = null, btnSearch = null, btnLookup = null;
 	private Font fontButton = null, fontComboBox = null;
 	private JTextField textSearch = null, textDisplaySelectedName = null;
-	private BusinessControl businessControl = null;
-	private int tableRows = 1, tableColumns = 3;
+	
+	
 	private CommonStuff commonStuff = null;
 	private Transaction transaction = null;
 	private ArrayList<User> users = null;
@@ -98,6 +98,8 @@ public class Colleague extends JPanel implements ActionListener
 		btnSave.setBounds(620, 500, 90, 25);
 		add(btnSave);
 		btnSave.addActionListener(this);
+		
+		
 		
 		this.populateColleagueWhoRequestedEndorsement(commonStuff.getColleague());
 		
@@ -203,12 +205,12 @@ public class Colleague extends JPanel implements ActionListener
 	
 	public boolean populateEndorsementRequest()
 	{
-		ArrayList<EndorsementNomination> endorseNom = new ArrayList<EndorsementNomination>();
-		endorseNom.add(new EndorsementNomination(this.getLoggedOnUserSkillId(), commonStuff.getLoggedOnUser().getUserID()));
+		EndorsementNomination endorseNom;
+//		endorseNom = new EndorsementNomination(commonStuff.getLoggedOnUser().getUserID(), commonStuff.getColleague().getUserID());
 		
-		transaction = new Transaction("endorseNomination", endorseNom);
+//		transaction = new Transaction("createEndorseNomination", endorseNom);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
-		endorsementRequested = Boolean.parseBoolean((String)transaction.getObject());
+		endorsementRequested = (boolean)transaction.getObject();
 		return endorsementRequested;
 	}
 	
@@ -219,8 +221,8 @@ public class Colleague extends JPanel implements ActionListener
 		
 		System.out.println("I selected: " + (String) comboBox.getSelectedItem());
 		
-		selectedLevel = Integer.parseInt((String)comboBox.getSelectedItem());
-		endorsement.add(new Endorsement(this.getLoggedOnUserSkillId(), commonStuff.getLoggedOnUser().getUserID(), selectedLevel));
+//		selectedLevel = Integer.parseInt((String)comboBox.getSelectedItem());
+//		endorsement.add(new Endorsement(this.getLoggedOnUserSkillId(), commonStuff.getLoggedOnUser().getUserID(), selectedLevel));
 		return endorsement;
 	}
 	
