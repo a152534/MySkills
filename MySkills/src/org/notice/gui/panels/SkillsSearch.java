@@ -56,6 +56,7 @@ public class SkillsSearch extends JPanel implements ActionListener
 		fontTextBox = commonStuff.getFontTextBox();
 		fontComboBox = commonStuff.getFontComboBox();
 		
+		
 		commonStuff = inCommonStuff;
 		setLayout(null);
 		skillList = new ArrayList<Skill>();
@@ -68,23 +69,26 @@ public class SkillsSearch extends JPanel implements ActionListener
 		
 		btnSearch = new JButton("Search on Skills");
 		btnSearch.setBounds(370, 115, 168, 24);
+		btnSearch.setFont(fontButton);
 		add(btnSearch);
 		btnSearch.setEnabled(false);
 		btnSearch.addActionListener(this);
 		
 		btnQuery = new JButton("Select Skills to Search");
 		btnQuery.setBounds(10, 115, 168, 24);
-	 
+		btnQuery.setFont(fontButton);
 		add(btnQuery);
 		btnQuery.addActionListener(this);
 		
 		textArea = new TextArea();
 		textArea.setBounds(10, 10, 587, 102);
+		textArea.setFont(fontTextArea);
 		textArea.setEditable(false);; 
 		add(textArea);
 		
 		btnClear = new JButton("Clear Search Skills");
 		btnClear.setBounds(190, 115, 168, 24);
+		btnClear.setFont(fontButton);
 		add(btnClear);
 		btnClear.setEnabled(false);
 		btnClear.addActionListener(this);
