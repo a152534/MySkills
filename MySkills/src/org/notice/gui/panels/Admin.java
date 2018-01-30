@@ -28,12 +28,17 @@ public class Admin extends JPanel implements ActionListener
 	private JTable tableSkills;
 	private JButton btnAdd;
 	private JButton btnDelete;
-	private Font fontButton;
 	private CommonStuff commonStuff;
 	private SkillsUtilTableModel myModel ;
 	private Transaction transaction;
 	private SkillSelector skillSelector;
 	private ArrayList<Skill> skills;
+	private Font fontLabel;
+	private Font fontButton;
+	private Font fontTextArea;
+	private Font fontTextBox;
+	private Font fontComboBox;
+
 	
 	public Admin(CommonStuff inCommonStuff)
 	{
@@ -41,10 +46,14 @@ public class Admin extends JPanel implements ActionListener
 		// skillID = 51517;
 
 		commonStuff = inCommonStuff;
+		
+		fontLabel = commonStuff.getFontLabel();
+		fontButton = commonStuff.getFontButton();
+		fontTextArea = commonStuff.getFontTextArea();
+		fontTextBox = commonStuff.getFontTextBox();
+		fontComboBox = commonStuff.getFontComboBox();
 
 		setLayout(null);
-
-		fontButton = (new Font("Arial", Font.BOLD, 18));
 	
 		btnDelete = new JButton("Delete");
 		btnDelete.setEnabled(true);
