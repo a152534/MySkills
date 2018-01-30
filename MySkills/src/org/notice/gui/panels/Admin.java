@@ -52,9 +52,9 @@ public class Admin extends JPanel implements ActionListener
 		// skillName = ("PetraTest");
 		// skillID = 51517;
 
-		commonStuff = inCommonStuff;
-
 		setLayout(null);
+		
+		commonStuff = inCommonStuff;
 		
 		fontLabel = commonStuff.getFontLabel();
 		fontButton = commonStuff.getFontButton();
