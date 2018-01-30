@@ -76,8 +76,8 @@ public class Graphs extends JPanel implements ActionListener {
 				return;
 
 			}
-			createDataset();
-			createPanel();
+			//createDataset();
+			//createPanel();
 		}
 	}
 
@@ -128,12 +128,11 @@ public class Graphs extends JPanel implements ActionListener {
 		dataset = new DefaultPieDataset();
 
 		dataset.setValue("No Endorsements", band[0]);
-		dataset.setValue("0 <  rating < 1 ", band[1]);
-		dataset.setValue("1 <  rating < 1 ", band[2]);
-		dataset.setValue("2 <  rating < 1 ", band[3]);
-		dataset.setValue("3 <  rating < 1 ", band[4]);
-		dataset.setValue("4 <  rating < 1 ", band[5]);
-
+		dataset.setValue("0 < rating < 1 ", band[1]);
+		dataset.setValue("1 < rating < 1 ", band[2]);
+		dataset.setValue("2 < rating < 1 ", band[3]);
+		dataset.setValue("3 < rating < 1 ", band[4]);
+		dataset.setValue("4 < rating < 1 ", band[5]);
 		return dataset;
 	}
 

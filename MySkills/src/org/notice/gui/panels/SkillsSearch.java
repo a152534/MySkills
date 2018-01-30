@@ -52,6 +52,7 @@ public class SkillsSearch extends JPanel implements ActionListener
 	{
 		
 		commonStuff = inCommonStuff;
+		
 		fontLabel = commonStuff.getFontLabel();
 		fontButton = commonStuff.getFontButton();
 		fontTextArea = commonStuff.getFontTextArea();

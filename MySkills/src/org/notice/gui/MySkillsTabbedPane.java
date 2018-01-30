@@ -27,7 +27,7 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 		colleague = new Colleague(commonStuff);
 		admin = new Admin(commonStuff);
 		skillsSearch = new SkillsSearch(commonStuff);
-		graphs = new Graphs( commonStuff);
+		//graphs = new Graphs( commonStuff);
 				
 		skillsAdmin = new JPanel();
 		reports = new Reports2(commonStuff);
@@ -43,7 +43,7 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 		this.addTab("Skills Search", skillsSearch);
 		this.addTab("Reports", reports);
 		this.addTab("Admin", admin);
-		this.addTab("Pretty Pictoures" , graphs);
+		//this.addTab("Pretty Pictoures" , graphs);
 
 
 	}
