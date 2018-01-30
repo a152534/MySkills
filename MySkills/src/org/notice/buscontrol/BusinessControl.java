@@ -366,8 +366,7 @@ public class BusinessControl {
 		this.userId = userId;
 		try {
 			skillsDB.updateDB(
-					"insert into endorsement_nomination values(null, " + userSkillId + ",'" + userId + "',null)");
-
+					"insert into endorsement_nomination values(null, '" + endorsor + "','" + userId + "',null)");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;

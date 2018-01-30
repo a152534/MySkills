@@ -28,9 +28,6 @@ public class Admin extends JPanel implements ActionListener
 	private JScrollPane scrollPaneSkills;
 	private JButton btnAdd;
 	private JButton btnDelete;
-	private Font fontButton;
-	private Font fontTextArea;
-	private Font fontComboBoxSearch;
 	private CommonStuff commonStuff;
 	private Transaction transaction;
 	private static JButton btnYes;
@@ -44,6 +41,11 @@ public class Admin extends JPanel implements ActionListener
 	private SkillSelector skillSelector;
 	private ArrayList<Skill> skills;
 	private MyProfileRatedSkillTableModel myModel;
+	private Font fontLabel;
+	private Font fontButton;
+	private Font fontTextArea;
+	private Font fontTextBox;
+	private Font fontComboBox;
 
 	public Admin(CommonStuff inCommonStuff)
 	{
@@ -53,10 +55,16 @@ public class Admin extends JPanel implements ActionListener
 		commonStuff = inCommonStuff;
 
 		setLayout(null);
+		
+		fontLabel = commonStuff.getFontLabel();
+		fontButton = commonStuff.getFontButton();
+		fontTextArea = commonStuff.getFontTextArea();
+		fontTextBox = commonStuff.getFontTextBox();
+		fontComboBox = commonStuff.getFontComboBox();
 
-		fontButton = (new Font("Arial", Font.BOLD, 18));
-		fontTextArea = (new Font("Arial", Font.PLAIN, 14));
-		fontComboBoxSearch = (new Font("Arial", Font.PLAIN, 14));
+//		fontButton = (new Font("Arial", Font.BOLD, 18));
+//		fontTextArea = (new Font("Arial", Font.PLAIN, 14));
+//		fontComboBoxSearch = (new Font("Arial", Font.PLAIN, 14));
 
 		skillSelector = new SkillSelector(commonStuff.getSkillsList());
 		skillSelector.setBounds(100, 32, 620, 500);
