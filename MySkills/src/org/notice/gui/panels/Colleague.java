@@ -159,7 +159,7 @@ public class Colleague extends JPanel implements ActionListener, ListSelectionLi
 		colleagueModel = new ColleagueProfileSkillTableModel(ratedSkills);
 		tableColleagueSkills = new JTable(colleagueModel);
 		
-	///
+	
 		colleagueListiner cListen = new colleagueListiner();
 		tableColleagueSkills.getSelectionModel().addListSelectionListener(cListen);
 
@@ -171,18 +171,14 @@ public class Colleague extends JPanel implements ActionListener, ListSelectionLi
 				int row = te.getFirstRow();
 				
 				System.out.println("Colleague table changed event at row  " + row);
-				int SkillId = (int) colleagueModel.getValueAt(row, 3);
-//				int selectedLevelInt =  (int) colleagueModel.getValueAt(row, 1); 
-//				UserSkills newSkill = new UserSkills(commonStuff.getLoggedOnUser().getUserID(), SkillId,	selectedLevelInt);
-//				Transaction transaction = new Transaction("SaveUserSkill", newSkill);
-				transaction = commonStuff.getClient().sendTransaction(transaction);
+				byte endorseLevel = (byte) colleagueModel.getValueAt(row, 2);
+ 
+
 				
 			}
 		});
-	///
-		
-		
-		
+	
+
 		
 		tableColleagueSkills.setCellSelectionEnabled(true);
 		tableColleagueSkills.setShowHorizontalLines(true);
