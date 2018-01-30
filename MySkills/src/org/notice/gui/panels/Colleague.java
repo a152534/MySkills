@@ -5,18 +5,20 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.table.*;
 
 import org.notice.beans.*;
 import org.notice.buscontrol.BusinessControl;
 import org.notice.client.Transaction;
 import org.notice.enums.Skill_Levels;
+import org.notice.gui.panels.MyProfile1.mySkillLestenr;
 import org.notice.tablemodel.ColleagueProfileSkillTableModel;
 
 
 
 
-public class Colleague extends JPanel implements ActionListener
+public class Colleague extends JPanel implements ActionListener, ListSelectionListener
 {
 	private JComboBox<String> comboBoxColleagueSearch = null, comboBox = null;
 	private JScrollPane scrollPaneColleagueSkills = null;
@@ -37,6 +39,7 @@ public class Colleague extends JPanel implements ActionListener
 	private int loggedOnUserSkillId, selectedLevel;
 	private boolean endorsementRequested = false, endorsementRequestResult = false, endorsementAdded = false,
 			endorsementAddedResult = false;
+	private EndorsementNomination endorseNom;
 
 	
 	
@@ -107,6 +110,17 @@ public class Colleague extends JPanel implements ActionListener
 
 	}
 	
+	class colleagueListiner implements ListSelectionListener
+	{
+		public void valueChanged(ListSelectionEvent e)
+		{
+			btnSave.setEnabled(true);
+		}
+	}
+
+	
+	
+	
 //	public void setUpLevelColumn(JTable table, TableColumn levelColumn)
 //	{	
 //		endorseBox = new JComboBox<Skill_Levels>(Skill_Levels.values());
@@ -118,7 +132,8 @@ public class Colleague extends JPanel implements ActionListener
 //		levelColumn.setCellRenderer(renderer);
 //	}
 	
-	public void setUpLevelColumn(JTable table, TableColumn levelColumn) {
+	public void setUpLevelColumn(JTable table, TableColumn levelColumn)
+	{
 
 		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.addItem("1");
@@ -143,6 +158,32 @@ public class Colleague extends JPanel implements ActionListener
 		
 		colleagueModel = new ColleagueProfileSkillTableModel(ratedSkills);
 		tableColleagueSkills = new JTable(colleagueModel);
+		
+	///
+		colleagueListiner cListen = new colleagueListiner();
+		tableColleagueSkills.getSelectionModel().addListSelectionListener(cListen);
+
+		tableColleagueSkills.getModel().addTableModelListener(new TableModelListener()
+		{
+			@Override
+			public void tableChanged(TableModelEvent te)
+			{
+				int row = te.getFirstRow();
+				
+				System.out.println("Colleague table changed event at row  " + row);
+				int SkillId = (int) colleagueModel.getValueAt(row, 3);
+//				int selectedLevelInt =  (int) colleagueModel.getValueAt(row, 1); 
+//				UserSkills newSkill = new UserSkills(commonStuff.getLoggedOnUser().getUserID(), SkillId,	selectedLevelInt);
+//				Transaction transaction = new Transaction("SaveUserSkill", newSkill);
+				transaction = commonStuff.getClient().sendTransaction(transaction);
+				
+			}
+		});
+	///
+		
+		
+		
+		
 		tableColleagueSkills.setCellSelectionEnabled(true);
 		tableColleagueSkills.setShowHorizontalLines(true);
 		tableColleagueSkills.setShowVerticalLines(true);
@@ -155,8 +196,6 @@ public class Colleague extends JPanel implements ActionListener
 		scrollPaneColleagueSkills.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPaneColleagueSkills.setBounds(150, 150, 620, 320);
 		add(scrollPaneColleagueSkills);
-		btnSave.setVisible(true);
-		btnSave.setEnabled(true);
 		btnRequestEndorsement.setVisible(true);
 		btnRequestEndorsement.setEnabled(true);
 	}
@@ -206,10 +245,11 @@ public class Colleague extends JPanel implements ActionListener
 	public boolean populateEndorsementRequest()
 	{
 		EndorsementNomination endorseNom;
-//		endorseNom = new EndorsementNomination(commonStuff.getLoggedOnUser().getUserID(), commonStuff.getColleague().getUserID());
+		endorseNom = new EndorsementNomination(commonStuff.getLoggedOnUser().getUserID(), commonStuff.getColleague().getUserID());
 		
-//		transaction = new Transaction("createEndorseNomination", endorseNom);
+		transaction = new Transaction("createEndorseNomination", endorseNom);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
+		
 		endorsementRequested = (boolean)transaction.getObject();
 		return endorsementRequested;
 	}
@@ -219,8 +259,10 @@ public class Colleague extends JPanel implements ActionListener
 		
 		ArrayList<Endorsement> endorsement = new ArrayList<Endorsement>();
 		
-		System.out.println("I selected: " + (String) comboBox.getSelectedItem());
+
 		
+		String temp = (String) comboBox.getSelectedItem();
+		System.out.println("Temp is: " + temp);
 //		selectedLevel = Integer.parseInt((String)comboBox.getSelectedItem());
 //		endorsement.add(new Endorsement(this.getLoggedOnUserSkillId(), commonStuff.getLoggedOnUser().getUserID(), selectedLevel));
 		return endorsement;
@@ -357,6 +399,22 @@ public class Colleague extends JPanel implements ActionListener
 				}
 			}
 			return;	
+		
 		}
+		
 	}
+	
+	
+
+
+	@Override
+	public void valueChanged(ListSelectionEvent e)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
 }
