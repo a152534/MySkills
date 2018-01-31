@@ -66,7 +66,7 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
     	
     	btnUsersForSelected = new JButton("Users for selected skills");
     	
-    	
+    	btnUsersForSelected.setEnabled(false);
     	
     	
 
@@ -238,7 +238,7 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
     @Override
     public void valueChanged(ListSelectionEvent e)
     {
-	
+	btnUsersForSelected.setEnabled(true);
 	 rowId =tableSkillsReport.getSelectedRow();
 	 
     }
@@ -254,7 +254,7 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 
 	        {
 		
-		
+		btnUsersForSelected.setEnabled(false);
 		tableSkillsReport.setModel(myModel);
 		setColumnWidths();
 		myModel.fireTableDataChanged();
