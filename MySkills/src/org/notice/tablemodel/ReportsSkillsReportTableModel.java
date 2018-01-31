@@ -1,5 +1,6 @@
 package org.notice.tablemodel;
 
+import java.math.MathContext;
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
@@ -10,6 +11,7 @@ import org.notice.beans.*;
 public class ReportsSkillsReportTableModel extends AbstractTableModel
 {
 	private boolean DEBUG = false;
+	
 	
 	ArrayList<EndorsementsPerSkill> skillReport;
 	private String[] columnNames = { "Skills", "Skill ID", "Number of endorsements", "Average endorsement", "Number of Resources" };
@@ -58,7 +60,7 @@ public class ReportsSkillsReportTableModel extends AbstractTableModel
 		}
 
 		if (columnIndex == 3) {
-			return skillsReport.getAvgEndorsement();
+			return skillsReport.getAvgEndorsement().stripTrailingZeros();
 		}
 		if (columnIndex == 4) {
 			return skillsReport.getNumResources();

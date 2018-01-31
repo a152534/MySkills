@@ -75,7 +75,7 @@ public class SkillsRatedTableModel extends AbstractTableModel {
 			return ratedSkills.getSkillName();
 		}
 		if (columnIndex == 2) {
-			return ratedSkills.getAvgEndorsement();
+			return ratedSkills.getAvgEndorsement().stripTrailingZeros();
 		}
 		if (columnIndex == 3) {
 			return ratedSkills.getNumOfEndorsements();
