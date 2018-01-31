@@ -5,11 +5,16 @@ import javax.swing.JPanel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -41,6 +46,13 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 	private String skillName;
 	private ReportsSkillsReportTableModel myModel = null;
 	private Skill skillobj = null;
+	private JButton btnExportSkillsToExcel;
+	private File file;
+	private JButton btnExportUserToExcel;
+	private JButton btnNewButton;
+	private JButton btnNewButton_1;
+	private JFileChooser fileChooser = null;
+
 
     /**
      * Create the panel.
@@ -54,32 +66,55 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
     	
     	btnUsersForSelected = new JButton("Users for selected skills");
     	
+    	
+    	
+    	
+
+    	
+    	
     	scrollPane = new JScrollPane();
     	scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
     	scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+    	
+    	btnExportSkillsToExcel = new JButton("Export to Excel");
+    	btnExportSkillsToExcel.addActionListener(this);
+    	btnExportSkillsToExcel.setEnabled(false);
+    	
+    	btnExportUserToExcel = new JButton("Export to Excel");
+    	btnExportUserToExcel.addActionListener(this);
+    	btnExportUserToExcel.setEnabled(false);
+ 
+    	
     	GroupLayout groupLayout = new GroupLayout(this);
     	groupLayout.setHorizontalGroup(
     		groupLayout.createParallelGroup(Alignment.LEADING)
     			.addGroup(groupLayout.createSequentialGroup()
+    				.addGap(129)
+    				.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 650, GroupLayout.PREFERRED_SIZE)
+    				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+    			.addGroup(groupLayout.createSequentialGroup()
+    				.addGap(146)
     				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-    					.addGroup(groupLayout.createSequentialGroup()
-    						.addGap(148)
-    						.addComponent(btnSkills)
-    						.addGap(168)
-    						.addComponent(btnUsersForSelected))
-    					.addGroup(groupLayout.createSequentialGroup()
-    						.addGap(129)
-    						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 650, GroupLayout.PREFERRED_SIZE)))
-    				.addContainerGap(131, Short.MAX_VALUE))
+    					.addComponent(btnSkills)
+    					.addComponent(btnExportSkillsToExcel))
+    				.addPreferredGap(ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
+    				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+    					.addComponent(btnExportUserToExcel)
+    					.addComponent(btnUsersForSelected))
+    				.addGap(238))
     	);
     	groupLayout.setVerticalGroup(
     		groupLayout.createParallelGroup(Alignment.LEADING)
     			.addGroup(groupLayout.createSequentialGroup()
-    				.addGap(73)
+    				.addGap(36)
     				.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-    					.addComponent(btnSkills)
-    					.addComponent(btnUsersForSelected))
-    				.addPreferredGap(ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
+    					.addComponent(btnUsersForSelected)
+    					.addComponent(btnSkills))
+    				.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+    				.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+    					.addComponent(btnExportSkillsToExcel)
+    					.addComponent(btnExportUserToExcel))
+    				.addPreferredGap(ComponentPlacement.RELATED)
     				.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
     				.addGap(68))
     	);
@@ -105,6 +140,101 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 	
     }
 
+    private void exportSkillToExcel() {
+   	 
+    	fileChooser = new JFileChooser("C:\\Users");
+		fileChooser.showSaveDialog(this);
+		File file = fileChooser.getSelectedFile();
+	//	file = new File("C:\\Users\\a044339\\java\\javaprojects\\javaio\\Skills.csv");
+		
+		FileWriter fw = null;
+		PrintWriter pw = null;
+		
+		try
+		{
+			fw = new FileWriter(file);
+			pw = new PrintWriter(fw);
+			String msg = null;
+			msg = "Skills, Number Of Endorsements, Avgerage Endorsement, Number Of Resources";
+			pw.println(msg);
+			
+			for (int count = 0; count < skillReport.size(); count++)
+			{
+				msg =   skillReport.get(count).getSkillName() + "," 
+						+ skillReport.get(count).getNumEndorsements() + "," 
+						+ skillReport.get(count).getAvgEndorsement() + ","
+						+ skillReport.get(count).getNumResources(); 
+						
+				pw.println(msg);
+			}
+			
+			
+			pw.close();
+			fw.close();
+			btnExportUserToExcel.setEnabled(false);
+			 
+			
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally
+		{
+			pw.close();
+			 
+		}
+		
+	}
+    
+    private void exportUserToExcel() {
+    	fileChooser = new JFileChooser("C:\\Users");
+		fileChooser.showSaveDialog(this);
+		File file = fileChooser.getSelectedFile();
+
+//		file = new File("C:\\Users\\a044339\\java\\javaprojects\\javaio\\Users.csv");
+		
+		FileWriter fw = null;
+		PrintWriter pw = null;
+		
+		try
+		{
+			fw = new FileWriter(file);
+			pw = new PrintWriter(fw);
+			
+			String msg = null;
+			msg = "Name, Skill, Endorsement Average, Number of Endorsements";
+			pw.println(msg);
+			
+			for (int count = 0; count < userSkillReport.size(); count++)
+			{
+				 
+				msg =   userSkillReport.get(count).getSurname() + "," 
+						+ userSkillReport.get(count).getSkillName() + "," 
+						+ userSkillReport.get(count).getAvgEndorsement() + "," 
+						+ userSkillReport.get(count).getNumOfEndorsements(); 
+						
+				pw.println(msg);
+			}
+			
+			pw.close();
+			fw.close();
+			btnExportSkillsToExcel.setEnabled(false);
+			
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally
+		{
+			pw.close();
+			 
+		}
+		
+	}
+
+
     @Override
     public void valueChanged(ListSelectionEvent e)
     {
@@ -128,6 +258,9 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 		tableSkillsReport.setModel(myModel);
 		setColumnWidths();
 		myModel.fireTableDataChanged();
+		btnExportSkillsToExcel.setEnabled(true);
+		btnExportUserToExcel.setEnabled(false);
+
 
 
 	        }
@@ -153,9 +286,21 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 		
 		tableSkillsReport.setModel(myModelUser);		
 		myModelUser.fireTableDataChanged();
+		btnExportUserToExcel.setEnabled(true);
+		btnExportSkillsToExcel.setEnabled(false);
+
 
 		
 	        }
+		if(source == btnExportSkillsToExcel)
+    	{
+    		exportSkillToExcel();
+    	}
+    	if(source == btnExportUserToExcel) 
+    	{
+    		exportUserToExcel();  
+    	}
+
 		
 	
     }
