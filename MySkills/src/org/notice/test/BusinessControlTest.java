@@ -78,6 +78,13 @@ public class BusinessControlTest
 			e.printStackTrace();
 		}
 	    }
+	    @Test
+	    public void testCreateEndorseNomination()
+	    {
+		validate = new BusinessControl();
+		assertTrue(validate.createEndorseNomination("A000456", "A000123"));
+		
+	    }
 	    
 //		@Test
 		
