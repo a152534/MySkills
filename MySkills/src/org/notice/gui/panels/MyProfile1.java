@@ -291,9 +291,13 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		if (source == btnDeleteSkill) {
 			deleteUserSkill();
 		}
-		if (source == btnEndorse) {
+		if (source == btnEndorse) { 
+			String selectedID = (String) tableEndorsementRequests.getValueAt(tableEndorsementRequests.getSelectedRow(), 1);
+			User coll = new User(selectedID, null	,null,null,null,null);
+			commonStuff.setColleague(coll);
 			commonStuff.getTabbedPane().setSelectedIndex(1);
 		}
+
 
 	}
 
@@ -401,6 +405,7 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 			commonStuff.getColleague().setUserID(
 					(String) tableEndorsementRequests.getValueAt(tableEndorsementRequests.getSelectedRow(), 1));
 			btnEndorse.setEnabled(true);
+			System.out.println("nominationLestenr");
 
 		}
 	}

@@ -124,15 +124,18 @@ public class LoginScreenGUI extends JPanel implements ActionListener {
 			skillsMainScreen = new MySkillsTabbedPane(basePanel, commonStuff);
 			commonStuff.setTabbedPane(skillsMainScreen);
 			
-			skillsMainScreen.addChangeListener(new ChangeListener() {
-		        
-
-				@Override
-				public void stateChanged(ChangeEvent e) {
-					System.out.println("Tab: " + skillsMainScreen.getSelectedIndex());
-					
-				}
-		    });
+//			skillsMainScreen.addChangeListener(new ChangeListener() {
+//		        
+//
+//				@Override
+//				public void stateChanged(ChangeEvent e) {
+//					System.out.println("Tab: " + skillsMainScreen.getSelectedIndex());
+//					if( skillsMainScreen.getSelectedIndex() == 1 ) {
+//						
+//					}
+//					
+//				}
+//		    });
 			
 			this.basePanel.removeAll();
 			this.basePanel.validate();

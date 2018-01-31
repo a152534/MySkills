@@ -67,7 +67,7 @@ public class MyProfileRatedSkillTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		// System.out.println("MyProfileRatedSkillTableModel getValueAt ");
+		System.out.println("row _ " + rowIndex);
 		RatedSkills ratedSkill = ratedSkills.get(rowIndex);
 		if (columnIndex == 0) {
 			return ratedSkill.getSkillName();
