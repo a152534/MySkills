@@ -99,6 +99,11 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
     	setLayout(groupLayout);
 
     }
+    
+    public void setColumnWidths() {
+	tableSkillsReport.removeColumn(tableSkillsReport.getColumnModel().getColumn(1));
+	
+    }
 
     @Override
     public void valueChanged(ListSelectionEvent e)
@@ -121,6 +126,7 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 		
 		
 		tableSkillsReport.setModel(myModel);
+		setColumnWidths();
 		myModel.fireTableDataChanged();
 
 
@@ -131,7 +137,7 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 	        {
 		
 		
-		skillId = Integer.parseInt(tableSkillsReport.getValueAt(rowId, 1).toString());
+		skillId = Integer.parseInt(myModel.getValueAt(rowId, 1).toString());
 		skillName = tableSkillsReport.getValueAt(rowId, 0).toString();
 		
 		skillList = new ArrayList<Skill>();
