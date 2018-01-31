@@ -91,10 +91,6 @@ public class Admin extends JPanel implements ActionListener
 
 	private void populateSkillsList()
 	{
-		
- 
-		
-		
 		transaction = new Transaction("getSkillList", null);
  		
 		transaction = commonStuff.getClient().sendTransaction(transaction);
@@ -119,7 +115,6 @@ public class Admin extends JPanel implements ActionListener
 	    skillSelector.getSkillModel().setSkills(newSkillList);
 	
 	//	skillSelector = new SkillSelector(commonStuff.getSkillsList());
-		
 		
 		System.out.println("Before SKILLS CLEAR");	
 	 	
