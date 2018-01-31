@@ -24,6 +24,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 	private CommonStuff commonStuff = null;
 	private ArrayList<RatedSkills> ratedSkills;
 	private String[] columnNames = { "Skill", "Level", "Endorse" };
+	
 
 	public ColleagueProfileSkillTableModel(ArrayList<RatedSkills> ratedSkills)
 	{
@@ -65,15 +66,15 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 	}
 	public void setValueAt(Object value, int row, int col) 
 	{
-		int sl =0;
-        if (DEBUG)
-        {
-            System.out.println("Setting value at " + row + "," + col + " to " + value + " (an instance of "
-                              + value.getClass() + ")");
-        }
-
-      ratedSkills.get(row).setLevel(Integer.parseInt((String)value)); 
-      //Tony - issue casting to string, with enums.
+//		int sl =0;
+		
+		Skill_Levels level = Skill_Levels.Notice;
+//      ratedSkills.get(row).setLevel(Integer.parseInt((String)value)); 
+      
+		System.out.println("Object: " +  value + " Row: " + row + " Col: " + col);
+     
+		ratedSkills.get(row).setLevel((int)level.ordinal());
+		
         
 //		for(Skill_Levels skillLevel : Skill_Levels.values())
 //		{
@@ -81,15 +82,12 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 //		}
 //		
 //        ratedSkills.get(row).setLevel(sl);
-
-        		
+//
+//        System.out.println("New value: " + ratedSkills.get(row).getLevel() );		
         		
         fireTableCellUpdated(row, col);
 
-        if (DEBUG)
-        {
-            System.out.println("New value of data:");
-        }
+ 
     }
 
 	@Override

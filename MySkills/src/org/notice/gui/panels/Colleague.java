@@ -37,9 +37,10 @@ public class Colleague extends JPanel implements ActionListener, ListSelectionLi
 			Expert = null;
 	private JComboBox<Skill_Levels> endorseBox = null; 
 	private int loggedOnUserSkillId, selectedLevel;
-	private boolean endorsementRequested = false, endorsementRequestResult = false, endorsementAdded = false,
+	private boolean endorsementRequestResult = false, endorsementAdded = false,
 			endorsementAddedResult = false;
 	private EndorsementNomination endorseNom;
+	private Boolean  endorsementRequested = false;
 
 	
 	
@@ -121,33 +122,33 @@ public class Colleague extends JPanel implements ActionListener, ListSelectionLi
 	
 	
 	
-//	public void setUpLevelColumn(JTable table, TableColumn levelColumn)
-//	{	
-//		endorseBox = new JComboBox<Skill_Levels>(Skill_Levels.values());
-//	
-//		levelColumn.setCellEditor(new DefaultCellEditor(endorseBox));
-//
-//		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-//		renderer.setToolTipText("Click to set endorsement level");
-//		levelColumn.setCellRenderer(renderer);
-//	}
-	
 	public void setUpLevelColumn(JTable table, TableColumn levelColumn)
-	{
-
-		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.addItem("1");
-		comboBox.addItem("2");
-		comboBox.addItem("3");
-		comboBox.addItem("4");
-		comboBox.addItem("5");
-
-		levelColumn.setCellEditor(new DefaultCellEditor(comboBox));
+	{	
+		endorseBox = new JComboBox<Skill_Levels>(Skill_Levels.values());
+	
+		levelColumn.setCellEditor(new DefaultCellEditor(endorseBox));
 
 		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-		renderer.setToolTipText("Click for combo box");
+		renderer.setToolTipText("Click to set endorsement level");
 		levelColumn.setCellRenderer(renderer);
 	}
+	
+//	public void setUpLevelColumn(JTable table, TableColumn levelColumn)
+//	{
+//
+//		JComboBox<String> comboBox = new JComboBox<String>();
+//		comboBox.addItem("1");
+//		comboBox.addItem("2");
+//		comboBox.addItem("3");
+//		comboBox.addItem("4");
+//		comboBox.addItem("5");
+//
+//		levelColumn.setCellEditor(new DefaultCellEditor(comboBox));
+//
+//		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+//		renderer.setToolTipText("Click for combo box");
+//		levelColumn.setCellRenderer(renderer);
+//	}
 	
 	
 	public void populateColleague(String searchID)
@@ -171,7 +172,7 @@ public class Colleague extends JPanel implements ActionListener, ListSelectionLi
 				int row = te.getFirstRow();
 				
 				System.out.println("Colleague table changed event at row  " + row);
-				byte endorseLevel = (byte) colleagueModel.getValueAt(row, 2);
+				int endorseLevel = (int) colleagueModel.getValueAt(row, 2);
  
 
 				
@@ -238,7 +239,7 @@ public class Colleague extends JPanel implements ActionListener, ListSelectionLi
 	}
 
 	
-	public boolean populateEndorsementRequest()
+	public boolean createEndorsementRequest()
 	{
 		EndorsementNomination endorseNom;
 		endorseNom = new EndorsementNomination(commonStuff.getLoggedOnUser().getUserID(), commonStuff.getColleague().getUserID());
@@ -246,7 +247,7 @@ public class Colleague extends JPanel implements ActionListener, ListSelectionLi
 		transaction = new Transaction("createEndorseNomination", endorseNom);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 		
-		endorsementRequested = (boolean)transaction.getObject();
+		endorsementRequested = (Boolean)transaction.getObject();
 		return endorsementRequested;
 	}
 	
@@ -371,7 +372,7 @@ public class Colleague extends JPanel implements ActionListener, ListSelectionLi
 			
 			if(option == JOptionPane.OK_OPTION)
 			{
-				endorsementRequestResult = populateEndorsementRequest();
+				endorsementRequestResult = createEndorsementRequest();
 				if (endorsementRequestResult == false)
 				{
 					JOptionPane.showMessageDialog(this, "An error has occurred - Your endorsement request has not been saved");
