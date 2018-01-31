@@ -451,7 +451,7 @@ public class BusinessControl {
 			// Fetch from database
 
 			skillResult = skillsDB.queryDB("SELECT skill_id, skill_name, num_of_resources, num_of_endorsements,"
-					+ " avg_endorsement  from v_endorsements_per_skill");
+					+ " avg_endorsement  from v_endorsements_per_skill order by avg_endorsement desc");
 
 			// Write to ArrayList
 			while (skillResult.next()) {
@@ -497,7 +497,7 @@ public class BusinessControl {
 			String sQL = null;
 			sQL = "SELECT  * FROM myskills.v_user_skill_endorsements a, (SELECT user_id FROM myskills.user_skill WHERE skill_id IN (" +
 			     userIdList + ") GROUP BY user_id HAVING COUNT(*) = " + skillList.size() + 
-			     " ) b WHERE skill_id IN (" + userIdList + ") AND b.user_id = a.user_id;";
+			     " ) b WHERE skill_id IN (" + userIdList + ") AND b.user_id = a.user_id order by avg_endorsement desc;";
 					{
 	 					userResult = skillsDB.queryDB(sQL);
 			
