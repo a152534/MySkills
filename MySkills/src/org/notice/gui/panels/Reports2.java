@@ -73,63 +73,31 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 		fontComboBox = commonStuff.getFontComboBox();
     	
     	btnSkills = new JButton("Skills");
+    	btnSkills.setFont(fontButton);
+    	btnSkills.setBounds(128, 11, 250, 25);
     	
     	btnUsersForSelected = new JButton("Users for selected skills");
-    	
+    	btnUsersForSelected.setBounds(529, 11, 250, 25);
+    	btnUsersForSelected.setFont(fontButton);
     	btnUsersForSelected.setEnabled(false);
-    	
-    	
-
-    	
-    	
+    	    	
     	scrollPane = new JScrollPane();
+    	scrollPane.setBounds(129, 69, 650, 550);
     	scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
     	scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
     	
     	btnExportSkillsToExcel = new JButton("Export to Excel");
+    	btnExportSkillsToExcel.setBounds(128, 40, 250, 25);
+    	btnExportSkillsToExcel.setFont(fontButton);
     	btnExportSkillsToExcel.addActionListener(this);
     	btnExportSkillsToExcel.setEnabled(false);
     	
+    	
     	btnExportUserToExcel = new JButton("Export to Excel");
+    	btnExportUserToExcel.setBounds(529, 40, 250, 25);
+    	btnExportUserToExcel.setFont(fontButton);
     	btnExportUserToExcel.addActionListener(this);
     	btnExportUserToExcel.setEnabled(false);
- 
-    	
-    	GroupLayout groupLayout = new GroupLayout(this);
-    	groupLayout.setHorizontalGroup(
-    		groupLayout.createParallelGroup(Alignment.LEADING)
-    			.addGroup(groupLayout.createSequentialGroup()
-    				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-    					.addGroup(groupLayout.createSequentialGroup()
-    						.addGap(129)
-    						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 650, GroupLayout.PREFERRED_SIZE))
-    					.addGroup(groupLayout.createSequentialGroup()
-    						.addGap(146)
-    						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-    							.addComponent(btnSkills)
-    							.addComponent(btnExportSkillsToExcel))
-    						.addPreferredGap(ComponentPlacement.RELATED, 230, Short.MAX_VALUE)
-    						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-    							.addComponent(btnUsersForSelected)
-    							.addComponent(btnExportUserToExcel))
-    						.addGap(166)))
-    				.addContainerGap())
-    	);
-    	groupLayout.setVerticalGroup(
-    		groupLayout.createParallelGroup(Alignment.LEADING)
-    			.addGroup(groupLayout.createSequentialGroup()
-    				.addContainerGap()
-    				.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-    					.addComponent(btnSkills)
-    					.addComponent(btnUsersForSelected))
-    				.addPreferredGap(ComponentPlacement.RELATED)
-    				.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-    					.addComponent(btnExportSkillsToExcel)
-    					.addComponent(btnExportUserToExcel))
-    				.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-    				.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 550, GroupLayout.PREFERRED_SIZE)
-    				.addGap(68))
-    	);
     	btnSkills.addActionListener(this);
     	btnUsersForSelected.addActionListener(this);
     	
@@ -142,8 +110,13 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 	tableSkillsReport = new JTable();
 	tableSkillsReport.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	tableSkillsReport.getSelectionModel().addListSelectionListener(this);
+    	setLayout(null);
     	scrollPane.setViewportView(tableSkillsReport);
-    	setLayout(groupLayout);
+    	add(scrollPane);
+    	add(btnSkills);
+    	add(btnExportSkillsToExcel);
+    	add(btnUsersForSelected);
+    	add(btnExportUserToExcel);
 
     }
     
