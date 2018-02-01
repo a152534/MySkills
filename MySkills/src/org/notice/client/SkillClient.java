@@ -3,6 +3,7 @@ package org.notice.client;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Properties;
  
 
 public class SkillClient {
@@ -12,14 +13,46 @@ public class SkillClient {
 	private ObjectInputStream in = null;
 	private Transaction transaction;
 //private Object fromServer = null; ;
+	
+	String server = null;
+    int port = 0;
+    
 	 
 
 	public SkillClient()
 	{
+		Properties prop = new Properties();
+        InputStream input = null;
+
+        try {
+
+            input = new FileInputStream("Client.properties");
+
+            // load a properties file
+            prop.load(input);
+
+            // get the property value 
+            server = prop.getProperty("server");
+            port = Integer.parseInt(prop.getProperty("port"));
+          
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
 		
 		try
 		{
-			socket = new Socket("localhost", 60606);
+			socket = new Socket(server, port);
+		//	socket = new Socket("localhost", 60606);
 			out = new ObjectOutputStream(socket.getOutputStream());
 			in = new ObjectInputStream(socket.getInputStream());
 		} catch (IOException e)
