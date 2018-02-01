@@ -362,6 +362,7 @@ public class BusinessControl {
 	}
 
 	public boolean createEndorseNomination(String  userId , String endorserId) {
+		System.out.println("in business cxontrol create endorsement");
 		this.endorsor = endorserId;
 		this.userId = userId;
 		try {

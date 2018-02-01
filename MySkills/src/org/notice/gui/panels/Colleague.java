@@ -54,6 +54,7 @@ public class Colleague extends JPanel implements ActionListener, ListSelectionLi
 		fontComboBox = (new Font("Arial", Font.PLAIN, 14));
 		
 		textSearch = new JTextField();
+		textSearch.setFont(new Font("Arial", Font.PLAIN, 18));
 		textSearch.setBounds(242, 25, 302, 22);
 		add(textSearch);
 		textSearch.setColumns(10);
@@ -71,7 +72,7 @@ public class Colleague extends JPanel implements ActionListener, ListSelectionLi
 		setLayout(null);
 		comboBoxColleagueSearch = new JComboBox<String>();
 		comboBoxColleagueSearch.setFont(fontComboBox);
-		comboBoxColleagueSearch.setBounds(242, 51, 302, 25);
+		comboBoxColleagueSearch.setBounds(242, 50, 302, 25);
 		comboBoxColleagueSearch.setVisible(false);
 		add(comboBoxColleagueSearch);
 		

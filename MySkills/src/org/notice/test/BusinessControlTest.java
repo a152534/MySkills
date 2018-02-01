@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+import org.notice.beans.EndorsementNomination;
 import org.notice.beans.RatedSkills;
 import org.notice.beans.User;
 import org.notice.beans.UserSkills;
@@ -82,7 +83,9 @@ public class BusinessControlTest
 	    public void testCreateEndorseNomination()
 	    {
 		validate = new BusinessControl();
-		assertTrue(validate.createEndorseNomination("A000456", "A000123"));
+		EndorsementNomination en = new EndorsementNomination("A000456", "A000123");
+//		assertTrue(validate.createEndorseNomination("A000456", "A000123"));
+		assertTrue(validate.createEndorseNomination(en.getUserID(), en.getEndorserUserID()));
 		
 	    }
 	    

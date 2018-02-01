@@ -83,7 +83,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 //		
 //        ratedSkills.get(row).setLevel(sl);
 //
-//        System.out.println("New value: " + ratedSkills.get(row).getLevel() );		
+        System.out.println("New value: " + ratedSkills.get(row).getLevel() );		
         		
         fireTableCellUpdated(row, col);
 
