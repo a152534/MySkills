@@ -4,19 +4,51 @@ import java.io.*;
 import java.sql.*;
 import java.util.*;
 
+//url=jdbc:mysql://192.168.1.101:3306/myskills
+//String url = "jdbc:mysql://localhost:3306/myskills";
+//dbuser=dbuser
+//dbpassword=password
+
 public class MySkillsDAO
 {
-    String url = "jdbc:mysql://192.168.1.101:3306/myskills";
-    //String url = "jdbc:mysql://localhost:3306/myskills";
-    String user = "dbuser", uName, password, sql;
-    String passwd = "password";
     Connection con = null;
     Statement sqlstat = null;
     ResultSet RS = null;
-   
-
+    
+    String url = null;
+    String user = null;
+    String passwd = null;
+ 
     public MySkillsDAO() throws Exception
     {
+    	
+    	Properties prop = new Properties();
+        InputStream input = null;
+
+        try {
+
+            input = new FileInputStream("config.properties");
+
+            // load a properties file
+            prop.load(input);
+
+            // get the property value and print it out
+            url = prop.getProperty("url");
+            user = prop.getProperty("dbuser");
+            passwd = prop.getProperty("dbpassword");
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        
 
 	try
 	{

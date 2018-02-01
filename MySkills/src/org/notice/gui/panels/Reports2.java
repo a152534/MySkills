@@ -2,7 +2,7 @@ package org.notice.gui.panels;
 
 import javax.swing.JPanel;
 
-
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -53,7 +53,11 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 	private JButton btnNewButton;
 	private JButton btnNewButton_1;
 	private JFileChooser fileChooser = null;
-
+	private Font fontLabel;
+	private Font fontButton;
+	private Font fontTextArea;
+	private Font fontTextBox;
+	private Font fontComboBox;
 
     /**
      * Create the panel.
@@ -62,6 +66,11 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
     {
     	commonStuff = inCommonStuff;
     
+		fontLabel = commonStuff.getFontLabel();
+		fontButton = commonStuff.getFontButton();
+		fontTextArea = commonStuff.getFontTextArea();
+		fontTextBox = commonStuff.getFontTextBox();
+		fontComboBox = commonStuff.getFontComboBox();
     	
     	btnSkills = new JButton("Skills");
     	
