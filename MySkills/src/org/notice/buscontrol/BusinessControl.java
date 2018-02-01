@@ -136,6 +136,14 @@ public class BusinessControl {
 			transaction.setDescription("getEndorseNominations");
 			break;
 		}
+		
+		case "deleteEndorsementNomination": {
+			endorseNom = (EndorsementNomination) transaction.getObject();
+			transaction.setObject(
+					this.deleteEndorseNomination(endorseNom.getUserID(), endorseNom.getEndorserUserID()));
+			transaction.setDescription("deleteEndorsement");
+			break;
+		}
 
 		case "getSkillsReport": {
 			transaction.setObject(this.getSkillsReport());
@@ -368,6 +376,24 @@ public class BusinessControl {
 		try {
 			skillsDB.updateDB(
 					"insert into endorsement_nomination values(null, '" + endorsor + "','" + userId + "',null)");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		return true;
+
+	}
+	
+	
+	public boolean deleteEndorseNomination(String  userId , String endorserId) {
+		
+		this.endorsor = endorserId;
+		this.userId = userId;
+		try {
+			skillsDB.updateDB(
+					"delete from  endorsement_nomination where user_id = '"  + userId + 
+					"' and  nominated_endorsee = '" + endorsor + "';");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
