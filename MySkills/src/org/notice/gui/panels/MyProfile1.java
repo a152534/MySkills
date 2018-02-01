@@ -54,16 +54,18 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 	private JButton btnSaveMySkill;
 	private JScrollPane scrollPaneEndorsementRequests;
 	private JTable tableEndorsementRequests;
-	private Font fontLabel;
-	private Font fontTextBox;
-	private Font fontButton;
-	private Font fontComboBox;
 	private CommonStuff commonStuff;
 	private Transaction transaction;
 	private ArrayList<RatedSkills> ratedSkills;
 	private MyProfileRatedSkillTableModel ratedSkillModel;
 	private EndorseNominationModel nominatioModel;
 	private SkillSelector skillSelector;
+	
+	private Font fontLabel;
+	private Font fontButton;
+	private Font fontTextArea;
+	private Font fontTextBox;
+	private Font fontComboBox;
 
 	/**
 	 * Create the panel.
@@ -72,69 +74,85 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		commonStuff = inCommonStuff;
 		setLayout(null);
 
-		fontLabel = (new Font("Arial", Font.BOLD, 14));
-		fontTextBox = (new Font("Arial", Font.PLAIN, 12));
-		fontButton = (new Font("Arial", Font.BOLD, 18));
-		fontComboBox = (new Font("Arial", Font.PLAIN, 14));
+//		fontLabel = (new Font("Arial", Font.BOLD, 14));
+//		fontTextBox = (new Font("Arial", Font.PLAIN, 12));
+//		fontButton = (new Font("Arial", Font.BOLD, 18));
+//		fontComboBox = (new Font("Arial", Font.PLAIN, 14));
+		
+		fontLabel = commonStuff.getFontLabel();
+		fontButton = commonStuff.getFontButton();
+		fontTextArea = commonStuff.getFontTextArea();
+		fontTextBox = commonStuff.getFontTextBox();
+		fontComboBox = commonStuff.getFontComboBox();
 
 		JLabel lblName = new JLabel("Name:");
 		lblName.setFont(fontLabel);
-		lblName.setBounds(20, 20, 130, 20);
+		//lblName.setBounds(20, 20, 130, 20);
+		lblName.setBounds(40, 20, 130, 20);
 		add(lblName);
 
 		JLabel lblSurname = new JLabel("Surname:");
 		lblSurname.setFont(fontLabel);
-		lblSurname.setBounds(20, 50, 130, 20);
+		//lblSurname.setBounds(20, 50, 130, 20);
+		lblSurname.setBounds(40, 50, 130, 20);
 		add(lblSurname);
 
 		JLabel lblAlias = new JLabel("Alias:");
 		lblAlias.setFont(fontLabel);
-		lblAlias.setBounds(20, 80, 130, 20);
+		//lblAlias.setBounds(20, 80, 130, 20);
+		lblAlias.setBounds(40, 80, 130, 20);
 		add(lblAlias);
 
 		txtName = new JTextField();
 		txtName.setFont(fontTextBox);
-		txtName.setBounds(120, 20, 290, 20);
+		//txtName.setBounds(120, 20, 290, 20);
+		txtName.setBounds(140, 20, 290, 20);
 		add(txtName);
 		txtName.setColumns(10);
 		txtName.setEditable(false);
 
 		txtSurname = new JTextField();
 		txtSurname.setFont(fontTextBox);
-		txtSurname.setBounds(120, 50, 290, 19);
+		//txtSurname.setBounds(120, 50, 290, 20);
+		txtSurname.setBounds(140, 50, 290, 20);
 		add(txtSurname);
 		txtSurname.setColumns(10);
 		txtSurname.setEditable(false);
 		
 		txtAlias = new JTextField();
 		txtAlias.setFont(fontTextBox);
-		txtAlias.setBounds(120, 80, 290, 19);
+		//txtAlias.setBounds(120, 80, 290, 20);
+		txtAlias.setBounds(140, 80, 290, 20);
 		add(txtAlias);
 		txtAlias.setColumns(10);
 		txtAlias.setEditable(false);
 
 		JLabel lblPhoneNumber = new JLabel("Phone number:");
 		lblPhoneNumber.setFont(fontLabel);
-		lblPhoneNumber.setBounds(440, 21, 136, 15);
+		//lblPhoneNumber.setBounds(440, 21, 136, 20);
+		lblPhoneNumber.setBounds(460, 21, 136, 20);
 		add(lblPhoneNumber);
 
 		txtPhone = new JTextField();
 		txtPhone.setFont(fontTextBox);
 		txtPhone.setColumns(10);
-		txtPhone.setBounds(580, 21, 290, 19);
+		//txtPhone.setBounds(580, 21, 290, 20);
+		txtPhone.setBounds(600, 21, 290, 20);
 		add(txtPhone);
 		txtPhone.setEditable(false);
 
 		lblEmailAddress = new JLabel("Email Address:");
 		lblEmailAddress.setFont(fontLabel);
-		lblEmailAddress.setBounds(440, 51, 131, 15);
+		//lblEmailAddress.setBounds(440, 51, 131, 20);
+		lblEmailAddress.setBounds(460, 51, 131, 20);
 		add(lblEmailAddress);
 		
 
 		txtEmail = new JTextField();
 		txtEmail.setFont(fontTextBox);
 		txtEmail.setColumns(10);
-		txtEmail.setBounds(580, 51, 290, 19);
+		//txtEmail.setBounds(580, 51, 290, 20);
+		txtEmail.setBounds(600, 51, 290, 20);
 		add(txtEmail);
 		txtEmail.setEditable(false);
 
@@ -148,17 +166,19 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		// btnSave.setBounds(780, 80, 90, 25);
 		// add(btnSave);
 
-		btnAddSkill = new JButton("Add  ");
+		btnAddSkill = new JButton("Add Skill");
 		btnAddSkill.addActionListener(this);
 		btnAddSkill.setFont(fontButton);
-		btnAddSkill.setBounds(180, 392, 145, 25);
+		//btnAddSkill.setBounds(180, 392, 145, 25);
+		btnAddSkill.setBounds(240, 392, 150, 25);
 		add(btnAddSkill);
 
-		btnDeleteSkill = new JButton("Delete  ");
+		btnDeleteSkill = new JButton("Delete Skill");
 		btnDeleteSkill.addActionListener(this);
 		btnDeleteSkill.setEnabled(false);
 		btnDeleteSkill.setFont(fontButton);
-		btnDeleteSkill.setBounds(377, 392, 145, 25);
+		//btnDeleteSkill.setBounds(377, 392, 145, 25);
+		btnDeleteSkill.setBounds(510, 392, 150, 25);
 		add(btnDeleteSkill);
 
 //		btnSaveMySkill = new JButton("Save  ");
@@ -258,8 +278,10 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		scrollPaneEndorsementRequests.setBounds(140, 440, 620, 132);
 		add(scrollPaneEndorsementRequests);
 
-		btnEndorse = new JButton("Endorse");
-		btnEndorse.setBounds(221, 595, 145, 25);
+		btnEndorse = new JButton("Endorse Colleague");
+		//btnEndorse.setBounds(221, 595, 145, 25);
+		btnEndorse.setBounds(350, 595, 200, 25);
+		btnEndorse.setFont(fontButton);
 		btnEndorse.addActionListener(this);
 		add(btnEndorse);
 
