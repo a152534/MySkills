@@ -37,6 +37,8 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 	
 	private boolean endorsementRequested, endorsementAdded;
 	private int selectedLevel, loggedOnUserSkillId;
+	private Font fontLabel, fontButton, fontTextArea, fontTextBox, fontComboBox;
+
 	 
 
 	/**
@@ -45,11 +47,17 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 	public Colleague2(CommonStuff inCommonStuff)
 	{
 		commonStuff = inCommonStuff;
+		
+		fontLabel = commonStuff.getFontLabel();
+		fontButton = commonStuff.getFontButton();
+		fontTextArea = commonStuff.getFontTextArea();
+		fontTextBox = commonStuff.getFontTextBox();
+		fontComboBox = commonStuff.getFontComboBox();
 		setLayout(null);
-		setLayout(null);
+
 		
 		lookupField = new JTextField();
-		lookupField.setFont(new Font("Arial", Font.PLAIN, 18));
+		lookupField.setFont(fontTextBox);
 		lookupField.setBounds(242, 25, 302, 22);
 		lookupField.setVisible(true);
 		lookupField.setEnabled(true);
@@ -57,14 +65,14 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		
 		
 		colleagueSearchBox = new JComboBox();
-		colleagueSearchBox.setFont(new Font("Arial", Font.PLAIN, 18));
+		colleagueSearchBox.setFont(fontTextBox);
 		colleagueSearchBox.setBounds(242, 50, 302, 22);
 		colleagueSearchBox.setVisible(false);
 		colleagueSearchBox.setEnabled(false);
 		add(colleagueSearchBox);
 		
 		displaySelected = new JTextField();
-		displaySelected.setFont(new Font("Arial", Font.PLAIN, 18));
+		displaySelected.setFont(fontTextBox);
 		displaySelected.setEditable(false);
 		displaySelected.setBounds(242, 75, 302, 22);
 		displaySelected.setVisible(false);
@@ -73,7 +81,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		
 		
 		lookupButton = new JButton("Lookup");
-		lookupButton.setFont(new Font("Arial", Font.BOLD, 18));
+		lookupButton.setFont(fontButton);
 		lookupButton.setBounds(556, 25, 120, 25);
 		lookupButton.setVisible(true);
 		lookupButton.setEnabled(true);
@@ -81,7 +89,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		add(lookupButton);
 		
 		selectButton = new JButton("Select");
-		selectButton.setFont(new Font("Arial", Font.BOLD, 18));
+		selectButton.setFont(fontButton);
 		selectButton.setBounds(556, 50, 120, 25);
 		selectButton.setVisible(false);
 		selectButton.setEnabled(false);
@@ -89,7 +97,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		add(selectButton);
 		
 		requestButton = new JButton("Request Endorsement");
-		requestButton.setFont(new Font("Arial", Font.BOLD, 18));
+		requestButton.setFont(fontButton);
 		requestButton.setBounds(190, 500, 240, 25);
 		requestButton.setVisible(false);
 		requestButton.setEnabled(false);
@@ -97,7 +105,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		add(requestButton);
 		
 		saveButton = new JButton("Save");
-		saveButton.setFont(new Font("Arial", Font.BOLD, 18));
+		saveButton.setFont(fontButton);
 		saveButton.setBounds(556, 500, 120, 25);
 		saveButton.setVisible(false);
 		saveButton.setEnabled(false);
@@ -168,6 +176,8 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 				
 				System.out.println("Colleague table changed event at row  " + row);
 				int endorseLevel = (int) colleagueModel.getValueAt(row, 2);
+				
+				
 			}
 		});
 		
@@ -216,9 +226,10 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 	
 	public ArrayList<Endorsement> saveEndorsement()
 	{	
+		Skill_Levels level = Skill_Levels.Notice;
 		ArrayList<Endorsement> endorsement = new ArrayList<Endorsement>();
 
-		selectedLevel = (int)(endorseBox.getSelectedIndex());//Check this!!!!
+		selectedLevel = (int)(level.getValue());
 		endorsement.add(new Endorsement(this.getLoggedOnUserSkillId(), commonStuff.getLoggedOnUser().getUserID(), selectedLevel));
 		return endorsement;
 	}
@@ -257,6 +268,14 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 				if(users != null)
 				{
 					setupColleagueSelection(users);
+					displaySelected.setVisible(false);
+					scrollPaneColleagueSkills.removeAll();
+					scrollPaneColleagueSkills.validate();
+					scrollPaneColleagueSkills.repaint();
+//					scrollPaneColleagueSkills.add(tableColleagueSkills);
+					scrollPaneColleagueSkills.validate();
+					scrollPaneColleagueSkills.repaint();
+					
 				}
 				else
 				{

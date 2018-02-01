@@ -66,7 +66,6 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 	}
 	public void setValueAt(Object value, int row, int col) 
 	{
-//		int sl =0;
 		
 		Skill_Levels level = Skill_Levels.Notice;
 //      ratedSkills.get(row).setLevel(Integer.parseInt((String)value)); 
@@ -74,18 +73,11 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 		System.out.println("Object: " +  value + " Row: " + row + " Col: " + col);
      
 		ratedSkills.get(row).setLevel((int)level.ordinal());
-		
-        
-//		for(Skill_Levels skillLevel : Skill_Levels.values())
-//		{
-//			sl = skillLevel.getValue();
-//		}
-//		
-//        ratedSkills.get(row).setLevel(sl);
-//
-        System.out.println("New value: " + ratedSkills.get(row).getLevel() );		
+
+        System.out.println("New value: " + ratedSkills.get(row).getLevel() + " " + value);		
         		
         fireTableCellUpdated(row, col);
+        fireTableDataChanged();
 
  
     }

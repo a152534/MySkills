@@ -18,7 +18,7 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 	private Reports2 reports = null;
 	private JButton logoffButton = null;
 	private ColleagueProfile colleague;
-	private Colleague colleague1;
+	private Colleague2 colleague2;
 	private Admin admin;
 	//private Graphs graphs ;
 	
@@ -28,7 +28,7 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 		
 		myProfile =  new MyProfile1(commonStuff );
 		colleague = new ColleagueProfile(commonStuff);
-		colleague1 = new Colleague(commonStuff);
+		colleague2 = new Colleague2(commonStuff);
 		admin = new Admin(commonStuff);
 		skillsSearch = new SkillsSearch(commonStuff);
 		//graphs = new Graphs( commonStuff);
@@ -44,11 +44,11 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 		
 		this.addTab("My Profile", myProfile);
 		this.addTab("Colleague", colleague);
-		this.addTab("Colleague_T", colleague1);
+		this.addTab("Colleague_T", colleague2);
 		this.addTab("Skills Search", skillsSearch);
 		this.addTab("Reports", reports);
 		this.addTab("Admin", admin);
-		//this.addTab("Pretty Pictoures" , graphs);
+		//this.addTab("Pretty Pictures" , graphs);
 
 		addChangeListener(new ChangeListener() {
 	    
