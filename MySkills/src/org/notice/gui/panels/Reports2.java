@@ -62,6 +62,7 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
     /**
      * Create the panel.
      */
+	
     public Reports2(CommonStuff inCommonStuff)
     {
     	commonStuff = inCommonStuff;
