@@ -52,6 +52,7 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 	private JButton btnExportUserToExcel;
 	private JButton btnNewButton;
 	private JButton btnNewButton_1;
+	private JButton btnUserDetail;
 	private JFileChooser fileChooser = null;
 	private Font fontLabel;
 	private Font fontButton;
@@ -102,6 +103,13 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
     	btnSkills.addActionListener(this);
     	btnUsersForSelected.addActionListener(this);
     	
+    	btnUserDetail = new JButton("User Details");
+    	btnUserDetail.setBounds(350, 650, 250, 25);
+    	btnUserDetail.setFont(fontButton);
+    	btnUserDetail.addActionListener(this);
+    	btnUserDetail.setEnabled(false);
+    	btnUserDetail.addActionListener(this);
+    	
     
     	transaction = new Transaction("getSkillsReport", null);
 	transaction = commonStuff.getClient().sendTransaction(transaction);
@@ -118,6 +126,7 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
     	add(btnExportSkillsToExcel);
     	add(btnUsersForSelected);
     	add(btnExportUserToExcel);
+    	add(btnUserDetail);
 
     }
     
@@ -228,8 +237,10 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
     @Override
     public void valueChanged(ListSelectionEvent e)
     {
+	
 	btnUsersForSelected.setEnabled(true);
-	 rowId =tableSkillsReport.getSelectedRow();
+	rowId =tableSkillsReport.getSelectedRow();
+	
 	 
     }
 
@@ -245,6 +256,7 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 	        {
 		
 		btnUsersForSelected.setEnabled(false);
+		 btnUserDetail.setEnabled(false);
 		tableSkillsReport.setModel(myModel);
 		setColumnWidths();
 		myModel.fireTableDataChanged();
@@ -258,7 +270,6 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 	    if(source == btnUsersForSelected)
 
 	        {
-		
 		
 		skillId = Integer.parseInt(myModel.getValueAt(rowId, 1).toString());
 		skillName = tableSkillsReport.getValueAt(rowId, 0).toString();
@@ -278,19 +289,23 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 		myModelUser.fireTableDataChanged();
 		btnExportUserToExcel.setEnabled(true);
 		btnExportSkillsToExcel.setEnabled(false);
-
+		btnUserDetail.setEnabled(true);
 
 		
 	        }
 		if(source == btnExportSkillsToExcel)
-    	{
-    		exportSkillToExcel();
-    	}
-    	if(source == btnExportUserToExcel) 
-    	{
-    		exportUserToExcel();  
-    	}
-
+        	{
+        		exportSkillToExcel();
+        	}
+        	if(source == btnExportUserToExcel) 
+        	{
+        		exportUserToExcel();  
+        	}
+        	if(source == btnUserDetail) 
+        	{
+        	    
+        		//commonStuff.setColleague();
+        	}
 		
 	
     }
