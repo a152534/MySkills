@@ -206,7 +206,8 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 			for (int count = 0; count < userSkillReport.size(); count++)
 			{
 				 
-				msg =   userSkillReport.get(count).getSurname() + "," 
+				msg =   userSkillReport.get(count).getSurname() + " " +
+						userSkillReport.get(count).getFirstName() + ","
 						+ userSkillReport.get(count).getSkillName() + "," 
 						+ userSkillReport.get(count).getAvgEndorsement() + "," 
 						+ userSkillReport.get(count).getNumOfEndorsements(); 
