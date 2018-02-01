@@ -301,7 +301,7 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 			String selectedID = (String) tableEndorsementRequests.getValueAt(tableEndorsementRequests.getSelectedRow(), 1);
 			User coll = new User(selectedID, null	,null,null,null,null);
 			commonStuff.setColleague(coll);
-			commonStuff.getTabbedPane().setSelectedIndex(1);
+			commonStuff.getTabbedPane().setSelectedIndex(2);
 		}
 
 

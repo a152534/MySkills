@@ -1,8 +1,14 @@
 package org.notice.beans;
 
-public class Endorsement
+import java.io.Serializable;
+
+public class Endorsement implements Serializable 
 {
-    int userSkillId = 0 , level = 0;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	int userSkillId = 0 , level = 0;
     String endorser = null;
     
     public Endorsement(int userSkillId, String endorser, int level)

@@ -36,7 +36,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 			Expert = null;
 	
 	private boolean endorsementRequested, endorsementAdded;
-	private int selectedLevel, loggedOnUserSkillId;
+	private int selectedLevel, colleagueSkillId;
 	private Font fontLabel, fontButton, fontTextArea, fontTextBox, fontComboBox;
 
 	 
@@ -53,12 +53,15 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		fontTextArea = commonStuff.getFontTextArea();
 		fontTextBox = commonStuff.getFontTextBox();
 		fontComboBox = commonStuff.getFontComboBox();
+		
 		setLayout(null);
 
 		
 		lookupField = new JTextField();
 		lookupField.setFont(fontTextBox);
 		lookupField.setBounds(242, 25, 302, 22);
+//		System.out.println(commonStuff.getColleague());
+//		System.out.println(commonStuff.getColleague().getAliasName());
 		lookupField.setVisible(true);
 		lookupField.setEnabled(true);
 		add(lookupField);
@@ -111,17 +114,28 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		saveButton.setEnabled(false);
 		saveButton.addActionListener(this);
 		add(saveButton);
+		
+		if(commonStuff.getColleague() != null &&commonStuff.getColleague().getAliasName() != null)
+		{
+			this.populateColleagueWhoRequestedEndorsement();
+		}
 
 	}
 	
-	class colleagueListiner implements ListSelectionListener
-	{
-		public void valueChanged(ListSelectionEvent e)
-		{
-			saveButton.setVisible(true);
-			saveButton.setEnabled(true);
-		}
-	}
+//	class colleagueListiner implements ListSelectionListener
+//	{
+//		public void valueSelected(ListSelectionEvent e)
+//		{
+//
+//		}
+//
+//		@Override
+//		public void valueChanged(ListSelectionEvent e)
+//		{
+//			saveButton.setVisible(true);
+//			saveButton.setEnabled(true);
+//		}
+//	}
 		
 	public String setupColleagueSelection(ArrayList<User> users)
 	{
@@ -164,8 +178,8 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		colleagueModel = new ColleagueProfileSkillTableModel(ratedSkills);
 		tableColleagueSkills = new JTable(colleagueModel);
 	
-		colleagueListiner cListen = new colleagueListiner();
-		tableColleagueSkills.getSelectionModel().addListSelectionListener(cListen);
+//		colleagueListiner cListen = new colleagueListiner();
+		tableColleagueSkills.getSelectionModel().addListSelectionListener(this);
 
 		tableColleagueSkills.getModel().addTableModelListener(new TableModelListener()
 		{
@@ -173,11 +187,13 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 			public void tableChanged(TableModelEvent te)
 			{
 				int row = te.getFirstRow();
-				
+				saveButton.setVisible(true);
+				saveButton.setEnabled(true);
 				System.out.println("Colleague table changed event at row  " + row);
-				int endorseLevel = (int) colleagueModel.getValueAt(row, 2);
-				
-				
+//				int selection = (int) colleagueModel.getValueAt(row, 2);
+//				Endorsement end = new Endorsement(getColleagueSkillId(), commonStuff.getLoggedOnUser().getUserID(), selection);
+//				transaction = new Transaction("createEndorsement", end);
+//				transaction = commonStuff.getClient().sendTransaction(transaction);
 			}
 		});
 		
@@ -196,6 +212,20 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		requestButton.setVisible(true);
 		requestButton.setEnabled(true);
 	}
+	
+	private void refreshSkills() {
+
+		transaction = new Transaction("getUserSkills", commonStuff.getColleague().getUserID());
+		transaction = commonStuff.getClient().sendTransaction(transaction);
+		ArrayList<RatedSkills> refreshedSkills = (ArrayList<RatedSkills>) transaction.getObject();
+		ratedSkills.clear();
+		for (RatedSkills skill : refreshedSkills)
+		{
+			ratedSkills.add(skill);
+
+		}
+		colleagueModel.fireTableDataChanged();
+	}
 
 	
 	public boolean createEndorsementRequest()
@@ -208,29 +238,32 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		return endorsementRequested;
 	}
 	
-	public int getLoggedOnUserSkillId()
+	public int getColleagueSkillId()
 	{
-		transaction = new Transaction("getUserSkills", commonStuff.getLoggedOnUser().getUserID());
+		transaction = new Transaction("getUserSkills", commonStuff.getColleague().getUserID());
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 		ratedSkills = (ArrayList<RatedSkills>) transaction.getObject();
 		
 		for(int pos = 0; pos < ratedSkills.size(); pos++)
 		{
-			if((commonStuff.getLoggedOnUser().getUserID()).equals(ratedSkills.get(pos).getUserId()))
+			if((commonStuff.getColleague().getUserID()).equals(ratedSkills.get(pos).getUserId()))
 			{
-				loggedOnUserSkillId =  ratedSkills.get(pos).getUserSkillId();
+				colleagueSkillId =  ratedSkills.get(pos).getUserSkillId();
 			}
 		}
-		return loggedOnUserSkillId;
+		return colleagueSkillId;
 	}
 	
-	public ArrayList<Endorsement> saveEndorsement()
+	public Endorsement saveEndorsement()
 	{	
-		Skill_Levels level = Skill_Levels.Notice;
-		ArrayList<Endorsement> endorsement = new ArrayList<Endorsement>();
-
-		selectedLevel = (int)(level.getValue());
-		endorsement.add(new Endorsement(this.getLoggedOnUserSkillId(), commonStuff.getLoggedOnUser().getUserID(), selectedLevel));
+		Skill_Levels level;
+		Endorsement endorsement;		
+		level = (Skill_Levels)endorseBox.getSelectedItem();
+		selectedLevel = level.ordinal() + 1;
+		//Add + 1 to ensure correct value pulls through from combo box, to factor out position 0
+		System.out.println("Selected level is---->>>> " + selectedLevel);
+		endorsement = new Endorsement(this.getColleagueSkillId(), commonStuff.getLoggedOnUser().getUserID(), selectedLevel);
+		System.out.println(endorsement.toString());
 		return endorsement;
 	}
 	
@@ -242,12 +275,40 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		return endorsementAdded;
 	}
 	
-//	public void populateColleagueWhoRequestedEndorsement(User userIn)
-//	{
-//		ArrayList<User> user = new ArrayList<User>();
-//		this.setupColleagueSelection(user);
-//	}
+	public void populateColleagueWhoRequestedEndorsement()
+	{
+		ArrayList<User> user = new ArrayList<User>();
+		user.add(new User(commonStuff.getColleague().getUserID(), commonStuff.getColleague().getFirstName(), commonStuff.getColleague().getSurName(),
+				commonStuff.getColleague().getAliasName(), commonStuff.getColleague().getEmail(), commonStuff.getColleague().getPhoneNumber()));
+		this.setupColleagueSelection(user);
+	}
+	
+	private User fetchuser(User selectedUser) {
+		Transaction transaction = new Transaction("getUser", selectedUser.getUserID());
+		transaction = commonStuff.getClient().sendTransaction(transaction);
 
+		if (transaction.getObject() == null) {
+			JOptionPane.showConfirmDialog(this, "Failed to find user in database ");
+		} else {
+			ArrayList<User> users = (ArrayList<User>) transaction.getObject();
+			selectedUser = users.get(0);
+			commonStuff.setColleague(selectedUser);
+		}
+		return selectedUser;
+	}
+	
+	public void reload()
+	{
+			if(commonStuff.getColleague() != null && commonStuff.getColleague().getUserID() != "-1")
+		{
+			commonStuff.setColleague(fetchuser(commonStuff.getColleague()));
+			System.out.println("reload  after if  - after fetch ");
+			System.out.println("Colleague is: " + commonStuff.getColleague());
+			this.populateColleagueWhoRequestedEndorsement();
+//			refreshSkills();
+		}
+	}
+			
 	@Override
 	public void actionPerformed(ActionEvent ae)
 	{
@@ -269,10 +330,11 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 				{
 					setupColleagueSelection(users);
 					displaySelected.setVisible(false);
+					
 					scrollPaneColleagueSkills.removeAll();
 					scrollPaneColleagueSkills.validate();
 					scrollPaneColleagueSkills.repaint();
-//					scrollPaneColleagueSkills.add(tableColleagueSkills);
+					refreshSkills();
 					scrollPaneColleagueSkills.validate();
 					scrollPaneColleagueSkills.repaint();
 					
@@ -377,7 +439,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(this, "Your colleague's profile has bene updated with your endorsement.");
+					JOptionPane.showMessageDialog(this, "Your colleague's profile has been updated with your endorsement.");
 				}
 			}
 			return;
@@ -388,7 +450,10 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 	@Override
 	public void valueChanged(ListSelectionEvent e)
 	{
-		// TODO Auto-generated method stub
+		if (e.getSource() == tableColleagueSkills)
+		{
+			
+		}
 		
 	}	
 		

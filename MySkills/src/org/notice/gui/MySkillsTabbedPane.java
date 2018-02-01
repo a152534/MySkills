@@ -54,12 +54,17 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 	    
 
 			@Override
-			public void stateChanged(ChangeEvent e) {
+			public void stateChanged(ChangeEvent e) 
+			{
 				System.out.println("Tab: " + getSelectedIndex());
-				if( getSelectedIndex() == 1 ) {
+				if( getSelectedIndex() == 1)
+				{
 					colleague.reload();
+				}	
+				if(getSelectedIndex() == 2)
+				{
+					colleague2.reload();
 				}
-				
 			}
 	    });
 	}
