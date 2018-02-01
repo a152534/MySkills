@@ -55,25 +55,25 @@ public class Admin extends JPanel implements ActionListener
 
 		setLayout(null);
 	
-		btnDelete = new JButton("Delete");
+		btnDelete = new JButton("Delete Skill");
 		btnDelete.setEnabled(true);
 		//btnDelete.setEnabled(false);
 		btnDelete.addActionListener(this);
 		btnDelete.setFont(fontButton);
-		btnDelete.setBounds(574, 532, 100, 25);
+		btnDelete.setBounds(510, 532, 150, 25);
 		add(btnDelete);
 
-		btnAdd = new JButton("Add");
+		btnAdd = new JButton("Add Skill");
 		btnAdd.setEnabled(true);
 		// btnAdd.setEnabled(false);
 		btnAdd.addActionListener(this);
 
 		btnAdd.setFont(fontButton);
-		btnAdd.setBounds(259, 532, 100, 25);
+		btnAdd.setBounds(270, 532, 150, 25);
 		add(btnAdd);
 		
 		skillSelector = new SkillSelector(commonStuff.getSkillsList());
-		skillSelector.setBounds(100, 32, 620, 400);
+		skillSelector.setBounds(100, 32, 620, 537);
 		
 		skills = new ArrayList<Skill>();
 	
