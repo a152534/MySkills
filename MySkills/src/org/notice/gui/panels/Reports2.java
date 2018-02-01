@@ -15,6 +15,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -89,33 +90,35 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
     	groupLayout.setHorizontalGroup(
     		groupLayout.createParallelGroup(Alignment.LEADING)
     			.addGroup(groupLayout.createSequentialGroup()
-    				.addGap(129)
-    				.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 650, GroupLayout.PREFERRED_SIZE)
-    				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-    			.addGroup(groupLayout.createSequentialGroup()
-    				.addGap(146)
     				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-    					.addComponent(btnSkills)
-    					.addComponent(btnExportSkillsToExcel))
-    				.addPreferredGap(ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
-    				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-    					.addComponent(btnExportUserToExcel)
-    					.addComponent(btnUsersForSelected))
-    				.addGap(238))
+    					.addGroup(groupLayout.createSequentialGroup()
+    						.addGap(129)
+    						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 650, GroupLayout.PREFERRED_SIZE))
+    					.addGroup(groupLayout.createSequentialGroup()
+    						.addGap(146)
+    						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+    							.addComponent(btnSkills)
+    							.addComponent(btnExportSkillsToExcel))
+    						.addPreferredGap(ComponentPlacement.RELATED, 230, Short.MAX_VALUE)
+    						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+    							.addComponent(btnUsersForSelected)
+    							.addComponent(btnExportUserToExcel))
+    						.addGap(166)))
+    				.addContainerGap())
     	);
     	groupLayout.setVerticalGroup(
     		groupLayout.createParallelGroup(Alignment.LEADING)
     			.addGroup(groupLayout.createSequentialGroup()
-    				.addGap(36)
+    				.addContainerGap()
     				.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-    					.addComponent(btnUsersForSelected)
-    					.addComponent(btnSkills))
-    				.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+    					.addComponent(btnSkills)
+    					.addComponent(btnUsersForSelected))
+    				.addPreferredGap(ComponentPlacement.RELATED)
     				.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
     					.addComponent(btnExportSkillsToExcel)
     					.addComponent(btnExportUserToExcel))
-    				.addPreferredGap(ComponentPlacement.RELATED)
-    				.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
+    				.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+    				.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 550, GroupLayout.PREFERRED_SIZE)
     				.addGap(68))
     	);
     	btnSkills.addActionListener(this);
@@ -172,6 +175,8 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 			pw.close();
 			fw.close();
 			btnExportUserToExcel.setEnabled(false);
+			JOptionPane.showMessageDialog(null, "File has been successfully exported");
+			
 			 
 			
 		} catch (IOException e)
@@ -220,6 +225,7 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 			pw.close();
 			fw.close();
 			btnExportSkillsToExcel.setEnabled(false);
+			JOptionPane.showMessageDialog(null, "File has been successfully exported");
 			
 		} catch (IOException e)
 		{
