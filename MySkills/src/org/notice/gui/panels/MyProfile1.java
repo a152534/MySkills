@@ -97,18 +97,21 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		txtName.setBounds(120, 20, 290, 20);
 		add(txtName);
 		txtName.setColumns(10);
+		txtName.setEditable(false);
 
 		txtSurname = new JTextField();
 		txtSurname.setFont(fontTextBox);
 		txtSurname.setBounds(120, 50, 290, 19);
 		add(txtSurname);
 		txtSurname.setColumns(10);
-
+		txtSurname.setEditable(false);
+		
 		txtAlias = new JTextField();
 		txtAlias.setFont(fontTextBox);
 		txtAlias.setBounds(120, 80, 290, 19);
 		add(txtAlias);
 		txtAlias.setColumns(10);
+		txtAlias.setEditable(false);
 
 		JLabel lblPhoneNumber = new JLabel("Phone number:");
 		lblPhoneNumber.setFont(fontLabel);
@@ -120,17 +123,20 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		txtPhone.setColumns(10);
 		txtPhone.setBounds(580, 21, 290, 19);
 		add(txtPhone);
+		txtPhone.setEditable(false);
 
 		lblEmailAddress = new JLabel("Email Address:");
 		lblEmailAddress.setFont(fontLabel);
 		lblEmailAddress.setBounds(440, 51, 131, 15);
 		add(lblEmailAddress);
+		
 
 		txtEmail = new JTextField();
 		txtEmail.setFont(fontTextBox);
 		txtEmail.setColumns(10);
 		txtEmail.setBounds(580, 51, 290, 19);
 		add(txtEmail);
+		txtEmail.setEditable(false);
 
 		// tableSkills = new JTable();
 		// tableSkills.setBounds(0, 0, 1, 1);
