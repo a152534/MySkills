@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import org.notice.beans.CommonStuff;
 import org.notice.beans.RatedSkills;
 import org.notice.beans.Skill;
+import org.notice.beans.SkillRatingDistribution;
 import org.notice.beans.User;
 import org.notice.client.Transaction;
 import org.notice.gui.panels.SkillSelector;
@@ -108,8 +109,8 @@ public class Graphs extends JPanel implements ActionListener {
 			return ; 
 			
 		}
-		commonStuff.setSkill(SelectedSkill);
-
+		commonStuff.getSkillsList().get(0).setSkillID(SelectedSkill.getSkillID() );
+		reloadSkill(); 
 	}
 
 	private void selectUser() {
@@ -161,6 +162,31 @@ public class Graphs extends JPanel implements ActionListener {
 				panel1.setBackground(Color.LIGHT_GRAY);
 				panel1.setBounds(475, 145, 425, 425);
 				add(panel1);// to be called when tab is selected
+				
+				validate(); 
+				repaint(); 
+	}
+	
+	public void reloadSkill() {
+		// Will remove be replaced by the graph panel
+		
+				remove(panel);
+				remove(panel1);
+				validate(); 
+			 
+				lblDescription.setText("Skill distributions for " + commonStuff.getSkillsList().get(0).getSkillName());
+				 
+				
+				panel = createChartPanel(getSkillRatingDistrubution(), "Resources by rating" );
+				panel.setBackground(Color.LIGHT_GRAY);
+				panel.setBounds(20, 145, 425, 425);
+				add(panel);
+
+//				// Will be replaced by the graph panel
+//				panel1 = createChartPanel(getDataSetUserSkillAvg(), "Skill by average rating " );
+//				panel1.setBackground(Color.LIGHT_GRAY);
+//				panel1.setBounds(475, 145, 425, 425);
+//				add(panel1);// to be called when tab is selected
 				
 				validate(); 
 				repaint(); 
@@ -230,6 +256,42 @@ public class Graphs extends JPanel implements ActionListener {
 		for (RatedSkills skill : ratedSkills) {
 			dataset.setValue(skill.getSkillName(), skill.getNumEndorsement());
 		}
+		return dataset;
+
+		
+
+	}
+	
+	private PieDataset getSkillRatingDistrubution() {
+		Transaction transaction = null;
+		if (commonStuff.getSkillsList() != null ) {
+			transaction = new Transaction("getSkillRatingdistrubution", commonStuff.getSkillsList());
+		}
+		
+		transaction = commonStuff.getClient().sendTransaction(transaction);
+		ArrayList<SkillRatingDistribution> ratings = (ArrayList<SkillRatingDistribution>) transaction.getObject();
+		DefaultPieDataset dataset = new DefaultPieDataset();
+		int[] bands = new int[] {0,0,0,0,0}; 
+		for ( SkillRatingDistribution rating : ratings) {
+			double  avg = rating.getAverageRating() ; 
+			if(avg  < 1 ) {bands[0] ++ ;  }
+			if(avg >= 1 && avg < 2 ) {bands[1] ++ ;  }
+			if(avg >= 2 && avg < 3 ) {bands[2] ++ ;  }
+			if(avg >= 3 && avg < 4 ) {bands[3] ++ ;  }
+			if(avg >= 4 && avg <= 5 ) {bands[4] ++ ;  }
+			
+			
+		}
+		
+		
+			dataset.setValue("Not Rated ", bands[0]);
+			dataset.setValue(" 1 -2  ", bands[1]);
+			dataset.setValue(" 2 -3  ", bands[2]);
+			dataset.setValue(" 3 -4  ", bands[3]);
+			dataset.setValue(" 4 -5  ", bands[4]);
+			
+			
+		
 		return dataset;
 
 		

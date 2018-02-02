@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javax.swing.plaf.SliderUI;
+
 import org.notice.beans.*;
 import org.notice.client.Transaction;
 import org.notice.dao.MySkillsDAO;
@@ -164,6 +166,14 @@ public class BusinessControl {
 			transaction.setDescription("getUserEndorsementPerSkill");
 			break;
 		}
+		
+		case "getSkillRatingdistrubution": {
+			ArrayList<Skill> skills = (ArrayList<Skill>) transaction.getObject();
+			
+			transaction.setObject(this.getSkillRatingdistribution(skills));
+			transaction.setDescription("getSkillRatingdistrubution");
+			break;
+		}
 
 		default:
 			System.out.println("Incorrect selection");
@@ -173,6 +183,8 @@ public class BusinessControl {
 		return transaction;
 
 	}
+
+	
 
 	public boolean validateUser(String userId) {
 		this.userId = userId;
@@ -306,6 +318,30 @@ public class BusinessControl {
 		return userSkillList;
 	}
 
+	private ArrayList<SkillRatingDistribution> getSkillRatingdistribution(ArrayList<Skill> skills) {
+		int skillId = skills.get(0).getSkillID() ; 
+		ArrayList<SkillRatingDistribution> ratings =  new ArrayList<SkillRatingDistribution>() ; 
+		String selectStatement = "select * from v_skill_rating_distribution where skill_id = " + skillId ;
+		try {
+			userSkillResult = skillsDB.queryDB(selectStatement);
+			while (userSkillResult.next()) {
+				skillId = userSkillResult.getInt("skill_id");
+				skillName = userSkillResult.getString("skill_name");
+				userSkillId = userSkillResult.getInt("user_skill_id");
+				double averageRating = userSkillResult.getDouble("average_rating");
+				ratings.add(new SkillRatingDistribution(skillId, skillName, userSkillId, averageRating)) ; 
+				
+				
+			}	
+			
+		} catch (SQLException se) {
+			System.out.println("ERROR: " + se.getMessage());
+			return null;
+		
+		} 
+		return ratings ; 
+		
+	}
 	public ArrayList<Skill> searchSkills(String skillName) {
 		this.skillName = skillName;
 		skillList = new ArrayList<Skill>();
