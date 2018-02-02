@@ -25,7 +25,11 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 	private ArrayList<RatedSkills> ratedSkills;
 	private String[] columnNames = { "Skill", "Level", "Endorse" };
 	
-
+	public ColleagueProfileSkillTableModel()
+	{
+						
+	}
+	
 	public ColleagueProfileSkillTableModel(ArrayList<RatedSkills> ratedSkills)
 	{
 		super();
@@ -33,6 +37,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 		System.out.println("ColleagueProfileSkillTableModel :  rows in User Skills " + ratedSkills.size());
 		
 	}
+	
 
 	@Override
 	public int getRowCount()

@@ -119,6 +119,15 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		{
 			this.populateColleagueWhoRequestedEndorsement();
 		}
+		ratedSkills = new ArrayList<RatedSkills>();
+		colleagueModel = new ColleagueProfileSkillTableModel(ratedSkills);
+		tableColleagueSkills = new JTable(colleagueModel);
+		scrollPaneColleagueSkills = new JScrollPane(tableColleagueSkills);
+		scrollPaneColleagueSkills.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPaneColleagueSkills.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPaneColleagueSkills.setBounds(150, 150, 620, 320);
+		add(scrollPaneColleagueSkills);
+		
 
 	}
 	
@@ -176,9 +185,10 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		ratedSkills = (ArrayList<RatedSkills>) transaction.getObject();
 		
 		colleagueModel = new ColleagueProfileSkillTableModel(ratedSkills);
-		tableColleagueSkills = new JTable(colleagueModel);
-	
-//		colleagueListiner cListen = new colleagueListiner();
+		tableColleagueSkills.setModel(colleagueModel);
+		colleagueModel.fireTableDataChanged();
+		
+		
 		tableColleagueSkills.getSelectionModel().addListSelectionListener(this);
 
 		tableColleagueSkills.getModel().addTableModelListener(new TableModelListener()
@@ -190,10 +200,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 				saveButton.setVisible(true);
 				saveButton.setEnabled(true);
 				System.out.println("Colleague table changed event at row  " + row);
-//				int selection = (int) colleagueModel.getValueAt(row, 2);
-//				Endorsement end = new Endorsement(getColleagueSkillId(), commonStuff.getLoggedOnUser().getUserID(), selection);
-//				transaction = new Transaction("createEndorsement", end);
-//				transaction = commonStuff.getClient().sendTransaction(transaction);
+
 			}
 		});
 		
@@ -204,10 +211,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		setUpLevelColumn(tableColleagueSkills, tableColleagueSkills.getColumnModel().getColumn(2));
 		colleagueModel.fireTableDataChanged();
 		
-		scrollPaneColleagueSkills = new JScrollPane(tableColleagueSkills);
-		scrollPaneColleagueSkills.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPaneColleagueSkills.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPaneColleagueSkills.setBounds(150, 150, 620, 320);
+		
 		add(scrollPaneColleagueSkills);
 		requestButton.setVisible(true);
 		requestButton.setEnabled(true);
@@ -222,9 +226,13 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		for (RatedSkills skill : refreshedSkills)
 		{
 			ratedSkills.add(skill);
+			System.out.println("in refresh loop");
 
 		}
+		setUpLevelColumn(tableColleagueSkills, tableColleagueSkills.getColumnModel().getColumn(2));
 		colleagueModel.fireTableDataChanged();
+		requestButton.setVisible(true);
+		requestButton.setEnabled(true);
 	}
 
 	
@@ -317,7 +325,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		
 		if(source == lookupButton)
 		{
-			if((lookupField.getText()) == null)
+			if((lookupField.getText()).equals(""))
 			{
 				JOptionPane.showMessageDialog(this, "Invalid Selection. Please type a search Name, Surname or User ID");
 			}
@@ -326,18 +334,11 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 				transaction = new Transaction("getUserList", lookupField.getText());
 				transaction = commonStuff.getClient().sendTransaction(transaction);
 				users = (ArrayList<User>) transaction.getObject();
-				if(users != null)
+				if(!users.isEmpty())
 				{
 					setupColleagueSelection(users);
 					displaySelected.setVisible(false);
-					
-					scrollPaneColleagueSkills.removeAll();
-					scrollPaneColleagueSkills.validate();
-					scrollPaneColleagueSkills.repaint();
-					refreshSkills();
-					scrollPaneColleagueSkills.validate();
-					scrollPaneColleagueSkills.repaint();
-					
+																				
 				}
 				else
 				{
@@ -349,11 +350,12 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		
 		if(source == selectButton)
 		{
-			searchName = (String)colleagueSearchBox.getSelectedItem();
-			if(searchName != null)
+			
+		    searchID = users.get(colleagueSearchBox.getSelectedIndex()).getUserID();
+		    System.out.println("select Button  searchID = " + searchID);
+			if(searchID != null)
 			{
-				int delimeter = searchName.indexOf(':');
-				searchID = searchName.substring(delimeter + 2);
+				
 				if(searchID.equals(commonStuff.getLoggedOnUser().getUserID()))
 				{
 					JOptionPane.showMessageDialog(this, "May not select yourself as a colleague.");
@@ -372,11 +374,14 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 				else
 				{
 					ArrayList<User> user = new ArrayList<User>();
-					this.populateColleagueSkillsTable(searchID);
+					
 					transaction = new Transaction("getUser", searchID);
 					transaction = commonStuff.getClient().sendTransaction(transaction);
 					user = (ArrayList<User>) transaction.getObject();
-					
+					commonStuff.setColleague(user.get(0));
+					//this.populateColleagueSkillsTable(searchID);
+					refreshSkills();
+										
 					for(int pos = 0; pos < user.size(); pos++)
 					{
 						commonStuff.setColleague(new User(searchID, user.get(pos).getFirstName(), user.get(pos).getSurName(), user.get(pos).getAliasName(),
