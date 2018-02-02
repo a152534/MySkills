@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import org.notice.beans.CommonStuff;
 import org.notice.beans.RatedSkills;
 import org.notice.beans.Skill;
+import org.notice.beans.SkillDistribution;
 import org.notice.beans.SkillRatingDistribution;
 import org.notice.beans.User;
 import org.notice.client.Transaction;
@@ -109,7 +110,7 @@ public class Graphs extends JPanel implements ActionListener {
 			return ; 
 			
 		}
-		commonStuff.getSkillsList().get(0).setSkillID(SelectedSkill.getSkillID() );
+		commonStuff.setSkill(SelectedSkill );
 		reloadSkill(); 
 	}
 
@@ -138,7 +139,7 @@ public class Graphs extends JPanel implements ActionListener {
 			selectedUser = fetchuser(selectedUser);
 		}
 		commonStuff.setColleague(selectedUser);
-		reload(); 
+		//reload(); 
 		
 	}
 
@@ -174,19 +175,19 @@ public class Graphs extends JPanel implements ActionListener {
 				remove(panel1);
 				validate(); 
 			 
-				lblDescription.setText("Skill distributions for " + commonStuff.getSkillsList().get(0).getSkillName());
+				lblDescription.setText("Skill distributions for " + commonStuff.getSkill().getSkillName());
 				 
 				
-				panel = createChartPanel(getSkillRatingDistrubution(), "Resources by rating" );
+				panel = createChartPanel(getSkillRatingDistribution(), "Number of resources by average rating" );
 				panel.setBackground(Color.LIGHT_GRAY);
 				panel.setBounds(20, 145, 425, 425);
 				add(panel);
 
-//				// Will be replaced by the graph panel
-//				panel1 = createChartPanel(getDataSetUserSkillAvg(), "Skill by average rating " );
-//				panel1.setBackground(Color.LIGHT_GRAY);
-//				panel1.setBounds(475, 145, 425, 425);
-//				add(panel1);// to be called when tab is selected
+				// Will be replaced by the graph panel
+				panel1 = createChartPanel(getSkillDistribution() , " Weighted distribution  " );
+				panel1.setBackground(Color.LIGHT_GRAY);
+				panel1.setBounds(475, 145, 425, 425);
+				add(panel1);// to be called when tab is selected
 				
 				validate(); 
 				repaint(); 
@@ -262,10 +263,12 @@ public class Graphs extends JPanel implements ActionListener {
 
 	}
 	
-	private PieDataset getSkillRatingDistrubution() {
+	private PieDataset getSkillRatingDistribution() {
 		Transaction transaction = null;
-		if (commonStuff.getSkillsList() != null ) {
-			transaction = new Transaction("getSkillRatingdistrubution", commonStuff.getSkillsList());
+		if (commonStuff.getSkill() != null ) {
+			transaction = new Transaction("getSkillRatingDistribution", commonStuff.getSkill());
+		} else {
+			return null ; 
 		}
 		
 		transaction = commonStuff.getClient().sendTransaction(transaction);
@@ -284,11 +287,11 @@ public class Graphs extends JPanel implements ActionListener {
 		}
 		
 		
-			dataset.setValue("Not Rated ", bands[0]);
-			dataset.setValue(" 1 -2  ", bands[1]);
-			dataset.setValue(" 2 -3  ", bands[2]);
-			dataset.setValue(" 3 -4  ", bands[3]);
-			dataset.setValue(" 4 -5  ", bands[4]);
+			dataset.setValue("Novice/Not rated ", bands[0]);
+			dataset.setValue("Advanced Beginner", bands[1]);
+			dataset.setValue("Competency", bands[2]);
+			dataset.setValue("Proficiency", bands[3]);
+			dataset.setValue("Expertise", bands[4]);
 			
 			
 		
@@ -297,6 +300,34 @@ public class Graphs extends JPanel implements ActionListener {
 		
 
 	}
+	
+	private PieDataset getSkillDistribution() {
+		Transaction transaction = null;
+		if (commonStuff.getSkill() != null ) {
+			transaction = new Transaction("getSkillDistribution", commonStuff.getSkill());
+		} else {
+			return null; 
+		}
+		
+		transaction = commonStuff.getClient().sendTransaction(transaction);
+		ArrayList<SkillDistribution> ratings = (ArrayList<SkillDistribution>) transaction.getObject();
+		DefaultPieDataset dataset = new DefaultPieDataset();
+		int[] bands = new int[] {0,0,0,0,0}; 
+		for ( SkillDistribution rating : ratings) {
+			
+			String longName = rating.getFirstName() + " " + rating.getSurname() + "(" + rating.getAliasName() + ")" ; 
+		
+			dataset.setValue(longName , rating.getUserValue());
+			
+		}
+		
+		return dataset;
+
+		
+
+	}
+	
+	
 	private User fetchuser(User selectedUser) {
 		Transaction transaction = new Transaction("getUser", selectedUser.getUserID());
 		transaction = commonStuff.getClient().sendTransaction(transaction);

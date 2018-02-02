@@ -63,9 +63,9 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 				if( getSelectedIndex() == 2 ) {
 					colleague2.reload();
 				}
-				if( getSelectedIndex() == 6 ) {
-					graphs.reload();
-				}
+//				if( getSelectedIndex() == 6 ) {
+//					graphs.reload();
+//				}
 				
 			}
 	    });

@@ -167,11 +167,19 @@ public class BusinessControl {
 			break;
 		}
 		
-		case "getSkillRatingdistrubution": {
-			ArrayList<Skill> skills = (ArrayList<Skill>) transaction.getObject();
+		case "getSkillRatingDistribution": {
+			Skill skill = (Skill) transaction.getObject();
 			
-			transaction.setObject(this.getSkillRatingdistribution(skills));
+			transaction.setObject(this.getSkillRatingDistribution(skill));
 			transaction.setDescription("getSkillRatingdistrubution");
+			break;
+		}
+		
+		case "getSkillDistribution": {
+			Skill skill = (Skill) transaction.getObject();
+			
+			transaction.setObject(this.getSkillDistribution(skill));
+			transaction.setDescription("getSkillDistribution");
 			break;
 		}
 
@@ -318,8 +326,8 @@ public class BusinessControl {
 		return userSkillList;
 	}
 
-	private ArrayList<SkillRatingDistribution> getSkillRatingdistribution(ArrayList<Skill> skills) {
-		int skillId = skills.get(0).getSkillID() ; 
+	private ArrayList<SkillRatingDistribution> getSkillRatingDistribution(Skill skill) {
+		int skillId = skill.getSkillID() ; 
 		ArrayList<SkillRatingDistribution> ratings =  new ArrayList<SkillRatingDistribution>() ; 
 		String selectStatement = "select * from v_skill_rating_distribution where skill_id = " + skillId ;
 		try {
@@ -342,6 +350,43 @@ public class BusinessControl {
 		return ratings ; 
 		
 	}
+	
+	
+	private ArrayList<SkillDistribution> getSkillDistribution(Skill skill) {
+		int skillId = skill.getSkillID() ; 
+		ArrayList<SkillDistribution> ratings =  new ArrayList<SkillDistribution>() ; 
+		String selectStatement = "select * from v_skill_distribution where skill_id = " + skillId + " order by user_value asc ";
+		try {
+			userSkillResult = skillsDB.queryDB(selectStatement);
+			while (userSkillResult.next()) {
+				skillId = userSkillResult.getInt("skill_id");
+				skillName = userSkillResult.getString("skill_name");
+				
+				
+				userId = userSkillResult.getString("user_id");
+				firstName  = userSkillResult.getString("first_name");
+				surname = userSkillResult.getString("surname");
+				String aliasName = userSkillResult.getString("alias_name"); 
+				skillName  = userSkillResult.getString("first_name"); 
+				Double userValue = userSkillResult.getDouble("user_value");
+				
+				
+				ratings.add(new SkillDistribution(userId, firstName, surname, aliasName, skillName, skillId, userValue));
+				
+				
+			}	
+			
+		} catch (SQLException se) {
+			System.out.println("ERROR: " + se.getMessage());
+			return null;
+		
+		} 
+		return ratings ; 
+		
+	}
+	
+	
+	
 	public ArrayList<Skill> searchSkills(String skillName) {
 		this.skillName = skillName;
 		skillList = new ArrayList<Skill>();
