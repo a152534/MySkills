@@ -23,7 +23,7 @@ public class BusinessControl {
 	private ArrayList<Skill> skillList = null;
 	private ResultSet userResult = null, userSkillResult = null, skillResult = null;
 	private int userSkillId, skillId, level, numEndorsement;
-	private Long numOfResources = 0L;
+	private Long numOfResources = 0L , numOfEndorsement = 0L;
 	private BigDecimal avgEndorsement, numOfEndorsements;
 	private UserSkills US = null;
 	private Endorsement endorse = null;
@@ -526,14 +526,15 @@ public class BusinessControl {
 					String userId = userResult.getString("user_id");
 					skillId = userResult.getInt("skill_id");
 					level = userResult.getInt("level");
-					numEndorsement = userResult.getInt("num_of_endorsements");
+					numOfEndorsement = userResult.getLong("num_of_endorsements");
 					skillName = userResult.getString("skill_name");
 					firstName = userResult.getString("first_name");
 					surname = userResult.getString("surname");
 					avgEndorsement = userResult.getBigDecimal("avg_endorsement");
 					ratedSkillsList.add(
-							new UserSkillEndorsements(firstName, surname, numEndorsement, avgEndorsement, skillName));
-
+					new UserSkillEndorsements(userId, firstName, surname, " ", " "," ", skillName, 0, skillId,
+						level, numOfEndorsement, avgEndorsement));
+					
 				}
 			}
 		} catch (SQLException se) {

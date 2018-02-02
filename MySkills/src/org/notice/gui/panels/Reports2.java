@@ -28,6 +28,7 @@ import javax.swing.event.ListSelectionListener;
 import org.notice.beans.CommonStuff;
 import org.notice.beans.EndorsementsPerSkill;
 import org.notice.beans.Skill;
+import org.notice.beans.User;
 import org.notice.beans.UserSkillEndorsements;
 import org.notice.client.Transaction;
 import org.notice.tablemodel.ReportsSkillsReportTableModel;
@@ -41,11 +42,12 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 	private  ArrayList<EndorsementsPerSkill> skillReport = null;
 	private  ArrayList<UserSkillEndorsements> userSkillReport = null;
 	private ArrayList<Skill> skillList = null;
+	private User user = null;
 	private Transaction transaction = null;
 	private CommonStuff commonStuff;
 	private JTable tableSkillsReport = null , tableUserSkillsReport = null;
 	private int skillId = 0 ,  rowId = 0;   
-	private String skillName;
+	private String skillName , userName , userId;
 	private ReportsSkillsReportTableModel myModel = null;
 	private Skill skillobj = null;
 	private JButton btnExportSkillsToExcel;
@@ -315,8 +317,13 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
         	}
         	if(source == btnUserDetail) 
         	{
-        	    
-        		//commonStuff.setColleague();
+        	    userId = userSkillReport.get(rowId).getUserId();
+        	    userName = userSkillReport.get(rowId).getFirstName();
+        	    System.out.println("skillreprot length " +userSkillReport.size() );
+        	    System.out.println("userdetail " + userId + "rowid " + rowId + "name " + userName);
+//        	    user = User(userId,userName);
+//        	    commonStuff.setColleague(userName);
+//        	    user = commonStuff.getColleague();
         	}
 		
 	
