@@ -9,6 +9,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.notice.beans.CommonStuff;
+import org.notice.graphs.Graphs;
 
 public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 {
@@ -20,7 +21,7 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 	private ColleagueProfile colleague;
 	private Colleague2 colleague2;
 	private Admin admin;
-	//private Graphs graphs ;
+	private Graphs graphs ;
 	
 	public MySkillsTabbedPane(JPanel basePanel, CommonStuff commonStuff)
 	{
@@ -31,7 +32,7 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 		colleague2 = new Colleague2(commonStuff);
 		admin = new Admin(commonStuff);
 		skillsSearch = new SkillsSearch(commonStuff);
-		//graphs = new Graphs( commonStuff);
+		graphs = new Graphs( commonStuff);
 				
 		skillsAdmin = new JPanel();
 		reports = new Reports2(commonStuff);
@@ -48,23 +49,24 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 		this.addTab("Skills Search", skillsSearch);
 		this.addTab("Reports", reports);
 		this.addTab("Admin", admin);
-		//this.addTab("Pretty Pictures" , graphs);
+		this.addTab("Pretty Pictures" , graphs);
 
 		addChangeListener(new ChangeListener() {
 	    
 
 			@Override
-			public void stateChanged(ChangeEvent e) 
-			{
+			public void stateChanged(ChangeEvent e) {
 				System.out.println("Tab: " + getSelectedIndex());
-				if( getSelectedIndex() == 1)
-				{
+				if( getSelectedIndex() == 1 ) {
 					colleague.reload();
-				}	
-				if(getSelectedIndex() == 2)
-				{
+				}
+				if( getSelectedIndex() == 2 ) {
 					colleague2.reload();
 				}
+				if( getSelectedIndex() == 6 ) {
+					graphs.reload();
+				}
+				
 			}
 	    });
 	}
