@@ -24,7 +24,7 @@ public class EndorseNominationModel extends AbstractTableModel {
 	@Override
 	public int getRowCount() {
 		// TODO Auto-generated method stub
-		return 2;
+		return nominations.size();
 	}
 
 	@Override
