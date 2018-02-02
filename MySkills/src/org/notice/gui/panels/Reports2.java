@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -141,7 +142,10 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
    	 
     	fileChooser = new JFileChooser("C:\\Users");
 		fileChooser.showSaveDialog(this);
-		File file = fileChooser.getSelectedFile();
+	
+ 
+  
+
 	//	file = new File("C:\\Users\\a044339\\java\\javaprojects\\javaio\\Skills.csv");
 		
 		FileWriter fw = null;
@@ -149,48 +153,53 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 		
 		try
 		{
-			fw = new FileWriter(file);
-			pw = new PrintWriter(fw);
-			String msg = null;
-			msg = "Skills, Number Of Endorsements, Avgerage Endorsement, Number Of Resources";
-			pw.println(msg);
-			
-			for (int count = 0; count < skillReport.size(); count++)
-			{
-				msg =   skillReport.get(count).getSkillName() + "," 
-						+ skillReport.get(count).getNumEndorsements() + "," 
-						+ skillReport.get(count).getAvgEndorsement() + ","
-						+ skillReport.get(count).getNumResources(); 
-						
-				pw.println(msg);
-			}
-			
-			
-			pw.close();
-			fw.close();
-			btnExportUserToExcel.setEnabled(false);
-			JOptionPane.showMessageDialog(null, "File has been successfully exported");
-			
+			int returnVal =	0;
 			 
-			
-		} catch (IOException e)
+			if (returnVal != fileChooser.APPROVE_OPTION) {
+				File file = fileChooser.getSelectedFile();  
+				fw = new FileWriter(file);
+				pw = new PrintWriter(fw);
+				String msg = null;
+				msg = "Skills, Number Of Endorsements, Avgerage Endorsement, Number Of Resources";
+				pw.println(msg);
+				
+				for (int count = 0; count < skillReport.size(); count++)
+				{
+					msg =   skillReport.get(count).getSkillName() + "," 
+							+ skillReport.get(count).getNumEndorsements() + "," 
+							+ skillReport.get(count).getAvgEndorsement() + ","
+							+ skillReport.get(count).getNumResources(); 
+							
+					pw.println(msg);
+				}
+				
+				
+				pw.close();
+				fw.close();
+				btnExportUserToExcel.setEnabled(false);
+				JOptionPane.showMessageDialog(null, "File has been successfully exported");
+			}
+				
+			} catch (IOException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	 
 		finally
 		{
-			pw.close();
+		 
+		//	pw.close();
 			 
 		}
-		
-	}
+    }
+ 
     
     private void exportUserToExcel() {
     	fileChooser = new JFileChooser("C:\\Users");
 		fileChooser.showSaveDialog(this);
 		File file = fileChooser.getSelectedFile();
-
+		 
 //		file = new File("C:\\Users\\a044339\\java\\javaprojects\\javaio\\Users.csv");
 		
 		FileWriter fw = null;
@@ -198,30 +207,33 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 		
 		try
 		{
-			fw = new FileWriter(file);
-			pw = new PrintWriter(fw);
-			
-			String msg = null;
-			msg = "Name, Skill, Endorsement Average, Number of Endorsements";
-			pw.println(msg);
-			
-			for (int count = 0; count < userSkillReport.size(); count++)
-			{
-				 
-				msg =   userSkillReport.get(count).getSurname() + " " +
-						userSkillReport.get(count).getFirstName() + ","
-						+ userSkillReport.get(count).getSkillName() + "," 
-						+ userSkillReport.get(count).getAvgEndorsement() + "," 
-						+ userSkillReport.get(count).getNumOfEndorsements(); 
-						
+			int returnVal =	0;
+			 
+			if (returnVal != fileChooser.APPROVE_OPTION) {
+				fw = new FileWriter(file);
+				pw = new PrintWriter(fw);
+				
+				String msg = null;
+				msg = "Name, Skill, Endorsement Average, Number of Endorsements";
 				pw.println(msg);
-			}
-			
-			pw.close();
-			fw.close();
-			btnExportSkillsToExcel.setEnabled(false);
-			JOptionPane.showMessageDialog(null, "File has been successfully exported");
-			
+				
+				for (int count = 0; count < userSkillReport.size(); count++)
+				{
+					 
+					msg =   userSkillReport.get(count).getSurname() + " " +
+							userSkillReport.get(count).getFirstName() + ","
+							+ userSkillReport.get(count).getSkillName() + "," 
+							+ userSkillReport.get(count).getAvgEndorsement() + "," 
+							+ userSkillReport.get(count).getNumOfEndorsements(); 
+							
+					pw.println(msg);
+				}
+				
+				pw.close();
+				fw.close();
+				btnExportSkillsToExcel.setEnabled(false);
+				JOptionPane.showMessageDialog(null, "File has been successfully exported");
+			}		
 		} catch (IOException e)
 		{
 			// TODO Auto-generated catch block
@@ -229,7 +241,7 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 		}
 		finally
 		{
-			pw.close();
+			//pw.close();
 			 
 		}
 		
