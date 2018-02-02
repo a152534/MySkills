@@ -181,12 +181,7 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		btnDeleteSkill.setBounds(510, 392, 150, 25);
 		add(btnDeleteSkill);
 
-//		btnSaveMySkill = new JButton("Save  ");
-//		btnSaveMySkill.addActionListener(this);
-//		btnSaveMySkill.setFont(fontButton);
-//
-//		btnSaveMySkill.setBounds(575, 392, 145, 25);
-//		add(btnSaveMySkill);
+
 
 		populateUserInfo();
 		populateSkills();

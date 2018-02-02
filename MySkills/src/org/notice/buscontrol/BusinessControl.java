@@ -639,7 +639,7 @@ public class BusinessControl {
 			}
 		} catch (SQLException se) {
 			System.out.println("ERROR: " + se.getMessage());
-			return null;
+			return  nominations;
 		}
 
 		return nominations;
