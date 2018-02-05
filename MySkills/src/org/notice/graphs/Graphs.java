@@ -314,10 +314,10 @@ public class Graphs extends JPanel implements ActionListener {
 		DefaultPieDataset dataset = new DefaultPieDataset();
 		int[] bands = new int[] {0,0,0,0,0}; 
 		for ( SkillDistribution rating : ratings) {
-			
+			System.out.println(" bands ");
 			String longName = rating.getFirstName() + " " + rating.getSurname() + "(" + rating.getAliasName() + ")" ; 
 		
-			dataset.setValue(longName , rating.getUserValue());
+			dataset.setValue(longName , rating.getUserValue()  );
 			
 		}
 		

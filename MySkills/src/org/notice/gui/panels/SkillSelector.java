@@ -95,7 +95,7 @@ public class SkillSelector extends JPanel implements ListSelectionListener {
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		if (skillTable.getSelectedRow() > 0) {
+		if (skillTable.getSelectedRow() >= 0) {
 			int skillId = (int) skillTable.getValueAt(skillTable.getSelectedRow(), 1);
 			String skillName = (String) skillTable.getValueAt(skillTable.getSelectedRow(), 0);
 			selectedSkill = new Skill(skillId, skillName);
