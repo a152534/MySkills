@@ -19,11 +19,8 @@ import org.notice.enums.Skill_Levels;
 public class ColleagueProfileSkillTableModel extends AbstractTableModel
 {
 
-	private boolean DEBUG = false;
-	private Transaction transaction = null;
-	private CommonStuff commonStuff = null;
 	private ArrayList<RatedSkills> ratedSkills;
-	private String[] columnNames = { "Skill", "Level", "Endorse" };
+	private String[] columnNames = { "Skill", "Level", "Average Rating", "Endorse" };
 	
 	public ColleagueProfileSkillTableModel()
 	{
@@ -48,7 +45,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 	@Override
 	public int getColumnCount()
 	{
-		return 3;
+		return 4;
 	}
 
 	public String getColumnName(int col)
@@ -60,7 +57,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 	{
 		// Note that the data/cell address is constant,
 		// no matter where the cell appears on screen.
-		if (col == 2)
+		if (col == 3)
 		{
 			return true ;
 		}
@@ -82,7 +79,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
         System.out.println("New value: " + ratedSkills.get(row).getLevel() + " " + value);		
         		
         fireTableCellUpdated(row, col);
-        fireTableDataChanged();
+//        fireTableDataChanged();
 
  
     }
@@ -91,6 +88,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 	public Object getValueAt(int rowIndex, int columnIndex)
 	{
 		RatedSkills ratedSkill = ratedSkills.get(rowIndex);
+		Skill_Levels displayLevel;
 		
 		if (columnIndex == 0)
 		{
@@ -101,10 +99,18 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 		{
 			return ratedSkill.getLevel();
 		}
-
+		
 		if (columnIndex == 2)
 		{
+			return ratedSkill.getAvgEndorsement();
+		}
+
+		if (columnIndex == 3)
+		{
 			return ratedSkill.getNumEndorsement();
+			
+			
+//			String stringValue = Enum.GetName(typeof(Skill_Levels), ratedSkill.getNumEndorsement());
 		}
 
 		return "1";
