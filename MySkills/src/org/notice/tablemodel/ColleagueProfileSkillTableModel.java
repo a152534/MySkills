@@ -20,7 +20,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 {
 
 	private ArrayList<RatedSkills> ratedSkills;
-	private String[] columnNames = { "Skill", "Level", "Average Rating", "Endorse" };
+	private String[] columnNames = { "Skill", "Skill ID", "Level", "Average Rating", "Endorse" };
 	
 	public ColleagueProfileSkillTableModel()
 	{
@@ -45,7 +45,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 	@Override
 	public int getColumnCount()
 	{
-		return 4;
+		return 5;
 	}
 
 	public String getColumnName(int col)
@@ -57,7 +57,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 	{
 		// Note that the data/cell address is constant,
 		// no matter where the cell appears on screen.
-		if (col == 3)
+		if (col == 4)
 		{
 			return true ;
 		}
@@ -94,18 +94,23 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 		{
 			return ratedSkill.getSkillName();
 		}
-
+		
 		if (columnIndex == 1) 
+		{
+			return ratedSkill.getSkillId();
+		}
+		
+		if (columnIndex == 2) 
 		{
 			return ratedSkill.getLevel();
 		}
 		
-		if (columnIndex == 2)
+		if (columnIndex == 3)
 		{
 			return ratedSkill.getAvgEndorsement();
 		}
 
-		if (columnIndex == 3)
+		if (columnIndex == 4)
 		{
 			return ratedSkill.getNumEndorsement();
 			

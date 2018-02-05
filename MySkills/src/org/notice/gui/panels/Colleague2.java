@@ -213,7 +213,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 			System.out.println("in refresh loop");
 
 		}
-		setUpLevelColumn(tableColleagueSkills, tableColleagueSkills.getColumnModel().getColumn(3));
+		setUpLevelColumn(tableColleagueSkills, tableColleagueSkills.getColumnModel().getColumn(4));
 		colleagueModel.fireTableDataChanged();
 		requestButton.setVisible(true);
 		requestButton.setEnabled(true);
@@ -226,9 +226,10 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 			public void tableChanged(TableModelEvent te)
 			{
 				int row = te.getFirstRow();
-				
+				int skillId = (int) tableColleagueSkills.getValueAt(row, 1);
 				System.out.println("Colleague table changed event at row  " + row);
-				addEndorsement();
+				addEndorsement(skillId);
+				
 				
 			}
 		});
@@ -247,7 +248,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		return endorsementRequested;
 	}
 	
-	public int getColleagueSkillId()
+	public int getColleagueSkillId(int selectedSkill)
 	{
 		transaction = new Transaction("getUserSkills", commonStuff.getColleague().getUserID());
 		transaction = commonStuff.getClient().sendTransaction(transaction);
@@ -255,33 +256,38 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		
 		for(int pos = 0; pos < ratedSkills.size(); pos++)
 		{
-			if((commonStuff.getColleague().getUserID()).equals(ratedSkills.get(pos).getUserId()))
+			if((ratedSkills.get(pos).getSkillId()) == selectedSkill)	
 			{
 				colleagueSkillId =  ratedSkills.get(pos).getUserSkillId();
 			}
+			System.out.println("Skill ID: " + ratedSkills.get(pos).getSkillId() + " UserSkillID: "
+					+ ratedSkills.get(pos).getUserSkillId() + " userID: " + ratedSkills.get(pos).getUserId());
 		}
 		return colleagueSkillId;
+		
 	}
 	
-	public Endorsement saveEndorsement()
+	public Endorsement saveEndorsement(int skillId)
 	{	
 		Skill_Levels level;
-		Endorsement endorsement;				
+		Endorsement endorsement;
+		
 		level = (Skill_Levels)endorseBox.getSelectedItem();
 		selectedLevel = level.ordinal() + 1;
 		//Add + 1 to ensure correct value pulls through from combo box, to factor out position 0
-		System.out.println("Selected level is---->>>> " + selectedLevel);
-		endorsement = new Endorsement(this.getColleagueSkillId(), commonStuff.getLoggedOnUser().getUserID(), selectedLevel);
+		System.out.println("Selected level is---->>>> " + selectedLevel + " User Skill ID is: " + getColleagueSkillId(skillId));
+		endorsement = new Endorsement(getColleagueSkillId(skillId), commonStuff.getLoggedOnUser().getUserID(), selectedLevel);
 		System.out.println(endorsement.toString());
 		return endorsement;
 	}
 	
-	public boolean addEndorsement()
+	public boolean addEndorsement(int skillId)
 	{
-		transaction = new Transaction("createEndorsement", this.saveEndorsement());
+		transaction = new Transaction("createEndorsement", this.saveEndorsement(skillId));
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 		endorsementAdded = (boolean)transaction.getObject();
 		return endorsementAdded;
+		
 	}
 	
 	public void populateColleagueWhoRequestedEndorsement()
@@ -317,6 +323,9 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 //			refreshSkills();
 		}
 	}
+	
+
+	
 			
 	@Override
 	public void actionPerformed(ActionEvent ae)

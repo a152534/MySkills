@@ -538,8 +538,21 @@ public class BusinessControl {
 		this.endorsor = endorser;
 		this.level = level;
 		try {
-			skillsDB.updateDB("INSERT INTO endorsement VALUES (null, " + userSkillId + ",'" + endorsor + "'," + level
-					+ ", null)");
+			skillsDB = new MySkillsDAO();//Added by Tony
+			RS = skillsDB
+					.queryDB("SELECT * from endorsement where user_skill_id = '" + userSkillId + "' and endorser = " + endorser);//Added by tony
+			if (!RS.next())
+			{
+				skillsDB.updateDB("INSERT INTO endorsement VALUES (null, " + userSkillId + ",'" + endorsor + "'," + level
+						+ ", null)");//Moved into if statement by Tony
+			}
+			else
+			{
+				skillsDB.updateDB("update endorsement set level = " + level + " user_skill_id = '" + userSkillId
+						+ "' and endorser = " + endorser);//Added by Tony
+			}
+			
+
 
 		} catch (Exception e) {
 			System.out.println("ERROR: " + e.getMessage());
