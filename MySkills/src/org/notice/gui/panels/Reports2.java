@@ -246,7 +246,7 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 		}
 		
 	}
-
+   
 
     @Override
     public void valueChanged(ListSelectionEvent e)
@@ -321,9 +321,12 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
         	    userName = userSkillReport.get(rowId).getFirstName();
         	    System.out.println("skillreprot length " +userSkillReport.size() );
         	    System.out.println("userdetail " + userId + "rowid " + rowId + "name " + userName);
-//        	    user = User(userId,userName);
-//        	    commonStuff.setColleague(userName);
-//        	    user = commonStuff.getColleague();
+        	//    user.setFirstName(userName);
+        	//    user.setUserID(userId);
+        	    user  = new User(userId, null	,null,null,null,null);
+        	    commonStuff.setColleague(user);
+        	    commonStuff.getTabbedPane().setSelectedIndex(2);
+        	     	    
         	}
 		
 	
