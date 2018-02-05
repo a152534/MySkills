@@ -1,4 +1,4 @@
-ppackage org.notice.tablemodel;
+package org.notice.tablemodel;
 
 import java.awt.Component;
 import java.util.ArrayList;

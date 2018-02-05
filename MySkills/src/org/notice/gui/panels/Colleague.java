@@ -1,6 +1,7 @@
 package org.notice.gui.panels;
 
 import java.awt.*;
+
 import java.awt.event.*;
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ import org.notice.beans.*;
 import org.notice.buscontrol.BusinessControl;
 import org.notice.client.Transaction;
 import org.notice.enums.Skill_Levels;
-import org.notice.gui.panels.MyProfile1.mySkillLestenr;
+
 import org.notice.tablemodel.ColleagueProfileSkillTableModel;
 
 
