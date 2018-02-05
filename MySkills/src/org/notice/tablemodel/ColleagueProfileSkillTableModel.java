@@ -72,7 +72,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 	public void setValueAt(Object value, int row, int col) 
 	{
 		
-		Skill_Levels level = Skill_Levels.Notice;
+		Skill_Levels level = Skill_Levels.Novice;
 //      ratedSkills.get(row).setLevel(Integer.parseInt((String)value)); 
       
 		System.out.println("Object: " +  value + " Row: " + row + " Col: " + col);

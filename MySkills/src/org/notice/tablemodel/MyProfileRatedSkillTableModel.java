@@ -12,6 +12,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import org.notice.beans.RatedSkills;
+import org.notice.enums.Skill_Levels;
 
 /**
  * @author philip     
@@ -27,7 +28,7 @@ public class MyProfileRatedSkillTableModel extends AbstractTableModel {
 	public MyProfileRatedSkillTableModel(ArrayList<RatedSkills> ratedSkills) {
 		super();
 		this.ratedSkills = ratedSkills;
-		System.out.println("MyProfileRatedSkillTableModel :  rows in rated skills " + ratedSkills.size());
+		//System.out.println("MyProfileRatedSkillTableModel :  rows in rated skills " + ratedSkills.size());
 	}
 
 	@Override
@@ -57,8 +58,10 @@ public class MyProfileRatedSkillTableModel extends AbstractTableModel {
 		}
 	}
 	public void setValueAt(Object value, int row, int col) {
-        
-        ratedSkills.get(row).setLevel(Integer.parseInt((String)value));
+		Skill_Levels level =  (Skill_Levels)value ;
+				
+		ratedSkills.get(row).setLevel( (int)level.ordinal() + 1 );
+        //ratedSkills.get(row).setLevel(Integer.parseInt((String)value));
             
         fireTableCellUpdated(row, col);
 
@@ -67,7 +70,9 @@ public class MyProfileRatedSkillTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		System.out.println("row _ " + rowIndex);
+		
+		
+		
 		RatedSkills ratedSkill = ratedSkills.get(rowIndex);
 		if (columnIndex == 0) {
 			return ratedSkill.getSkillName();

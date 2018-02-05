@@ -2,7 +2,7 @@ package org.notice.enums;
 
 public enum Skill_Levels
 {
-	Notice(1),
+	Novice(1),
 	Advanced_Beginner(2),
 	Competent(3),
 	Proficient(4),

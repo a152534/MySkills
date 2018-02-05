@@ -37,8 +37,8 @@ public class Graphs extends JPanel implements ActionListener {
 	private JPanel panel;
 	private JPanel panel1;
 	private CommonStuff commonStuff;
-	private UserSelector userSelector ; 
-	private SkillSelector skillSelector ; 
+	private UserSelector userSelector;
+	private SkillSelector skillSelector;
 	private JLabel lblDescription;
 	// private PieDataset dataSet;
 	// private JFreeChart chart;
@@ -61,18 +61,19 @@ public class Graphs extends JPanel implements ActionListener {
 		add(btnUser);
 
 		// Will be replaced by the graph panel
-		panel = createChartPanel(getUserSkillsDatasetNumEndorsements(), "Skill by Number of ratings " );
+		panel = createChartPanel(getUserSkillsDatasetNumEndorsements(), "Skill by Number of ratings ");
 		panel.setBackground(Color.LIGHT_GRAY);
 		panel.setBounds(20, 145, 425, 425);
 		add(panel);
 
 		// Will be replaced by the graph panel
-		panel1 = createChartPanel(getDataSetUserSkillAvg(), "Skill by average rating " );
+		panel1 = createChartPanel(getDataSetUserSkillAvg(), "Skill by average rating ");
 		panel1.setBackground(Color.LIGHT_GRAY);
 		panel1.setBounds(475, 145, 425, 425);
 		add(panel1);
 
-		lblDescription = new JLabel("Graphs for " + commonStuff.getLoggedOnUser().getFirstName() + " " + commonStuff.getLoggedOnUser().getSurName());
+		lblDescription = new JLabel("Graphs for " + commonStuff.getLoggedOnUser().getFirstName() + " "
+				+ commonStuff.getLoggedOnUser().getSurName());
 		lblDescription.setBounds(20, 85, 383, 40);
 		add(lblDescription);
 
@@ -91,9 +92,9 @@ public class Graphs extends JPanel implements ActionListener {
 	}
 
 	private void selectSkill() {
-		
+
 		skillSelector = new SkillSelector(commonStuff.getSkillsList());
-		
+
 		int result = JOptionPane.showConfirmDialog(null, skillSelector, "Select a skill ", JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.PLAIN_MESSAGE);
 		if (result == JOptionPane.CANCEL_OPTION) {
@@ -105,13 +106,13 @@ public class Graphs extends JPanel implements ActionListener {
 		}
 
 		Skill SelectedSkill = skillSelector.getSelectedSkill();
-		if(SelectedSkill.getSkillID() == -1 ) {
+		if (SelectedSkill.getSkillID() == -1) {
 			JOptionPane.showMessageDialog(this, "No skill has been selected");
-			return ; 
-			
+			return;
+
 		}
-		commonStuff.setSkill(SelectedSkill );
-		reloadSkill(); 
+		commonStuff.setSkill(SelectedSkill);
+		reloadSkill();
 	}
 
 	private void selectUser() {
@@ -139,58 +140,58 @@ public class Graphs extends JPanel implements ActionListener {
 			selectedUser = fetchuser(selectedUser);
 		}
 		commonStuff.setColleague(selectedUser);
-		//reload(); 
-		
+		reload();
+
 	}
 
 	public void reload() {
 		// Will remove be replaced by the graph panel
-		
-				remove(panel);
-				remove(panel1);
-				validate(); 
-				if(commonStuff.getColleague() != null) {
-					lblDescription.setText("Graphs for " + commonStuff.getColleague().getFirstName() + " " + commonStuff.getColleague().getSurName());
-				}
-				
-				panel = createChartPanel(getUserSkillsDatasetNumEndorsements(), "Skill by Number of Ratings " );
-				panel.setBackground(Color.LIGHT_GRAY);
-				panel.setBounds(20, 145, 425, 425);
-				add(panel);
 
-				// Will be replaced by the graph panel
-				panel1 = createChartPanel(getDataSetUserSkillAvg(), "Skill by average rating " );
-				panel1.setBackground(Color.LIGHT_GRAY);
-				panel1.setBounds(475, 145, 425, 425);
-				add(panel1);// to be called when tab is selected
-				
-				validate(); 
-				repaint(); 
+		remove(panel);
+		remove(panel1);
+		validate();
+		if (commonStuff.getColleague() != null) {
+			lblDescription.setText("Graphs for " + commonStuff.getColleague().getFirstName() + " "
+					+ commonStuff.getColleague().getSurName());
+		}
+
+		panel = createChartPanel(getUserSkillsDatasetNumEndorsements(), "Skill by Number of Ratings ");
+		panel.setBackground(Color.LIGHT_GRAY);
+		panel.setBounds(20, 145, 425, 425);
+		add(panel);
+
+		// Will be replaced by the graph panel
+		panel1 = createChartPanel(getDataSetUserSkillAvg(), "Skill by average rating ");
+		panel1.setBackground(Color.LIGHT_GRAY);
+		panel1.setBounds(475, 145, 425, 425);
+		add(panel1);// to be called when tab is selected
+
+		validate();
+		repaint();
 	}
-	
+
 	public void reloadSkill() {
 		// Will remove be replaced by the graph panel
-		
-				remove(panel);
-				remove(panel1);
-				validate(); 
-			 
-				lblDescription.setText("Skill distributions for " + commonStuff.getSkill().getSkillName());
-				 
-				
-				panel = createChartPanel(getSkillRatingDistribution(), "Number of resources by average rating" );
-				panel.setBackground(Color.LIGHT_GRAY);
-				panel.setBounds(20, 145, 425, 425);
-				add(panel);
 
-				// Will be replaced by the graph panel
-				panel1 = createChartPanel(getSkillDistribution() , " Weighted distribution  " );
-				panel1.setBackground(Color.LIGHT_GRAY);
-				panel1.setBounds(475, 145, 425, 425);
-				add(panel1);// to be called when tab is selected
-				
-				validate(); 
-				repaint(); 
+		remove(panel);
+		remove(panel1);
+		validate();
+
+		lblDescription.setText("Skill distributions for " + commonStuff.getSkill().getSkillName());
+
+		panel = createChartPanel(getSkillRatingDistribution(), "Number of resources by average rating");
+		panel.setBackground(Color.LIGHT_GRAY);
+		panel.setBounds(20, 145, 425, 425);
+		add(panel);
+
+		// Will be replaced by the graph panel
+		panel1 = createChartPanel(getSkillDistribution(), " Weighted distribution  ");
+		panel1.setBackground(Color.LIGHT_GRAY);
+		panel1.setBounds(475, 145, 425, 425);
+		add(panel1);// to be called when tab is selected
+
+		validate();
+		repaint();
 	}
 
 	private PieDataset createDataset() {
@@ -221,7 +222,7 @@ public class Graphs extends JPanel implements ActionListener {
 	}
 
 	public JPanel createChartPanel(PieDataset dataset, String chartName) {
-		JFreeChart chart = createChart(dataset , chartName);
+		JFreeChart chart = createChart(dataset, chartName);
 		return new ChartPanel(chart);
 
 	}
@@ -240,7 +241,6 @@ public class Graphs extends JPanel implements ActionListener {
 			dataset.setValue(skill.getSkillName(), skill.getAvgEndorsement());
 		}
 		return dataset;
-		
 
 	}
 
@@ -259,75 +259,74 @@ public class Graphs extends JPanel implements ActionListener {
 		}
 		return dataset;
 
-		
-
 	}
-	
+
 	private PieDataset getSkillRatingDistribution() {
 		Transaction transaction = null;
-		if (commonStuff.getSkill() != null ) {
+		if (commonStuff.getSkill() != null) {
 			transaction = new Transaction("getSkillRatingDistribution", commonStuff.getSkill());
 		} else {
-			return null ; 
+			return null;
 		}
-		
+
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 		ArrayList<SkillRatingDistribution> ratings = (ArrayList<SkillRatingDistribution>) transaction.getObject();
 		DefaultPieDataset dataset = new DefaultPieDataset();
-		int[] bands = new int[] {0,0,0,0,0}; 
-		for ( SkillRatingDistribution rating : ratings) {
-			double  avg = rating.getAverageRating() ; 
-			if(avg  < 1 ) {bands[0] ++ ;  }
-			if(avg >= 1 && avg < 2 ) {bands[1] ++ ;  }
-			if(avg >= 2 && avg < 3 ) {bands[2] ++ ;  }
-			if(avg >= 3 && avg < 4 ) {bands[3] ++ ;  }
-			if(avg >= 4 && avg <= 5 ) {bands[4] ++ ;  }
-			
-			
+		int[] bands = new int[] { 0, 0, 0, 0, 0 };
+		for (SkillRatingDistribution rating : ratings) {
+			double avg = rating.getAverageRating();
+			if (avg < 1) {
+				bands[0]++;
+			}
+			if (avg >= 1 && avg < 2) {
+				bands[1]++;
+			}
+			if (avg >= 2 && avg < 3) {
+				bands[2]++;
+			}
+			if (avg >= 3 && avg < 4) {
+				bands[3]++;
+			}
+			if (avg >= 4 && avg <= 5) {
+				bands[4]++;
+			}
+
 		}
-		
-		
-			dataset.setValue("Novice/Not rated ", bands[0]);
-			dataset.setValue("Advanced Beginner", bands[1]);
-			dataset.setValue("Competency", bands[2]);
-			dataset.setValue("Proficiency", bands[3]);
-			dataset.setValue("Expertise", bands[4]);
-			
-			
-		
+
+		dataset.setValue("Novice/Not rated ", bands[0]);
+		dataset.setValue("Advanced Beginner", bands[1]);
+		dataset.setValue("Competency", bands[2]);
+		dataset.setValue("Proficiency", bands[3]);
+		dataset.setValue("Expertise", bands[4]);
+
 		return dataset;
 
-		
-
 	}
-	
+
 	private PieDataset getSkillDistribution() {
 		Transaction transaction = null;
-		if (commonStuff.getSkill() != null ) {
+		if (commonStuff.getSkill() != null) {
 			transaction = new Transaction("getSkillDistribution", commonStuff.getSkill());
 		} else {
-			return null; 
+			return null;
 		}
-		
+
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 		ArrayList<SkillDistribution> ratings = (ArrayList<SkillDistribution>) transaction.getObject();
 		DefaultPieDataset dataset = new DefaultPieDataset();
-		int[] bands = new int[] {0,0,0,0,0}; 
-		for ( SkillDistribution rating : ratings) {
+		int[] bands = new int[] { 0, 0, 0, 0, 0 };
+		for (SkillDistribution rating : ratings) {
 			System.out.println(" bands ");
-			String longName = rating.getFirstName() + " " + rating.getSurname() + "(" + rating.getAliasName() + ")" ; 
-		
-			dataset.setValue(longName , rating.getUserValue()  );
-			
+			String longName = rating.getFirstName() + " " + rating.getSurname() + "(" + rating.getAliasName() + ")";
+
+			dataset.setValue(longName, rating.getUserValue());
+
 		}
-		
+
 		return dataset;
 
-		
-
 	}
-	
-	
+
 	private User fetchuser(User selectedUser) {
 		Transaction transaction = new Transaction("getUser", selectedUser.getUserID());
 		transaction = commonStuff.getClient().sendTransaction(transaction);

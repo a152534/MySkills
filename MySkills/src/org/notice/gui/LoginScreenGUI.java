@@ -111,14 +111,14 @@ public class LoginScreenGUI extends JPanel implements ActionListener {
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 
 		if (transaction.getObject() == null) {
-			JOptionPane.showConfirmDialog(this, "Failed to validate user");
+			JOptionPane.showMessageDialog(this, "Invalid user", "Warning", JOptionPane.OK_OPTION);
+			 // showInputDialog(this, "Failed to validate user",JOptionPane.OK_OPTION);
 		} else {
 			ArrayList<User> users = (ArrayList<User>) transaction.getObject();
 			User loggedOnUser = users.get(0);
 			commonStuff.setLoggedOnUser(loggedOnUser);
 			
-			
-			
+				
 			
 			
 			skillsMainScreen = new MySkillsTabbedPane(basePanel, commonStuff);

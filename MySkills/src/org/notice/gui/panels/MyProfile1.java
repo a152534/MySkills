@@ -17,6 +17,7 @@ import org.notice.beans.Skill;
 import org.notice.beans.User;
 import org.notice.beans.UserSkills;
 import org.notice.client.Transaction;
+import org.notice.enums.Skill_Levels;
 import org.notice.tablemodel.EndorseNominationModel;
 import org.notice.tablemodel.MyProfileRatedSkillTableModel;
 
@@ -208,7 +209,7 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		ratedSkillModel = new MyProfileRatedSkillTableModel(ratedSkills);
 
 		tableSkills = new JTable(ratedSkillModel);
-		mySkillLestenr ml = new mySkillLestenr();
+		SkillListener ml = new SkillListener();
 		tableSkills.getSelectionModel().addListSelectionListener(ml);
 
 		tableSkills.getModel().addTableModelListener(new TableModelListener() {
@@ -268,13 +269,21 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		ArrayList<EndorsementNomination> nominations = (ArrayList<EndorsementNomination>) transaction.getObject();
 		nominatioModel = new EndorseNominationModel(nominations);
 
+	
+		
 		tableEndorsementRequests = new JTable(nominatioModel);
+		
+		
+		NominationListener nl = new NominationListener() ; 
+		tableEndorsementRequests.getSelectionModel().addListSelectionListener(nl);
+		
+		
 		scrollPaneEndorsementRequests = new JScrollPane(tableEndorsementRequests);
 		scrollPaneEndorsementRequests.setBounds(140, 440, 620, 132);
 		add(scrollPaneEndorsementRequests);
 
 		btnEndorse = new JButton("Endorse Colleague");
-		//btnEndorse.setBounds(221, 595, 145, 25);
+		btnEndorse.setEnabled(false);
 		btnEndorse.setBounds(350, 595, 200, 25);
 		btnEndorse.setFont(fontButton);
 		btnEndorse.addActionListener(this);
@@ -290,14 +299,20 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 	}
 
 	public void setUpLevelColumn(JTable table, TableColumn levelColumn) {
-
-		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.addItem("1");
-		comboBox.addItem("2");
-		comboBox.addItem("3");
-		comboBox.addItem("4");
-		comboBox.addItem("5");
-
+//
+//		endorseBox = new JComboBox<Skill_Levels>(Skill_Levels.values());
+//		
+//		levelColumn.setCellEditor(new DefaultCellEditor(endorseBox));
+//
+//		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+//		renderer.setToolTipText("Click to set endorsement level");
+//		levelColumn.setCellRenderer(renderer);
+		
+		
+		//**************
+		
+		JComboBox<Skill_Levels> comboBox = new JComboBox<Skill_Levels>(Skill_Levels.values());
+		
 		levelColumn.setCellEditor(new DefaultCellEditor(comboBox));
 
 		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
@@ -417,15 +432,19 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 
 	}
 
-	class mySkillLestenr implements ListSelectionListener {
+	class SkillListener implements ListSelectionListener {
 		public void valueChanged(ListSelectionEvent e) {
 			btnDeleteSkill.setEnabled(true);
 		}
 	}
 
-	class nominationLestenr implements ListSelectionListener {
+	class NominationListener implements ListSelectionListener {
 		public void valueChanged(ListSelectionEvent e) {
-			commonStuff.getColleague().setUserID(
+			if ( commonStuff.getColleague() == null ) {
+				System.out.println("Createing colloeague ");
+				commonStuff.setColleague(new User((String) tableEndorsementRequests.getValueAt(tableEndorsementRequests.getSelectedRow(), 1),null,null,null,null,null));
+			}
+			commonStuff.getColleague().setUserID( 
 					(String) tableEndorsementRequests.getValueAt(tableEndorsementRequests.getSelectedRow(), 1));
 			btnEndorse.setEnabled(true);
 			System.out.println("nominationLestenr");
