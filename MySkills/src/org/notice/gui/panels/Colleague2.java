@@ -36,8 +36,9 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 			Expert = null;
 	
 	private boolean endorsementRequested, endorsementAdded;
-	private int selectedLevel, colleagueSkillId;
+	private int selectedLevel, colleagueSkillId, skillId;
 	private Font fontLabel, fontButton, fontTextArea, fontTextBox, fontComboBox;
+	
 
 	 
 
@@ -202,7 +203,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 	
 	private void refreshSkills()
 	{
-
+		
 		transaction = new Transaction("getUserSkills", commonStuff.getColleague().getUserID());
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 		ArrayList<RatedSkills> refreshedSkills = (ArrayList<RatedSkills>) transaction.getObject();
@@ -222,19 +223,25 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 
 		tableColleagueSkills.getModel().addTableModelListener(new TableModelListener()
 		{
+
 			@Override
-			public void tableChanged(TableModelEvent te)
+			public void tableChanged(TableModelEvent e)
 			{
-				int row = te.getFirstRow();
-				int skillId = (int) tableColleagueSkills.getValueAt(row, 1);
-				System.out.println("Colleague table changed event at row  " + row);
-				addEndorsement(skillId);
-				
+				// TODO Auto-generated method stub
 				
 			}
+//			@Override
+//			public void tableChanged(TableModelEvent te)
+//			{
+//				int row = te.getFirstRow();
+//				skillId = (int) tableColleagueSkills.getValueAt(row, 1);
+//				System.out.println("Colleague table changed event at row  " + row);
+//	
+//			}
 		});
 		tableColleagueSkills.setCellSelectionEnabled(true);
 		
+
 	}
 
 	
@@ -260,8 +267,8 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 			{
 				colleagueSkillId =  ratedSkills.get(pos).getUserSkillId();
 			}
-			System.out.println("Skill ID: " + ratedSkills.get(pos).getSkillId() + " UserSkillID: "
-					+ ratedSkills.get(pos).getUserSkillId() + " userID: " + ratedSkills.get(pos).getUserId());
+//			System.out.println("Skill ID: " + ratedSkills.get(pos).getSkillId() + " UserSkillID: "
+//					+ ratedSkills.get(pos).getUserSkillId() + " userID: " + ratedSkills.get(pos).getUserId());
 		}
 		return colleagueSkillId;
 		
@@ -469,10 +476,19 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 	@Override
 	public void valueChanged(ListSelectionEvent e)
 	{
-//	    saveButton.setVisible(true);
-//	    saveButton.setEnabled(true);
-		
+
 	}	
+	
+	
+	public void tableChanged(TableModelEvent te)
+	{
+		int row = te.getFirstRow();
+		skillId = (int) tableColleagueSkills.getValueAt(row, 1);
+		System.out.println("Colleague table changed event at row  " + row);
+		refreshSkills();
+
+	}
+	
 		
 }
 

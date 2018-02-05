@@ -112,10 +112,17 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 
 		if (columnIndex == 4)
 		{
+//			byte enumDisplay = (byte)
+//			
+//			switch ratedSkill.getNumEndorsement()
+//			{
+//			
+//			}
+			
+			
 			return ratedSkill.getNumEndorsement();
 			
-			
-//			String stringValue = Enum.GetName(typeof(Skill_Levels), ratedSkill.getNumEndorsement());
+
 		}
 
 		return "1";
