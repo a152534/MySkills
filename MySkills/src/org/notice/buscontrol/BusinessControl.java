@@ -540,7 +540,7 @@ public class BusinessControl {
 		try {
 			skillsDB = new MySkillsDAO();//Added by Tony
 			RS = skillsDB
-					.queryDB("SELECT * from endorsement where user_skill_id = '" + userSkillId + "' and endorser = " + endorser);//Added by tony
+					.queryDB("SELECT * from endorsement where user_skill_id = " + userSkillId + " and endorsor = '" + endorser + "';");//Added by tony
 			if (!RS.next())
 			{
 				skillsDB.updateDB("INSERT INTO endorsement VALUES (null, " + userSkillId + ",'" + endorsor + "'," + level
@@ -548,8 +548,9 @@ public class BusinessControl {
 			}
 			else
 			{
-				skillsDB.updateDB("update endorsement set level = " + level + " user_skill_id = '" + userSkillId
-						+ "' and endorser = " + endorser);//Added by Tony
+				skillsDB.updateDB("update endorsement set level = " + level + ", user_skill_id = '" + userSkillId
+						+ "' , endorsor = '" + endorser + "' where user_skill_id = " +
+					userSkillId );//Added by Tony
 			}
 			
 
