@@ -270,7 +270,8 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 	        {
 		
 		btnUsersForSelected.setEnabled(false);
-		 btnUserDetail.setEnabled(false);
+		btnUserDetail.setEnabled(false);
+		btnUserDetail.setVisible(false);
 		tableSkillsReport.setModel(myModel);
 		setColumnWidths();
 		myModel.fireTableDataChanged();
@@ -303,6 +304,7 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
 		myModelUser.fireTableDataChanged();
 		btnExportUserToExcel.setEnabled(true);
 		btnExportSkillsToExcel.setEnabled(false);
+		btnUserDetail.setVisible(true);
 		btnUserDetail.setEnabled(true);
 
 		

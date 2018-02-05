@@ -369,9 +369,15 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		if(source == selectButton)
 		{
 			searchName = (String)colleagueSearchBox.getSelectedItem();
-			
-		    searchID = users.get(colleagueSearchBox.getSelectedIndex()).getUserID();
-		    System.out.println("select Button  searchID = " + searchID);
+			if (commonStuff.getColleague().getUserID().isEmpty())
+			{
+        		    searchID = users.get(colleagueSearchBox.getSelectedIndex()).getUserID();
+        		    System.out.println("select Button  searchID = " + searchID);
+			}
+			else
+			{
+			    searchID = commonStuff.getColleague().getUserID();
+			}
 			if(searchID != null)
 			{
 
