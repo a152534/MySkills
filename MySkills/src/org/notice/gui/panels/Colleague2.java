@@ -7,7 +7,7 @@ import javax.swing.table.*;
 import org.notice.beans.*;
 import org.notice.client.Transaction;
 import org.notice.enums.Skill_Levels;
-import org.notice.gui.panels.Colleague.colleagueListiner;
+//import org.notice.gui.panels.Colleague.colleagueListiner;
 import org.notice.tablemodel.ColleagueProfileSkillTableModel;
 
 import java.awt.*;
@@ -27,7 +27,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 	private ColleagueProfileSkillTableModel colleagueModel = null;
 
 	private ArrayList<User> users = null;
-	private ArrayList<RatedSkills> ratedSkills = null;
+	private ArrayList<ColleagueRatings> ratedSkills = null;
 
 	private static final Skill_Levels Notice = null, Advanced_Beginner = null, Competent = null, Proficient = null,
 			Expert = null;
@@ -35,7 +35,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 	private boolean endorsementRequested, endorsementAdded;
 	private int selectedLevel, colleagueSkillId, skillId;
 	private Font fontLabel, fontButton, fontTextArea, fontTextBox, fontComboBox;
-	private SkillTableListener skillTableListener ; 
+	private SkillTableListener skillTableListener;
 
 	/**
 	 * Create the panel.
@@ -102,23 +102,23 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		if (commonStuff.getColleague() != null && commonStuff.getColleague().getAliasName() != null) {
 			this.populateColleagueWhoRequestedEndorsement();
 		}
-		ratedSkills = new ArrayList<RatedSkills>();
+		ratedSkills = new ArrayList<ColleagueRatings>();
 		colleagueModel = new ColleagueProfileSkillTableModel(ratedSkills);
 		tableColleagueSkills = new JTable(colleagueModel);
 		tableColleagueSkills.getSelectionModel().addListSelectionListener(this);
-		skillTableListener = new SkillTableListener(); 
-		tableColleagueSkills.getModel().addTableModelListener(  skillTableListener);
-		//{
-//
-//			@Override
-//			public void tableChanged(TableModelEvent e) {
-//				int row = e.getFirstRow();
-//				System.out.println("Got this far--->>>");
-//
-//				System.out.println("table changed event at row  " + row);
-//
-//			}
-//		});
+		skillTableListener = new SkillTableListener();
+		tableColleagueSkills.getModel().addTableModelListener(skillTableListener);
+		// {
+		//
+		// @Override
+		// public void tableChanged(TableModelEvent e) {
+		// int row = e.getFirstRow();
+		// System.out.println("Got this far--->>>");
+		//
+		// System.out.println("table changed event at row " + row);
+		//
+		// }
+		// });
 
 		scrollPaneColleagueSkills = new JScrollPane(tableColleagueSkills);
 		scrollPaneColleagueSkills.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -157,26 +157,35 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 	}
 
 	private void refreshSkills() {
+		users = new ArrayList<User>();
+		
+		users.add(commonStuff.getLoggedOnUser()); // endorsor
+		users.add(commonStuff.getColleague()); // endorse
+
+		// transaction = new Transaction("getColleagueProfile", users);
+		// transaction = commonStuff.getClient().sendTransaction(transaction);
+		//
+
+		// lleagueSkills = (ArrayList<ColleagueRatings>) transaction.getObject();
+
 		tableColleagueSkills.getModel().removeTableModelListener(skillTableListener);
-		System.out.println("Refresh " + commonStuff.getColleague().getUserID() );
-		transaction = new Transaction("getUserSkills", commonStuff.getColleague().getUserID());
+		System.out.println("Refresh " + commonStuff.getColleague().getUserID());
+		transaction = new Transaction("getColleagueProfile", users);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
-		ArrayList<RatedSkills> refreshedSkills = (ArrayList<RatedSkills>) transaction.getObject();
+		ArrayList<ColleagueRatings> refreshedSkills = (ArrayList<ColleagueRatings>) transaction.getObject();
 		ratedSkills.clear();
-		for (RatedSkills skill : refreshedSkills) {
+		for (ColleagueRatings skill : refreshedSkills) {
 			ratedSkills.add(skill);
 			System.out.println("in refresh loop");
 
 		}
-		setUpLevelColumn(tableColleagueSkills, tableColleagueSkills.getColumnModel().getColumn(4));
+		setUpLevelColumn(tableColleagueSkills, tableColleagueSkills.getColumnModel().getColumn(5));
 		colleagueModel.fireTableDataChanged();
 		requestButton.setVisible(true);
 		requestButton.setEnabled(true);
-		
-	
 
 		colleagueModel.fireTableDataChanged();
-		tableColleagueSkills.getModel().addTableModelListener( skillTableListener) ;
+		tableColleagueSkills.getModel().addTableModelListener(skillTableListener);
 
 	}
 
@@ -193,7 +202,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 	public int getColleagueSkillId(int selectedSkill) {
 		transaction = new Transaction("getUserSkills", commonStuff.getColleague().getUserID());
 		transaction = commonStuff.getClient().sendTransaction(transaction);
-		ratedSkills = (ArrayList<RatedSkills>) transaction.getObject();
+		ratedSkills = (ArrayList<ColleagueRatings>) transaction.getObject();
 
 		for (int pos = 0; pos < ratedSkills.size(); pos++) {
 			if ((ratedSkills.get(pos).getSkillId()) == selectedSkill) {
@@ -208,10 +217,8 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 
 	}
 
-
-
-	public boolean addEndorsement( int userSkillId, int level) {
-		Endorsement endorsement = new Endorsement(userSkillId, commonStuff.getLoggedOnUser().getUserID(), level) ;  
+	public boolean addEndorsement(int userSkillId, int level) {
+		Endorsement endorsement = new Endorsement(userSkillId, commonStuff.getLoggedOnUser().getUserID(), level);
 		transaction = new Transaction("createEndorsement", endorsement);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 		endorsementAdded = (boolean) transaction.getObject();
@@ -275,64 +282,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		}
 
 		if (source == selectButton) {
-			searchName = (String) colleagueSearchBox.getSelectedItem();
-			searchID = users.get(colleagueSearchBox.getSelectedIndex()).getUserID();
-			
-			if (commonStuff.getColleague() == null) {
-				commonStuff.setColleague(new User(searchID, null, null, null, null, null));
-				
-				System.out.println("select Button  searchID = " + searchID);
-			} 
-			if (searchID != null) {
-
-				if (searchID.equals(commonStuff.getLoggedOnUser().getUserID())) {
-					JOptionPane.showMessageDialog(this, "May not select yourself as a colleague.");
-					System.out.println("ERROR - Cannot rate yourself as colleague.");
-					lookupField.setVisible(true);
-					lookupField.setEnabled(true);
-					lookupField.setText(null);
-					lookupButton.setVisible(true);
-					lookupButton.setEnabled(true);
-					selectButton.setVisible(false);
-					selectButton.setEnabled(false);
-					colleagueSearchBox.setVisible(false);
-					colleagueSearchBox.setEnabled(false);
-					colleagueSearchBox.removeAllItems();
-					System.out.println("colleague search box " + colleagueSearchBox.getItemCount());
-				} else {
-					ArrayList<User> user = new ArrayList<User>();
-
-					transaction = new Transaction("getUser", searchID);
-					transaction = commonStuff.getClient().sendTransaction(transaction);
-					user = (ArrayList<User>) transaction.getObject();
-					commonStuff.setColleague(user.get(0));
-					// this.populateColleagueSkillsTable(searchID);
-					refreshSkills();
-
-					for (int pos = 0; pos < user.size(); pos++) {
-						commonStuff.setColleague(new User(searchID, user.get(pos).getFirstName(),
-								user.get(pos).getSurName(), user.get(pos).getAliasName(), user.get(pos).getEmail(),
-								user.get(pos).getPhoneNumber()));
-					}
-
-					displaySelected.setText(searchName);
-					displaySelected.setVisible(true);
-					displaySelected.setEnabled(true);
-					lookupField.setVisible(true);
-					lookupField.setEnabled(true);
-					lookupField.setText(null);
-					lookupButton.setVisible(true);
-					lookupButton.setEnabled(true);
-					selectButton.setVisible(false);
-					selectButton.setEnabled(false);
-					colleagueSearchBox.setVisible(false);
-					colleagueSearchBox.setEnabled(false);
-					colleagueSearchBox.removeAllItems();
-				}
-			} else {
-				JOptionPane.showMessageDialog(this, "Invalid Selection");
-			}
-			colleagueSearchBox.removeAllItems();
+			selectButtonPressed();
 		}
 
 		if (source == requestButton) {
@@ -353,8 +303,69 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 			return;
 		}
 
-	
+	}
 
+	private void selectButtonPressed() {
+		String searchName;
+		String searchID;
+		searchName = (String) colleagueSearchBox.getSelectedItem();
+		searchID = users.get(colleagueSearchBox.getSelectedIndex()).getUserID();
+
+		if (commonStuff.getColleague() == null) {
+			commonStuff.setColleague(new User(searchID, null, null, null, null, null));
+
+			System.out.println("select Button  searchID = " + searchID);
+		}
+		if (searchID != null) {
+
+			if (searchID.equals(commonStuff.getLoggedOnUser().getUserID())) {
+				JOptionPane.showMessageDialog(this, "May not select yourself as a colleague.");
+				System.out.println("ERROR - Cannot rate yourself as colleague.");
+				lookupField.setVisible(true);
+				lookupField.setEnabled(true);
+				lookupField.setText(null);
+				lookupButton.setVisible(true);
+				lookupButton.setEnabled(true);
+				selectButton.setVisible(false);
+				selectButton.setEnabled(false);
+				colleagueSearchBox.setVisible(false);
+				colleagueSearchBox.setEnabled(false);
+				colleagueSearchBox.removeAllItems();
+				System.out.println("colleague search box " + colleagueSearchBox.getItemCount());
+			} else {
+				ArrayList<User> user = new ArrayList<User>();
+
+				transaction = new Transaction("getUser", searchID);
+				transaction = commonStuff.getClient().sendTransaction(transaction);
+				user = (ArrayList<User>) transaction.getObject();
+				commonStuff.setColleague(user.get(0));
+				// this.populateColleagueSkillsTable(searchID);
+				refreshSkills();
+
+				for (int pos = 0; pos < user.size(); pos++) {
+					commonStuff.setColleague(new User(searchID, user.get(pos).getFirstName(),
+							user.get(pos).getSurName(), user.get(pos).getAliasName(), user.get(pos).getEmail(),
+							user.get(pos).getPhoneNumber()));
+				}
+
+				displaySelected.setText(searchName);
+				displaySelected.setVisible(true);
+				displaySelected.setEnabled(true);
+				lookupField.setVisible(true);
+				lookupField.setEnabled(true);
+				lookupField.setText(null);
+				lookupButton.setVisible(true);
+				lookupButton.setEnabled(true);
+				selectButton.setVisible(false);
+				selectButton.setEnabled(false);
+				colleagueSearchBox.setVisible(false);
+				colleagueSearchBox.setEnabled(false);
+				colleagueSearchBox.removeAllItems();
+			}
+		} else {
+			JOptionPane.showMessageDialog(this, "Invalid Selection");
+		}
+		colleagueSearchBox.removeAllItems();
 	}
 
 	@Override
@@ -362,30 +373,30 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 
 	}
 
-
-
 	class SkillTableListener implements TableModelListener {
-		
 
 		@Override
 		public void tableChanged(TableModelEvent e) {
-			int row = tableColleagueSkills.getSelectedRow() ;
-			System.out.println("selected row : " + tableColleagueSkills.getSelectedRow() ) ;  
+			int row = tableColleagueSkills.getSelectedRow();
+			System.out.println("selected row : " + tableColleagueSkills.getSelectedRow());
 			skillId = (int) tableColleagueSkills.getValueAt(row, 1);
-			Skill_Levels level;//Added  by Tony
-			level = (Skill_Levels)endorseBox.getSelectedItem();//Added by tony
-			int selectedLevelInt = level.ordinal() + 1;//Added by tony
-			
+			Skill_Levels level;// Added by Tony
+			level = (Skill_Levels) endorseBox.getSelectedItem();// Added by tony
+			int selectedLevelInt = level.ordinal() + 1;// Added by tony
+
 			int userSkillId = ratedSkills.get(row).getUserSkillId();
-					
-			if(addEndorsement(userSkillId , selectedLevelInt )) {
+
+			if (addEndorsement(userSkillId, selectedLevelInt)) {
 				System.out.println("I think it is now added to the database ");
-			};
-			System.out.println("Got this far--->>> skill id = " + skillId + " level " + level  + "" +selectedLevelInt );
+			}else {
+				System.out.println("The insert in the database did not work ");
+			}
+			;
+			System.out.println("Got this far--->>> skill id = " + skillId + " level " + level + "" + selectedLevelInt);
 
 			System.out.println("table changed event at row  " + row);
 			refreshSkills();
-			
+
 		}
 	}
 }

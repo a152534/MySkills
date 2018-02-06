@@ -13,8 +13,8 @@ import org.notice.enums.Skill_Levels;
 public class ColleagueProfileSkillTableModel extends AbstractTableModel
 {
 
-	private ArrayList<RatedSkills> ratedSkills;
-	private String[] columnNames = { "Skill", "Skill ID", "Level", "Average Rating", "Endorse" };
+	private ArrayList<ColleagueRatings> ratedSkills;
+	private String[] columnNames = { "Skill", "Skill ID", "Level", "Average Rating","Number of endorsements", "Endorse" };
 	private LevelDescription levelDescription = null;
 	
 	
@@ -23,7 +23,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 						
 	}
 	
-	public ColleagueProfileSkillTableModel(ArrayList<RatedSkills> ratedSkills)
+	public ColleagueProfileSkillTableModel(ArrayList<ColleagueRatings> ratedSkills)
 	{
 		super();
 		this.ratedSkills = ratedSkills;
@@ -41,9 +41,8 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 	@Override
 	public int getColumnCount()
 	{
-		return 5;
+		return columnNames.length; 
 	}
-
 	public String getColumnName(int col)
 	{
 		return columnNames[col];
@@ -53,7 +52,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 	{
 		// Note that the data/cell address is constant,
 		// no matter where the cell appears on screen.
-		if (col == 4)
+		if (col == 5)
 		{
 			return true ;
 		}
@@ -83,7 +82,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex)
 	{
-		RatedSkills ratedSkill = ratedSkills.get(rowIndex);
+		ColleagueRatings ratedSkill = ratedSkills.get(rowIndex);
 		levelDescription = new LevelDescription();
 		
 		if (columnIndex == 0)
@@ -105,13 +104,17 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 		{
 			return ratedSkill.getAvgEndorsement();
 		}
-
 		if (columnIndex == 4)
+		{
+			return ratedSkill.getNumOfEndorsements();
+		}
+
+		if (columnIndex == 5)
 		{	
 	
 //			return ratedSkill.getNumEndorsement();
-			System.out.println("level"  + ratedSkill.getNumEndorsement());
-			byte levelValueFromDB = (byte) ratedSkill.getNumEndorsement();
+			System.out.println("colleagye model level"  + ratedSkill.getMyRating());
+			byte levelValueFromDB = (byte) ratedSkill.getMyRating();
 			return levelDescription.getLevelDescription(levelValueFromDB);
 		}
 
