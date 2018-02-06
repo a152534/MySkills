@@ -1,14 +1,8 @@
 package org.notice.tablemodel;
 
-import java.awt.Component;
 import java.util.ArrayList;
-
-import javax.swing.JComboBox;
-import javax.swing.JTable;
 import javax.swing.table.*;
-
 import org.notice.beans.*;
-import org.notice.client.Transaction;
 import org.notice.enums.Skill_Levels;
 
 /**
@@ -21,6 +15,8 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 
 	private ArrayList<RatedSkills> ratedSkills;
 	private String[] columnNames = { "Skill", "Skill ID", "Level", "Average Rating", "Endorse" };
+	private LevelDescription levelDescription = null;
+	
 	
 	public ColleagueProfileSkillTableModel()
 	{
@@ -88,7 +84,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 	public Object getValueAt(int rowIndex, int columnIndex)
 	{
 		RatedSkills ratedSkill = ratedSkills.get(rowIndex);
-		Skill_Levels displayLevel;
+		levelDescription = new LevelDescription();
 		
 		if (columnIndex == 0)
 		{
@@ -111,18 +107,9 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 		}
 
 		if (columnIndex == 4)
-		{
-//			byte enumDisplay = (byte)
-//			
-//			switch ratedSkill.getNumEndorsement()
-//			{
-//			
-//			}
-			
-			
-			return ratedSkill.getNumEndorsement();
-			
-
+		{	
+			byte levelValueFromDB = (byte) ratedSkill.getNumEndorsement();
+			levelDescription.getLevelDescription(levelValueFromDB);
 		}
 
 		return "1";

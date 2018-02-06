@@ -150,4 +150,6 @@ public class CommonStuff
 	{
 		this.fontComboBox = fontComboBoxSearch;
 	}
+	
+
 }

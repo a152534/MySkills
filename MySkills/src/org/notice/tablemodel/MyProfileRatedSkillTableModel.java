@@ -11,6 +11,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import org.notice.beans.LevelDescription;
 import org.notice.beans.RatedSkills;
 import org.notice.enums.Skill_Levels;
 
@@ -24,7 +25,8 @@ public class MyProfileRatedSkillTableModel extends AbstractTableModel {
 	
 	ArrayList<RatedSkills> ratedSkills;
 	private String[] columnNames = { "Skill", "My rating", "Number of endorsements", "Average endorsement","Skill ID","UserSkillID" };
-
+	private LevelDescription levelDescription = null;
+	
 	public MyProfileRatedSkillTableModel(ArrayList<RatedSkills> ratedSkills) {
 		super();
 		this.ratedSkills = ratedSkills;
@@ -74,12 +76,17 @@ public class MyProfileRatedSkillTableModel extends AbstractTableModel {
 		
 		
 		RatedSkills ratedSkill = ratedSkills.get(rowIndex);
+		levelDescription = new LevelDescription();
+		
 		if (columnIndex == 0) {
 			return ratedSkill.getSkillName();
 		}
 
 		if (columnIndex == 1) {
-			return ratedSkill.getLevel();
+			byte levelValueFromDB = (byte) ratedSkill.getLevel();
+			levelDescription.getLevelDescription(levelValueFromDB);
+			
+//			return ratedSkill.getLevel();
 		}
 
 		if (columnIndex == 2) {
