@@ -13,15 +13,15 @@ public class LevelDescription
 		
 		switch (levelValueFromDB)
 		{
-			case 1	:	enumDisplay = ("Novice");
+			case 1	:	enumDisplay = ("1. Novice");
 						return enumDisplay;	
-			case 2	:	enumDisplay = ("Advanced Beginner");
+			case 2	:	enumDisplay = ("2. Advanced Beginner");
 						return enumDisplay;
-			case 3	:	enumDisplay = ("Competent");
+			case 3	:	enumDisplay = ("3. Competent");
 						return enumDisplay;
-			case 4	:	enumDisplay = ("Proficient");
+			case 4	:	enumDisplay = ("4. Proficient");
 						return enumDisplay;
-			case 5	:	enumDisplay = ("Expert");
+			case 5	:	enumDisplay = ("5. Expert");
 						return enumDisplay;
 			default :	enumDisplay = ("No Rating");
 						return enumDisplay;
