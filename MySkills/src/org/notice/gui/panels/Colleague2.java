@@ -146,6 +146,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 			selectButton.setEnabled(true);
 			lookupField.setVisible(false);
 			lookupButton.setVisible(false);
+			displaySelected.setText("");
 
 		}
 		return displayName;
@@ -369,7 +370,8 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		if(source == selectButton)
 		{
 			searchName = (String)colleagueSearchBox.getSelectedItem();
-			if (commonStuff.getColleague().getUserID().isEmpty())
+			
+			if (commonStuff.getColleague() == null)
 			{
         		    searchID = users.get(colleagueSearchBox.getSelectedIndex()).getUserID();
         		    System.out.println("select Button  searchID = " + searchID);
@@ -395,6 +397,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 					colleagueSearchBox.setVisible(false);
 					colleagueSearchBox.setEnabled(false);
 					colleagueSearchBox.removeAllItems();
+				System.out.println("colleague search box " + colleagueSearchBox.getItemCount());
 				}
 				else
 				{
@@ -432,6 +435,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 			{
 				JOptionPane.showMessageDialog(this, "Invalid Selection");	
 			}
+			colleagueSearchBox.removeAllItems();
 		}
 		
 		if(source == requestButton)
