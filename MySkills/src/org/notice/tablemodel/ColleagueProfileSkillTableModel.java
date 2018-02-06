@@ -110,6 +110,7 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 		{	
 	
 //			return ratedSkill.getNumEndorsement();
+			System.out.println("level"  + ratedSkill.getNumEndorsement());
 			byte levelValueFromDB = (byte) ratedSkill.getNumEndorsement();
 			return levelDescription.getLevelDescription(levelValueFromDB);
 		}
