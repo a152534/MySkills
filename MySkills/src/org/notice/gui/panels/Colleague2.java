@@ -124,6 +124,28 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		colleagueModel = new ColleagueProfileSkillTableModel(ratedSkills);
 		tableColleagueSkills = new JTable(colleagueModel);
 		tableColleagueSkills.getSelectionModel().addListSelectionListener(this);
+		
+		tableColleagueSkills.getModel().addTableModelListener(new TableModelListener()
+		 {
+
+			 
+
+				@Override
+				public void tableChanged(TableModelEvent e) {
+					int row = e.getFirstRow();
+					System.out.println("Got this far--->>>");
+
+					System.out.println("table changed event at row  " + row);
+//					int SkillId = (int) ratedSkillModel.getValueAt(row, 4);
+//					int selectedLevelInt =  (int) ratedSkillModel.getValueAt(row, 1); 
+//					UserSkills newSkill = new UserSkills(commonStuff.getLoggedOnUser().getUserID(), SkillId,	selectedLevelInt);
+//					Transaction transaction = new Transaction("SaveUserSkill", newSkill);
+//					transaction = commonStuff.getClient().sendTransaction(transaction);
+					
+				}
+				});
+		
+		
 		scrollPaneColleagueSkills = new JScrollPane(tableColleagueSkills);
 		scrollPaneColleagueSkills.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPaneColleagueSkills.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -221,7 +243,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		requestButton.setEnabled(true);
 		
 		tableColleagueSkills.getSelectionModel().addListSelectionListener(this);
-
+		
 		tableColleagueSkills.getModel().addTableModelListener(new TableModelListener()
 		{
 
@@ -495,10 +517,17 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		int row = te.getFirstRow();
 		skillId = (int) tableColleagueSkills.getValueAt(row, 1);
 		System.out.println("Colleague table changed event at row  " + row);
+		addEndorsement(skillId);
 		refreshSkills();
 
 	}
 	
-		
+	class LevelListener implements ListSelectionListener
+	{
+		public void valueChanged(ListSelectionEvent e)
+		{
+//			btnDeleteSkill.setEnabled(true);
+		}
+	}	
 }
 
