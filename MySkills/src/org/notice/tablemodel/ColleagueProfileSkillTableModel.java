@@ -108,8 +108,10 @@ public class ColleagueProfileSkillTableModel extends AbstractTableModel
 
 		if (columnIndex == 4)
 		{	
-			byte levelValueFromDB = (byte) ratedSkill.getNumEndorsement();
-			levelDescription.getLevelDescription(levelValueFromDB);
+	
+			return ratedSkill.getNumEndorsement();
+//			byte levelValueFromDB = (byte) ratedSkill.getNumEndorsement();
+//			return levelDescription.getLevelDescription(levelValueFromDB);
 		}
 
 		return "1";

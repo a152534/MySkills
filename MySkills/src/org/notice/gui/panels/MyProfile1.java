@@ -61,6 +61,9 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 	private MyProfileRatedSkillTableModel ratedSkillModel;
 	private EndorseNominationModel nominatioModel;
 	private SkillSelector skillSelector;
+	private JComboBox<Skill_Levels> comboBox;
+	private static final Skill_Levels Notice = null, Advanced_Beginner = null, Competent = null, Proficient = null,
+			Expert = null;
 	
 	private Font fontLabel;
 	private Font fontButton;
@@ -202,6 +205,9 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 
 	private void populateSkills() {
 
+		
+		
+		
 		transaction = new Transaction("getUserSkills", commonStuff.getLoggedOnUser().getUserID());
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 		ratedSkills = (ArrayList<RatedSkills>) transaction.getObject();
@@ -219,10 +225,13 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 			@Override
 			public void tableChanged(TableModelEvent e) {
 				int row = e.getFirstRow();
+				Skill_Levels level;//Added  by Tony
 				
 				System.out.println("table changed event at row  " + row);
 				int SkillId = (int) ratedSkillModel.getValueAt(row, 4);
-				int selectedLevelInt =  (int) ratedSkillModel.getValueAt(row, 1); 
+				level = (Skill_Levels)comboBox.getSelectedItem();//Added by tony
+				int selectedLevelInt = level.ordinal() + 1;//Added by tony
+//				int selectedLevelInt =  (int) ratedSkillModel.getValueAt(row, 1); 
 				UserSkills newSkill = new UserSkills(commonStuff.getLoggedOnUser().getUserID(), SkillId,	selectedLevelInt);
 				Transaction transaction = new Transaction("SaveUserSkill", newSkill);
 				transaction = commonStuff.getClient().sendTransaction(transaction);
@@ -311,7 +320,7 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 		
 		//**************
 		
-		JComboBox<Skill_Levels> comboBox = new JComboBox<Skill_Levels>(Skill_Levels.values());
+		comboBox = new JComboBox<Skill_Levels>(Skill_Levels.values());
 		
 		levelColumn.setCellEditor(new DefaultCellEditor(comboBox));
 
