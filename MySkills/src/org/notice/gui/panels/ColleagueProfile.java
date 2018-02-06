@@ -10,15 +10,16 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import org.notice.beans.ColleagueRatings;
 import org.notice.beans.CommonStuff;
 import org.notice.beans.EndorsementNomination;
-import org.notice.beans.RatedSkills;
+// org.notice.beans.RatedSkills;
 import org.notice.beans.Skill;
 import org.notice.beans.User;
-import org.notice.beans.UserSkills;
+//import org.notice.beans.UserSkills;
 import org.notice.client.Transaction;
 import org.notice.tablemodel.EndorseNominationModel;
-import org.notice.tablemodel.MyProfileRatedSkillTableModel;
+import org.notice.tablemodel.ColleagueRatedTableModel;
 
 import java.awt.Component;
 import java.awt.Font;
@@ -58,8 +59,8 @@ public class ColleagueProfile extends JPanel implements ActionListener, ListSele
 
 	private CommonStuff commonStuff;
 	private Transaction transaction;
-	private ArrayList<RatedSkills> ratedSkills;
-	private MyProfileRatedSkillTableModel ratedSkillModel;
+	private ArrayList<ColleagueRatings> colleagueSkills;
+	private ColleagueRatedTableModel colleagueRatedTableModel;
 
 	private ArrayList<User> users;
 	private UserSelector userSelector;
@@ -136,14 +137,15 @@ public class ColleagueProfile extends JPanel implements ActionListener, ListSele
 		txtEmail.setBounds(580, 81, 290, 19);
 		add(txtEmail);
 		
-		ratedSkills = new ArrayList<RatedSkills>(); 
-		ratedSkillModel = new MyProfileRatedSkillTableModel(ratedSkills);
+		colleagueSkills = new ArrayList<ColleagueRatings>(); 
+		colleagueRatedTableModel = new ColleagueRatedTableModel(colleagueSkills);
+		populateSkills();
 		
 		if(commonStuff.getColleague() != null &&commonStuff.getColleague().getAliasName() != null) {
 			populateUserInfo();
-			populateSkills();
+			refreshSkills();
 		}
-
+		
 		// setColumnWidths();
 
 	}
@@ -157,40 +159,88 @@ public class ColleagueProfile extends JPanel implements ActionListener, ListSele
 
 	}
 
-	private void populateSkills() {
+	private void populateSkills1() {
+		System.out.println(" populateSkills()    colleague     "  + commonStuff.getColleague().getAliasName().toString()  + commonStuff.getColleague().getUserID()) ; 
+		ArrayList<User> users = new ArrayList<User>() ; 
+		users.add(commonStuff.getColleague()); // endorse
+		users.add(commonStuff.getLoggedOnUser()); // endorsor
 
-		transaction = new Transaction("getUserSkills", commonStuff.getColleague().getUserID());
+
+		transaction = new Transaction("getColleagueProfile", users);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
-		ratedSkills = (ArrayList<RatedSkills>) transaction.getObject();
+		
 
-		ratedSkillModel = new MyProfileRatedSkillTableModel(ratedSkills);
+		colleagueSkills = (ArrayList<ColleagueRatings>) transaction.getObject();
 
-		tableSkills = new JTable(ratedSkillModel);
+		colleagueRatedTableModel = new ColleagueRatedTableModel(colleagueSkills);
+
+		tableSkills = new JTable(colleagueRatedTableModel);
 		mySkillLestenr ml = new mySkillLestenr();
 		tableSkills.getSelectionModel().addListSelectionListener(ml);
 
-		tableSkills.getModel().addTableModelListener(new TableModelListener() {
-
-			@Override
-			public void tableChanged(TableModelEvent e) {
-				int row = e.getFirstRow();
-
-				System.out.println("table changed event at row  " + row);
-				int SkillId = (int) ratedSkillModel.getValueAt(row, 4);
-				int selectedLevelInt = (int) ratedSkillModel.getValueAt(row, 1);
-				UserSkills newSkill = new UserSkills(commonStuff.getLoggedOnUser().getUserID(), SkillId,
-						selectedLevelInt);
-				Transaction transaction = new Transaction("SaveUserSkill", newSkill);
-				transaction = commonStuff.getClient().sendTransaction(transaction);
-
-			}
-		});
+//		tableSkills.getModel().addTableModelListener(new TableModelListener() {
+//
+//			@Override
+//			public void tableChanged(TableModelEvent e) {
+//				int row = e.getFirstRow();
+//
+//				System.out.println("table changed event at row  " + row);
+//				int SkillId = (int) colleagueRatedTableModel.getValueAt(row, 4);
+//				int selectedLevelInt = (int) colleagueRatedTableModel.getValueAt(row, 1);
+//				UserSkills newSkill = new UserSkills(commonStuff.getLoggedOnUser().getUserID(), SkillId,
+//						selectedLevelInt);
+//				Transaction transaction = new Transaction("SaveUserSkill", newSkill);
+//				transaction = commonStuff.getClient().sendTransaction(transaction);
+//
+//			}
+//		});
 
 		tableSkills.setCellSelectionEnabled(true);
 
 		setUpLevelColumn(tableSkills, tableSkills.getColumnModel().getColumn(1));
 
-		ratedSkillModel.fireTableDataChanged();
+		colleagueRatedTableModel.fireTableDataChanged();
+
+		scrollPaneSkills = new JScrollPane(tableSkills);
+		scrollPaneSkills.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPaneSkills.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPaneSkills.setBounds(140, 150, 620, 250);
+		add(scrollPaneSkills);
+
+	}
+	
+	private void populateSkills() {
+		 
+		colleagueSkills =  new ArrayList<ColleagueRatings> (); 
+
+		colleagueRatedTableModel = new ColleagueRatedTableModel(colleagueSkills);
+
+		tableSkills = new JTable(colleagueRatedTableModel);
+		mySkillLestenr ml = new mySkillLestenr();
+		tableSkills.getSelectionModel().addListSelectionListener(ml);
+
+//		tableSkills.getModel().addTableModelListener(new TableModelListener() {
+//
+//			@Override
+//			public void tableChanged(TableModelEvent e) {
+//				int row = e.getFirstRow();
+//
+//				System.out.println("table changed event at row  " + row);
+//				int SkillId = (int) colleagueRatedTableModel.getValueAt(row, 4);
+//				int selectedLevelInt = (int) colleagueRatedTableModel.getValueAt(row, 1);
+//				UserSkills newSkill = new UserSkills(commonStuff.getLoggedOnUser().getUserID(), SkillId,
+//						selectedLevelInt);
+//				Transaction transaction = new Transaction("SaveUserSkill", newSkill);
+//				transaction = commonStuff.getClient().sendTransaction(transaction);
+//
+//			}
+//		});
+
+		tableSkills.setCellSelectionEnabled(true);
+
+		setUpLevelColumn(tableSkills, tableSkills.getColumnModel().getColumn(4));
+
+		colleagueRatedTableModel.fireTableDataChanged();
 
 		scrollPaneSkills = new JScrollPane(tableSkills);
 		scrollPaneSkills.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -201,17 +251,24 @@ public class ColleagueProfile extends JPanel implements ActionListener, ListSele
 	}
 
 	private void refreshSkills() {
+		System.out.println(" refreshSkills()    colleague     "  + commonStuff.getColleague().getAliasName().toString()  + commonStuff.getColleague().getUserID()) ; 
+		ArrayList<User> users = new ArrayList<User>() ; 
+		users.add(commonStuff.getColleague()); // endorse
+		users.add(commonStuff.getLoggedOnUser()); // endorsor
 
-		transaction = new Transaction("getUserSkills", commonStuff.getColleague().getUserID());
+
+		transaction = new Transaction("getColleagueProfile", users);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
-		ArrayList<RatedSkills> newratedSkills = (ArrayList<RatedSkills>) transaction.getObject();
-
-		ratedSkills.clear();
-		for (RatedSkills skill : newratedSkills) {
-			ratedSkills.add(skill);
+		ArrayList<ColleagueRatings> newratedSkills = (ArrayList<ColleagueRatings>) transaction.getObject();
+		
+		colleagueSkills.clear();
+		for (ColleagueRatings skill : newratedSkills) {
+			colleagueSkills.add(skill);
+			System.out.println(skill.getSkillId());
 
 		}
-		ratedSkillModel.fireTableDataChanged();
+		//setUpLevelColumn(tableSkills, tableSkills.getColumnModel().getColumn(4));
+		colleagueRatedTableModel.fireTableDataChanged();
 
 	}
 
@@ -268,7 +325,8 @@ public class ColleagueProfile extends JPanel implements ActionListener, ListSele
 			selectedUser = fetchuser(selectedUser);
 		}
 		commonStuff.setColleague(selectedUser);
-		populateSkills();
+		System.out.println("colleague     "  + commonStuff.getColleague().getAliasName().toString()  + commonStuff.getColleague().getUserID()) ; 
+		refreshSkills();
 		populateUserInfo();
 	}
 

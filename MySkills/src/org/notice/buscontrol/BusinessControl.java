@@ -25,7 +25,7 @@ public class BusinessControl {
 	private ArrayList<Skill> skillList = null;
 	private ResultSet userResult = null, userSkillResult = null, skillResult = null;
 	private int userSkillId, skillId, level, numEndorsement;
-	private Long numOfResources = 0L , numOfEndorsement = 0L;
+	private Long numOfResources = 0L, numOfEndorsement = 0L;
 	private BigDecimal avgEndorsement, numOfEndorsements;
 	private UserSkills US = null;
 	private Endorsement endorse = null;
@@ -137,11 +137,10 @@ public class BusinessControl {
 			transaction.setDescription("getEndorseNominations");
 			break;
 		}
-		
+
 		case "deleteEndorsementNomination": {
 			endorseNom = (EndorsementNomination) transaction.getObject();
-			transaction.setObject(
-					this.deleteEndorseNomination(endorseNom.getUserID(), endorseNom.getEndorserUserID()));
+			transaction.setObject(this.deleteEndorseNomination(endorseNom.getUserID(), endorseNom.getEndorserUserID()));
 			transaction.setDescription("deleteEndorsement");
 			break;
 		}
@@ -166,22 +165,32 @@ public class BusinessControl {
 			transaction.setDescription("getUserEndorsementPerSkill");
 			break;
 		}
-		
+
 		case "getSkillRatingDistribution": {
 			Skill skill = (Skill) transaction.getObject();
-			
+
 			transaction.setObject(this.getSkillRatingDistribution(skill));
 			transaction.setDescription("getSkillRatingdistrubution");
 			break;
 		}
-		
+
 		case "getSkillDistribution": {
 			Skill skill = (Skill) transaction.getObject();
-			
+
 			transaction.setObject(this.getSkillDistribution(skill));
 			transaction.setDescription("getSkillDistribution");
 			break;
 		}
+		
+		case "getColleagueProfile": {
+			System.out.println("getColleagueProfile");
+			ArrayList<User> users = (ArrayList<User>) transaction.getObject();
+
+			transaction.setObject(this.getColleagueProfile(users));
+			transaction.setDescription("getColleagueProfile");
+			break;
+		}
+		//    getColleagueProfile(ArrayList<User> users)
 
 		default:
 			System.out.println("Incorrect selection");
@@ -191,8 +200,6 @@ public class BusinessControl {
 		return transaction;
 
 	}
-
-	
 
 	public boolean validateUser(String userId) {
 		this.userId = userId;
@@ -296,6 +303,54 @@ public class BusinessControl {
 		return true;
 	}
 
+	public ArrayList<ColleagueRatings> getColleagueProfile(ArrayList<User> users) {
+		String endorsee1 = users.get(1).getUserID();
+		String endorsor1 = users.get(0).getUserID();
+
+		String selectStatement = " SELECT    a.user_id,   "
+				+ "    a.user_skill_id,   a.skill_id,"
+				+ "    a.level,   a.num_of_endorsements, a.avg_endorsement,    a.skill_name,"
+				+ "    COALESCE(e.level, 0) my_rating" + " FROM " + "    myskills.v_user_skill_endorsements a"
+				+ "        LEFT OUTER JOIN" + "    (SELECT " + "        user_skill_id, level" + "    FROM   "
+				+ "        endorsement" + "    WHERE " + "        endorsor = '" + endorsor1
+				+ "') e ON a.user_skill_id = e.user_skill_id " +
+
+				"Where a.user_id = '" + endorsee1 +"'";
+		System.out.println(selectStatement);
+		ArrayList<ColleagueRatings> ratings = new ArrayList<ColleagueRatings>();
+
+		
+		try {
+			userSkillResult = skillsDB.queryDB(selectStatement);
+			while (userSkillResult.next()) {
+				userSkillId = userSkillResult.getInt("user_skill_id");
+				userId = userSkillResult.getString("user_id");
+				skillId = userSkillResult.getInt("skill_id");
+				level = userSkillResult.getInt("level");
+				numEndorsement = userSkillResult.getInt("num_of_endorsements");
+				skillName = userSkillResult.getString("skill_name");
+				avgEndorsement = userSkillResult.getBigDecimal("avg_endorsement");
+				int myRating =  userSkillResult.getInt("my_rating");
+				
+				ratings.add(new ColleagueRatings(userId, skillName, userSkillId, skillId, level, numEndorsement, myRating, avgEndorsement.doubleValue())) ; 
+				/* 
+				 * String userId, firstName, surname, aliasName, skillName; 
+	int userSkillId, skillId, level, numOfEndorsements, myRating;
+	double avgEndorsement;
+				 * */
+				
+				
+			}
+
+		} catch (SQLException se) {
+			System.out.println("ERROR: " + se.getMessage());
+
+			return null;
+		}
+		System.out.println("Coll rating size "  + ratings.size());
+		return ratings;
+	}
+
 	public ArrayList<RatedSkills> getUserSkills(String userId) {
 		this.userId = userId;
 		userSkillList = new ArrayList<RatedSkills>();
@@ -327,9 +382,9 @@ public class BusinessControl {
 	}
 
 	private ArrayList<SkillRatingDistribution> getSkillRatingDistribution(Skill skill) {
-		int skillId = skill.getSkillID() ; 
-		ArrayList<SkillRatingDistribution> ratings =  new ArrayList<SkillRatingDistribution>() ; 
-		String selectStatement = "select * from v_skill_rating_distribution where skill_id = " + skillId ;
+		int skillId = skill.getSkillID();
+		ArrayList<SkillRatingDistribution> ratings = new ArrayList<SkillRatingDistribution>();
+		String selectStatement = "select * from v_skill_rating_distribution where skill_id = " + skillId;
 		try {
 			userSkillResult = skillsDB.queryDB(selectStatement);
 			while (userSkillResult.next()) {
@@ -337,56 +392,51 @@ public class BusinessControl {
 				skillName = userSkillResult.getString("skill_name");
 				userSkillId = userSkillResult.getInt("user_skill_id");
 				double averageRating = userSkillResult.getDouble("average_rating");
-				ratings.add(new SkillRatingDistribution(skillId, skillName, userSkillId, averageRating)) ; 
-				
-				
-			}	
-			
+				ratings.add(new SkillRatingDistribution(skillId, skillName, userSkillId, averageRating));
+
+			}
+
 		} catch (SQLException se) {
 			System.out.println("ERROR: " + se.getMessage());
 			return null;
-		
-		} 
-		return ratings ; 
-		
+
+		}
+		return ratings;
+
 	}
-	
-	
+
 	private ArrayList<SkillDistribution> getSkillDistribution(Skill skill) {
-		int skillId = skill.getSkillID() ; 
-		ArrayList<SkillDistribution> ratings =  new ArrayList<SkillDistribution>() ; 
-		String selectStatement = "select * from v_skill_distribution where skill_id = " + skillId + " order by user_value asc ";
+		int skillId = skill.getSkillID();
+		ArrayList<SkillDistribution> ratings = new ArrayList<SkillDistribution>();
+		String selectStatement = "select * from v_skill_distribution where skill_id = " + skillId
+				+ " order by user_value asc ";
 		try {
 			userSkillResult = skillsDB.queryDB(selectStatement);
 			while (userSkillResult.next()) {
 				skillId = userSkillResult.getInt("skill_id");
 				skillName = userSkillResult.getString("skill_name");
-				
-				
+
 				userId = userSkillResult.getString("user_id");
-				firstName  = userSkillResult.getString("first_name");
+				firstName = userSkillResult.getString("first_name");
 				surname = userSkillResult.getString("surname");
-				String aliasName = userSkillResult.getString("alias_name"); 
-				skillName  = userSkillResult.getString("first_name"); 
+				String aliasName = userSkillResult.getString("alias_name");
+				skillName = userSkillResult.getString("first_name");
 				Double userValue = userSkillResult.getDouble("user_value");
-				
-				
-				ratings.add(new SkillDistribution(userId, firstName, surname, aliasName, skillName, skillId, userValue));
-				
-				
-			}	
-			
+
+				ratings.add(
+						new SkillDistribution(userId, firstName, surname, aliasName, skillName, skillId, userValue));
+
+			}
+
 		} catch (SQLException se) {
 			System.out.println("ERROR: " + se.getMessage());
 			return null;
-		
-		} 
-		return ratings ; 
-		
+
+		}
+		return ratings;
+
 	}
-	
-	
-	
+
 	public ArrayList<Skill> searchSkills(String skillName) {
 		this.skillName = skillName;
 		skillList = new ArrayList<Skill>();
@@ -462,16 +512,14 @@ public class BusinessControl {
 		return true;
 
 	}
-	
-	
-	public boolean deleteEndorseNomination(String  userId , String endorserId) {
-		
+
+	public boolean deleteEndorseNomination(String userId, String endorserId) {
+
 		this.endorsor = endorserId;
 		this.userId = userId;
 		try {
-			skillsDB.updateDB(
-					"delete from  endorsement_nomination where user_id = '"  + userId + 
-					"' and  nominated_endorsee = '" + endorsor + "';");
+			skillsDB.updateDB("delete from  endorsement_nomination where user_id = '" + userId
+					+ "' and  nominated_endorsee = '" + endorsor + "';");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -538,22 +586,16 @@ public class BusinessControl {
 		this.endorsor = endorser;
 		this.level = level;
 		try {
-			skillsDB = new MySkillsDAO();//Added by Tony
-			RS = skillsDB
-					.queryDB("SELECT * from endorsement where user_skill_id = " + userSkillId + " and endorsor = '" + endorser + "';");//Added by tony
-			if (!RS.next())
-			{
-				skillsDB.updateDB("INSERT INTO endorsement VALUES (null, " + userSkillId + ",'" + endorsor + "'," + level
-						+ ", null)");//Moved into if statement by Tony
-			}
-			else
-			{
+			skillsDB = new MySkillsDAO();// Added by Tony
+			RS = skillsDB.queryDB("SELECT * from endorsement where user_skill_id = " + userSkillId + " and endorsor = '"
+					+ endorser + "';");// Added by tony
+			if (!RS.next()) {
+				skillsDB.updateDB("INSERT INTO endorsement VALUES (null, " + userSkillId + ",'" + endorsor + "',"
+						+ level + ", null)");// Moved into if statement by Tony
+			} else {
 				skillsDB.updateDB("update endorsement set level = " + level + ", user_skill_id = '" + userSkillId
-						+ "' , endorsor = '" + endorser + "' where user_skill_id = " +
-					userSkillId );//Added by Tony
+						+ "' , endorsor = '" + endorser + "' where user_skill_id = " + userSkillId);// Added by Tony
 			}
-			
-
 
 		} catch (Exception e) {
 			System.out.println("ERROR: " + e.getMessage());
@@ -626,10 +668,9 @@ public class BusinessControl {
 					firstName = userResult.getString("first_name");
 					surname = userResult.getString("surname");
 					avgEndorsement = userResult.getBigDecimal("avg_endorsement");
-					ratedSkillsList.add(
-					new UserSkillEndorsements(userId, firstName, surname, " ", " "," ", skillName, 0, skillId,
-						level, numOfEndorsement, avgEndorsement));
-					
+					ratedSkillsList.add(new UserSkillEndorsements(userId, firstName, surname, " ", " ", " ", skillName,
+							0, skillId, level, numOfEndorsement, avgEndorsement));
+
 				}
 			}
 		} catch (SQLException se) {
@@ -653,7 +694,7 @@ public class BusinessControl {
 			}
 		} catch (SQLException se) {
 			System.out.println("ERROR: " + se.getMessage());
-			return  nominations;
+			return nominations;
 		}
 
 		return nominations;
