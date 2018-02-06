@@ -84,9 +84,9 @@ public class MyProfileRatedSkillTableModel extends AbstractTableModel {
 
 		if (columnIndex == 1) {
 			byte levelValueFromDB = (byte) ratedSkill.getLevel();
-			levelDescription.getLevelDescription(levelValueFromDB);
+//			levelDescription.getLevelDescription(levelValueFromDB);
 			
-//			return ratedSkill.getLevel();
+			return ratedSkill.getLevel();
 		}
 
 		if (columnIndex == 2) {
