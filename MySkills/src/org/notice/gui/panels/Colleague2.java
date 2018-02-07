@@ -134,7 +134,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		add(requestButton);
 
 		if (commonStuff.getColleague() != null && commonStuff.getColleague().getAliasName() != null) {
-			this.populateColleagueWhoRequestedEndorsement();
+			selectUser();
 		}
 		ratedSkills = new ArrayList<ColleagueRatings>();
 		colleagueModel = new ColleagueProfileSkillTableModel(ratedSkills);

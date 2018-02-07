@@ -28,7 +28,7 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 		this.basePanel = basePanel;
 		
 		myProfile =  new MyProfile1(commonStuff );
-		colleague = new ColleagueProfile(commonStuff);
+//		colleague = new ColleagueProfile(commonStuff);
 		colleague2 = new Colleague2(commonStuff);
 		admin = new Admin(commonStuff);
 		skillsSearch = new SkillsSearch(commonStuff);
@@ -44,12 +44,12 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 		
 		
 		this.addTab("My Profile", myProfile);
-		this.addTab("Colleague", colleague);
-		this.addTab("Colleague_T", colleague2);
+
+		this.addTab("Colleague", colleague2);
 		this.addTab("Skills Search", skillsSearch);
 		this.addTab("Reports", reports);
-		this.addTab("Admin", admin);
-		this.addTab("Pretty Pictures" , graphs);
+		this.addTab("Skill Administration", admin);
+		this.addTab("Graphs" , graphs);
 
 		addChangeListener(new ChangeListener() {
 	    
@@ -57,10 +57,8 @@ public class MySkillsTabbedPane extends JTabbedPane implements ActionListener
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				System.out.println("Tab: " + getSelectedIndex());
+				
 				if( getSelectedIndex() == 1 ) {
-					colleague.reload();
-				}
-				if( getSelectedIndex() == 2 ) {
 					colleague2.reload();
 				}
 //				if( getSelectedIndex() == 6 ) {
