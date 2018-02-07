@@ -20,7 +20,7 @@ public class ReportsSkillsReportTableModel extends AbstractTableModel
 	{
 		super();
 		this.skillReport = skillReport;
-		System.out.println("MyProfileRatedSkillTableModel :  rows in rated skills " + skillReport.size());
+		//System.out.println("MyProfileRatedSkillTableModel :  rows in rated skills " + skillReport.size());
 	}
 
 	@Override

@@ -17,7 +17,7 @@ public class EndorseNominationModel extends AbstractTableModel {
 		if (this.nominations == null) {
 			System.out.println("No nominations");
 		} else {
-			System.out.println("Skills list size " + this.nominations.size());
+			//System.out.println("Skills list size " + this.nominations.size());
 		}
 	}
 

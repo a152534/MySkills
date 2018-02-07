@@ -27,7 +27,7 @@ public class EndorsementRequestsTableModel extends AbstractTableModel {
 	public EndorsementRequestsTableModel(ArrayList<RatedSkills> ratedSkills) {
 		super();
 		this.ratedSkills = ratedSkills;
-		System.out.println("MyProfileRatedSkillTableModel :  rows in rated skills " + ratedSkills.size());
+		//System.out.println("MyProfileRatedSkillTableModel :  rows in rated skills " + ratedSkills.size());
 	}
 
 	@Override

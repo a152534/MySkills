@@ -96,7 +96,7 @@ public class UserSelector extends JPanel implements ListSelectionListener {
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		System.out.println("Selected User " + tableUser.getSelectedRow() );
+		//System.out.println("Selected User " + tableUser.getSelectedRow() );
 		if (tableUser.getSelectedRow() > -1) {
 			//int row = tableUser.convertRowIndexToModel(tableUser.getSelectedRow());
 			int row = tableUser.getSelectedRow();

@@ -227,7 +227,7 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 				int row = e.getFirstRow();
 				Skill_Levels level;//Added  by Tony
 				
-				System.out.println("table changed event at row  " + row);
+				//System.out.println("table changed event at row  " + row);
 				int SkillId = (int) ratedSkillModel.getValueAt(row, 4);
 				level = (Skill_Levels)comboBox.getSelectedItem();//Added by tony
 				int selectedLevelInt = level.ordinal() + 1;//Added by tony
