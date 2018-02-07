@@ -260,13 +260,13 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 
 	}
 
-	public void populateColleagueWhoRequestedEndorsement() {
-		ArrayList<User> user = new ArrayList<User>();
-		user.add(new User(commonStuff.getColleague().getUserID(), commonStuff.getColleague().getFirstName(),
-				commonStuff.getColleague().getSurName(), commonStuff.getColleague().getAliasName(),
-				commonStuff.getColleague().getEmail(), commonStuff.getColleague().getPhoneNumber()));
-		this.setupColleagueSelection(user);
-	}
+//	public void populateColleagueWhoRequestedEndorsement() {
+//		ArrayList<User> user = new ArrayList<User>();
+//		user.add(new User(commonStuff.getColleague().getUserID(), commonStuff.getColleague().getFirstName(),
+//				commonStuff.getColleague().getSurName(), commonStuff.getColleague().getAliasName(),
+//				commonStuff.getColleague().getEmail(), commonStuff.getColleague().getPhoneNumber()));
+//		this.setupColleagueSelection(user);
+//	}
 
 	private User fetchuser(User selectedUser) {
 		Transaction transaction = new Transaction("getUser", selectedUser.getUserID());
@@ -287,8 +287,9 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 			commonStuff.setColleague(fetchuser(commonStuff.getColleague()));
 		//	System.out.println("reload  after if  - after fetch ");
 		//	System.out.println("Colleague is: " + commonStuff.getColleague());
-			this.populateColleagueWhoRequestedEndorsement();
-			// refreshSkills();
+		//	this.populateColleagueWhoRequestedEndorsement();
+			refreshSkills();
+			populateUserInfo();
 		}
 	}
 
