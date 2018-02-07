@@ -99,7 +99,7 @@ public class SkillSelector extends JPanel implements ListSelectionListener {
 			int skillId = (int) skillTable.getValueAt(skillTable.getSelectedRow(), 1);
 			String skillName = (String) skillTable.getValueAt(skillTable.getSelectedRow(), 0);
 			selectedSkill = new Skill(skillId, skillName);
-			System.out.println("SkillUtil Selected Skill" + selectedSkill.getSkillName());
+			//System.out.println("SkillUtil Selected Skill" + selectedSkill.getSkillName());
 		} else {
 			selectedSkill = new Skill(-1, txtSearch.getText());
 		}
