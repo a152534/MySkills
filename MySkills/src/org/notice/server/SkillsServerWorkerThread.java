@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 
 import org.notice.buscontrol.BusinessControl;
 import org.notice.client.Transaction;
@@ -59,13 +60,17 @@ public class SkillsServerWorkerThread implements Runnable
 		catch (EOFException e ) {
 			System.out.println("Connection Closed from client");
 		}
+		catch (SocketException e) {
+			System.out.println("Connection Closed from client");
+		}
 		catch (ClassNotFoundException e) {
 
 			e.printStackTrace();
 		} catch (IOException e) {
 
 			e.printStackTrace();
-		}
+		} 
+		
 
 	}
 
