@@ -103,7 +103,7 @@ public class BusinessControl {
 
 		case "DeleteSkill": {
 			skillId = Integer.parseInt(transaction.getObject().toString());
-			System.out.println("in case delete " + skillId);
+		//	System.out.println("in case delete " + skillId);
 			transaction.setObject(this.deleteSkill(skillId));
 			transaction.setDescription("DeleteSkill");
 			break;
@@ -183,7 +183,7 @@ public class BusinessControl {
 		}
 		
 		case "getColleagueProfile": {
-			System.out.println("getColleagueProfile");
+		//	System.out.println("getColleagueProfile");
 			ArrayList<User> users = (ArrayList<User>) transaction.getObject();
 
 			transaction.setObject(this.getColleagueProfile(users));
@@ -316,7 +316,7 @@ public class BusinessControl {
 				+ "') e ON a.user_skill_id = e.user_skill_id " +
 
 				"Where a.user_id = '" + endorsee1 +"'";
-		System.out.println(selectStatement);
+		//System.out.println(selectStatement);
 		ArrayList<ColleagueRatings> ratings = new ArrayList<ColleagueRatings>();
 
 		
@@ -347,7 +347,7 @@ public class BusinessControl {
 
 			return null;
 		}
-		System.out.println("Coll rating size "  + ratings.size());
+		//System.out.println("Coll rating size "  + ratings.size());
 		return ratings;
 	}
 
@@ -468,9 +468,9 @@ public class BusinessControl {
 			RS = skillsDB.queryDB("select * from user_skill where skill_id = '" + skillId + "'");
 			if (!RS.next()) {
 				skillsDB.updateDB("delete from skills where skill_id = " + skillId);
-				System.out.println("BC  after DB delete");
+			//	System.out.println("BC  after DB delete");
 			} else {
-				System.out.println("BC   no RS next");
+			//	System.out.println("BC   no RS next");
 				return false;
 
 			}
@@ -498,7 +498,7 @@ public class BusinessControl {
 	}
 
 	public boolean createEndorseNomination(String userId, String endorserId) {
-		System.out.println("in business cxontrol create endorsement");
+		//System.out.println("in business cxontrol create endorsement");
 		this.endorsor = endorserId;
 		this.userId = userId;
 		try {
@@ -641,13 +641,13 @@ public class BusinessControl {
 		{
 			String userIdList = null;
 			for (int pos = 0; pos < skillList.size(); pos++) {
-				System.out.println("pos" + pos);
+				//System.out.println("pos" + pos);
 				if (pos == 0) {
 					userIdList = "" + skillList.get(pos).getSkillID();
 				} else {
 					userIdList = userIdList + ", " + skillList.get(pos).getSkillID();
 				}
-				System.out.println("Array  Length " + skillList.size());
+				//System.out.println("Array  Length " + skillList.size());
 			}
 
 			String sQL = null;

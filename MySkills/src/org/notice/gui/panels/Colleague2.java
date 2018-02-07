@@ -195,14 +195,14 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		// lleagueSkills = (ArrayList<ColleagueRatings>) transaction.getObject();
 
 		tableColleagueSkills.getModel().removeTableModelListener(skillTableListener);
-		System.out.println("Refresh " + commonStuff.getColleague().getUserID());
+		//System.out.println("Refresh " + commonStuff.getColleague().getUserID());
 		transaction = new Transaction("getColleagueProfile", users);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 		ArrayList<ColleagueRatings> refreshedSkills = (ArrayList<ColleagueRatings>) transaction.getObject();
 		ratedSkills.clear();
 		for (ColleagueRatings skill : refreshedSkills) {
 			ratedSkills.add(skill);
-			System.out.println("in refresh loop");
+		//	System.out.println("in refresh loop");
 
 		}
 		setUpLevelColumn(tableColleagueSkills, tableColleagueSkills.getColumnModel().getColumn(5));
@@ -285,8 +285,8 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 	public void reload() {
 		if (commonStuff.getColleague() != null && commonStuff.getColleague().getUserID() != "-1") {
 			commonStuff.setColleague(fetchuser(commonStuff.getColleague()));
-			System.out.println("reload  after if  - after fetch ");
-			System.out.println("Colleague is: " + commonStuff.getColleague());
+		//	System.out.println("reload  after if  - after fetch ");
+		//	System.out.println("Colleague is: " + commonStuff.getColleague());
 			this.populateColleagueWhoRequestedEndorsement();
 			// refreshSkills();
 		}
