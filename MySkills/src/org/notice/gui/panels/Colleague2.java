@@ -36,6 +36,18 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 	private int selectedLevel, colleagueSkillId, skillId;
 	private Font fontLabel, fontButton, fontTextArea, fontTextBox, fontComboBox;
 	private SkillTableListener skillTableListener;
+	private UserSelector userSelector;
+	private JButton btnSearchColl;
+	
+	private JTextField txtName;
+	private JTextField txtSurname;
+	private JTextField txtAlias;
+	private JTextField txtPhone;
+	private JLabel lblEmailAddress;
+	private JTextField txtEmail;
+	
+	
+	
 
 	/**
 	 * Create the panel.
@@ -51,45 +63,67 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 
 		setLayout(null);
 
-		lookupField = new JTextField();
-		lookupField.setFont(fontTextBox);
-		lookupField.setBounds(242, 25, 302, 22);
-		// System.out.println(commonStuff.getColleague());
-		// System.out.println(commonStuff.getColleague().getAliasName());
-		lookupField.setVisible(true);
-		lookupField.setEnabled(true);
-		add(lookupField);
+		
+		btnSearchColl = new JButton("Search Colleague");
+		btnSearchColl.setBounds(20, 20, 180, 20);
+		btnSearchColl.addActionListener(this);
+		add(btnSearchColl);
+		
+		JLabel lblName = new JLabel("Name:");
+		lblName.setFont(fontLabel);
+		lblName.setBounds(20, 50, 130, 20);
+		add(lblName);
 
-		colleagueSearchBox = new JComboBox();
-		colleagueSearchBox.setFont(fontTextBox);
-		colleagueSearchBox.setBounds(242, 50, 302, 22);
-		colleagueSearchBox.setVisible(false);
-		colleagueSearchBox.setEnabled(false);
-		add(colleagueSearchBox);
+		JLabel lblSurname = new JLabel("Surname:");
+		lblSurname.setFont(fontLabel);
+		lblSurname.setBounds(20, 80, 130, 20);
+		add(lblSurname);
 
-		displaySelected = new JTextField();
-		displaySelected.setFont(fontTextBox);
-		displaySelected.setEditable(false);
-		displaySelected.setBounds(242, 75, 302, 22);
-		displaySelected.setVisible(false);
-		displaySelected.setEnabled(false);
-		add(displaySelected);
+		JLabel lblAlias = new JLabel("Alias:");
+		lblAlias.setFont(fontLabel);
+		lblAlias.setBounds(20, 110, 130, 20);
+		add(lblAlias);
 
-		lookupButton = new JButton("Lookup");
-		lookupButton.setFont(fontButton);
-		lookupButton.setBounds(560, 25, 120, 25);
-		lookupButton.setVisible(true);
-		lookupButton.setEnabled(true);
-		lookupButton.addActionListener(this);
-		add(lookupButton);
+		txtName = new JTextField();
+		txtName.setFont(fontTextBox);
+		txtName.setBounds(120, 50, 290, 20);
+		add(txtName);
+		txtName.setColumns(10);
 
-		selectButton = new JButton("Select");
-		selectButton.setFont(fontButton);
-		selectButton.setBounds(560, 50, 120, 25);
-		selectButton.setVisible(false);
-		selectButton.setEnabled(false);
-		selectButton.addActionListener(this);
-		add(selectButton);
+		txtSurname = new JTextField();
+		txtSurname.setFont(fontTextBox);
+		txtSurname.setBounds(120, 80, 290, 19);
+		add(txtSurname);
+		txtSurname.setColumns(10);
+
+		txtAlias = new JTextField();
+		txtAlias.setFont(fontTextBox);
+		txtAlias.setBounds(120, 110, 290, 19);
+		add(txtAlias);
+		txtAlias.setColumns(10);
+
+		JLabel lblPhoneNumber = new JLabel("Phone number:");
+		lblPhoneNumber.setFont(fontLabel);
+		lblPhoneNumber.setBounds(440, 51, 136, 15);
+		add(lblPhoneNumber);
+
+		txtPhone = new JTextField();
+		txtPhone.setFont(fontTextBox);
+		txtPhone.setColumns(10);
+		txtPhone.setBounds(580, 51, 290, 19);
+		add(txtPhone);
+
+		lblEmailAddress = new JLabel("Email Address:");
+		lblEmailAddress.setFont(fontLabel);
+		lblEmailAddress.setBounds(440, 81, 131, 15);
+		add(lblEmailAddress);
+
+		txtEmail = new JTextField();
+		txtEmail.setFont(fontTextBox);
+		txtEmail.setColumns(10);
+		txtEmail.setBounds(580, 81, 290, 19);
+		add(txtEmail);
+		
 
 		requestButton = new JButton("Request Endorsement");
 		requestButton.setFont(fontButton);
@@ -108,22 +142,14 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		tableColleagueSkills.getSelectionModel().addListSelectionListener(this);
 		skillTableListener = new SkillTableListener();
 		tableColleagueSkills.getModel().addTableModelListener(skillTableListener);
-		// {
-		//
-		// @Override
-		// public void tableChanged(TableModelEvent e) {
-		// int row = e.getFirstRow();
-		// System.out.println("Got this far--->>>");
-		//
-		// System.out.println("table changed event at row " + row);
-		//
-		// }
-		// });
+	
 
 		scrollPaneColleagueSkills = new JScrollPane(tableColleagueSkills);
 		scrollPaneColleagueSkills.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPaneColleagueSkills.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPaneColleagueSkills.setBounds(150, 150, 620, 320);
+		//scrollPaneColleagueSkills.setBounds(150, 150, 620, 320);
+		scrollPaneColleagueSkills.setBounds(140, 150, 620, 250);
+		
 		add(scrollPaneColleagueSkills);
 
 	}
@@ -189,6 +215,14 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 
 	}
 
+	private void populateUserInfo() {
+		txtAlias.setText(commonStuff.getColleague().getAliasName());
+		txtName.setText(commonStuff.getColleague().getFirstName());
+		txtSurname.setText(commonStuff.getColleague().getSurName());
+		txtPhone.setText(commonStuff.getColleague().getPhoneNumber());
+		txtEmail.setText(commonStuff.getColleague().getEmail());
+
+	}
 	public boolean createEndorsementRequest() {
 		EndorsementNomination endorseNom;
 		endorseNom = new EndorsementNomination(commonStuff.getLoggedOnUser().getUserID(),
@@ -262,27 +296,9 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 	public void actionPerformed(ActionEvent ae) {
 		Object source = ae.getSource();
 		String searchName = null, searchID = null;
-
-		if (source == lookupButton) {
-			requestButton.setVisible(false);
-			requestButton.setEnabled(false);
-			if ((lookupField.getText()).equals("")) {
-				JOptionPane.showMessageDialog(this, "Invalid Selection. Please type a search Name, Surname or User ID");
-			} else {
-				transaction = new Transaction("getUserList", lookupField.getText());
-				transaction = commonStuff.getClient().sendTransaction(transaction);
-				users = (ArrayList<User>) transaction.getObject();
-				if (!users.isEmpty()) {
-					setupColleagueSelection(users);
-					displaySelected.setVisible(false);
-				} else {
-					JOptionPane.showMessageDialog(this, "No Data For Selection");
-				}
-			}
-		}
-
-		if (source == selectButton) {
-			selectButtonPressed();
+		
+		if( source == btnSearchColl) {
+			selectUser();
 		}
 
 		if (source == requestButton) {
@@ -305,67 +321,38 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 
 	}
 
-	private void selectButtonPressed() {
-		String searchName;
-		String searchID;
-		searchName = (String) colleagueSearchBox.getSelectedItem();
-		searchID = users.get(colleagueSearchBox.getSelectedIndex()).getUserID();
+	
+	
+	private void selectUser() {
 
-		if (commonStuff.getColleague() == null) {
-			commonStuff.setColleague(new User(searchID, null, null, null, null, null));
+		transaction = new Transaction("getUserList", "A");
+		transaction = commonStuff.getClient().sendTransaction(transaction);
+		users = (ArrayList<User>) transaction.getObject();
+		userSelector = new UserSelector(users);
 
-			System.out.println("select Button  searchID = " + searchID);
+		int result = JOptionPane.showConfirmDialog(null, userSelector, "Select a user ", JOptionPane.OK_CANCEL_OPTION,
+				JOptionPane.PLAIN_MESSAGE);
+		if (result == JOptionPane.CANCEL_OPTION) {
+
+			return;
 		}
-		if (searchID != null) {
+		if (result == JOptionPane.OK_OPTION) {
 
-			if (searchID.equals(commonStuff.getLoggedOnUser().getUserID())) {
-				JOptionPane.showMessageDialog(this, "May not select yourself as a colleague.");
-				System.out.println("ERROR - Cannot rate yourself as colleague.");
-				lookupField.setVisible(true);
-				lookupField.setEnabled(true);
-				lookupField.setText(null);
-				lookupButton.setVisible(true);
-				lookupButton.setEnabled(true);
-				selectButton.setVisible(false);
-				selectButton.setEnabled(false);
-				colleagueSearchBox.setVisible(false);
-				colleagueSearchBox.setEnabled(false);
-				colleagueSearchBox.removeAllItems();
-				System.out.println("colleague search box " + colleagueSearchBox.getItemCount());
-			} else {
-				ArrayList<User> user = new ArrayList<User>();
+		}
 
-				transaction = new Transaction("getUser", searchID);
-				transaction = commonStuff.getClient().sendTransaction(transaction);
-				user = (ArrayList<User>) transaction.getObject();
-				commonStuff.setColleague(user.get(0));
-				// this.populateColleagueSkillsTable(searchID);
-				refreshSkills();
+		User selectedUser = userSelector.getSelectedUser();
+		if (selectedUser.getUserID() == "-1") {
+			JOptionPane.showMessageDialog(this, "No User has been selected");
+			return;
 
-				for (int pos = 0; pos < user.size(); pos++) {
-					commonStuff.setColleague(new User(searchID, user.get(pos).getFirstName(),
-							user.get(pos).getSurName(), user.get(pos).getAliasName(), user.get(pos).getEmail(),
-							user.get(pos).getPhoneNumber()));
-				}
-
-				displaySelected.setText(searchName);
-				displaySelected.setVisible(true);
-				displaySelected.setEnabled(true);
-				lookupField.setVisible(true);
-				lookupField.setEnabled(true);
-				lookupField.setText(null);
-				lookupButton.setVisible(true);
-				lookupButton.setEnabled(true);
-				selectButton.setVisible(false);
-				selectButton.setEnabled(false);
-				colleagueSearchBox.setVisible(false);
-				colleagueSearchBox.setEnabled(false);
-				colleagueSearchBox.removeAllItems();
-			}
 		} else {
-			JOptionPane.showMessageDialog(this, "Invalid Selection");
+			selectedUser = fetchuser(selectedUser);
 		}
-		colleagueSearchBox.removeAllItems();
+		commonStuff.setColleague(selectedUser);
+		System.out.println("colleague     "  + commonStuff.getColleague().getAliasName().toString()  + commonStuff.getColleague().getUserID()) ; 
+		refreshSkills();
+		populateUserInfo();
+		
 	}
 
 	@Override
