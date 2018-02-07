@@ -350,7 +350,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 			selectedUser = fetchuser(selectedUser);
 		}
 		commonStuff.setColleague(selectedUser);
-		System.out.println("colleague     "  + commonStuff.getColleague().getAliasName().toString()  + commonStuff.getColleague().getUserID()) ; 
+		//System.out.println("colleague     "  + commonStuff.getColleague().getAliasName().toString()  + commonStuff.getColleague().getUserID()) ; 
 		refreshSkills();
 		populateUserInfo();
 		

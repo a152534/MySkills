@@ -450,13 +450,13 @@ public class MyProfile1 extends JPanel implements ActionListener, ListSelectionL
 	class NominationListener implements ListSelectionListener {
 		public void valueChanged(ListSelectionEvent e) {
 			if ( commonStuff.getColleague() == null ) {
-				System.out.println("Createing colloeague ");
+				//System.out.println("Createing colloeague ");
 				commonStuff.setColleague(new User((String) tableEndorsementRequests.getValueAt(tableEndorsementRequests.getSelectedRow(), 1),null,null,null,null,null));
 			}
 			commonStuff.getColleague().setUserID( 
 					(String) tableEndorsementRequests.getValueAt(tableEndorsementRequests.getSelectedRow(), 1));
 			btnEndorse.setEnabled(true);
-			System.out.println("nominationLestenr");
+			//System.out.println("nominationLestenr");
 
 		}
 	}

@@ -201,7 +201,7 @@ public class SkillsSearch extends JPanel implements ActionListener
 		}
 		if (source == btnSearch)
 		{
-			System.out.println("IN BUTTON SEARCH");
+			//System.out.println("IN BUTTON SEARCH");
 			refreshSkillPerUser();
 		}
 

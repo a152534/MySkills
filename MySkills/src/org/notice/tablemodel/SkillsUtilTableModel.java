@@ -13,7 +13,7 @@ public class SkillsUtilTableModel extends AbstractTableModel {
 	
 	public SkillsUtilTableModel(ArrayList<Skill> inSkills) {
 		this.skills = inSkills ; 
-		System.out.println("Skills list size " + this.skills.size());
+		//System.out.println("Skills list size " + this.skills.size());
 	}
 
 	@Override
