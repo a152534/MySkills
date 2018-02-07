@@ -96,13 +96,13 @@ public class Admin extends JPanel implements ActionListener
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 		ArrayList<Skill> skills = (ArrayList<Skill>)transaction.getObject();
 	 		
-	    System.out.println("SKILLS  "  + skills.size());
+	    //System.out.println("SKILLS  "  + skills.size());
 	    skillSelector.getSkillModel().setSkills(skills);
 		//skillSelector = new SkillSelector(commonStuff.getSkillsList());
 		 
 		skillSelector.setBounds(100, 32, 620, 500);
 		add(skillSelector);
-		System.out.println("After add skillSelector " );
+		//System.out.println("After add skillSelector " );
 	}
 	
 
@@ -116,7 +116,7 @@ public class Admin extends JPanel implements ActionListener
 	
 	//	skillSelector = new SkillSelector(commonStuff.getSkillsList());
 		
-		System.out.println("Before SKILLS CLEAR");	
+	//	System.out.println("Before SKILLS CLEAR");	
 	 	
 	// 	skills.clear();  
 	//	for (Skill skill : newSkillList)

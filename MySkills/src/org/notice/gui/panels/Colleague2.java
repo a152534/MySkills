@@ -366,7 +366,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		@Override
 		public void tableChanged(TableModelEvent e) {
 			int row = tableColleagueSkills.getSelectedRow();
-			System.out.println("selected row : " + tableColleagueSkills.getSelectedRow());
+			//System.out.println("selected row : " + tableColleagueSkills.getSelectedRow());
 			skillId = (int) tableColleagueSkills.getValueAt(row, 1);
 			Skill_Levels level;// Added by Tony
 			level = (Skill_Levels) endorseBox.getSelectedItem();// Added by tony
@@ -375,14 +375,14 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 			int userSkillId = ratedSkills.get(row).getUserSkillId();
 
 			if (addEndorsement(userSkillId, selectedLevelInt)) {
-				System.out.println("I think it is now added to the database ");
+				
 			}else {
 				System.out.println("The insert in the database did not work ");
 			}
 			;
-			System.out.println("Got this far--->>> skill id = " + skillId + " level " + level + "" + selectedLevelInt);
+			//System.out.println("Got this far--->>> skill id = " + skillId + " level " + level + "" + selectedLevelInt);
 
-			System.out.println("table changed event at row  " + row);
+			//System.out.println("table changed event at row  " + row);
 			refreshSkills();
 
 		}
