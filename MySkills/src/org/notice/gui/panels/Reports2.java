@@ -319,15 +319,17 @@ public class Reports2 extends JPanel implements ActionListener, ListSelectionLis
         	}
         	if(source == btnUserDetail) 
         	{
+        	    btnUserDetail.setVisible(false);
+    		    btnUserDetail.setEnabled(false);
         	    userId = userSkillReport.get(rowId).getUserId();
         	    userName = userSkillReport.get(rowId).getFirstName();
         	    System.out.println("skillreprot length " +userSkillReport.size() );
         	    System.out.println("userdetail " + userId + "rowid " + rowId + "name " + userName);
         	//    user.setFirstName(userName);
         	//    user.setUserID(userId);
-        	    user  = new User(userId, null	,null,null,null,null);
+        	    user  = new User(userId, userName,null,null,null,null);
         	    commonStuff.setColleague(user);
-        	    commonStuff.getTabbedPane().setSelectedIndex(2);
+        	    commonStuff.getTabbedPane().setSelectedIndex(1);
         	     	    
         	}
 		
