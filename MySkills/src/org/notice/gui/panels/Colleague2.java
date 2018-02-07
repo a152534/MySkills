@@ -148,7 +148,7 @@ public class Colleague2 extends JPanel implements ActionListener, ListSelectionL
 		scrollPaneColleagueSkills.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPaneColleagueSkills.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		//scrollPaneColleagueSkills.setBounds(150, 150, 620, 320);
-		scrollPaneColleagueSkills.setBounds(140, 150, 620, 250);
+		scrollPaneColleagueSkills.setBounds(110, 150, 730, 310);
 		
 		add(scrollPaneColleagueSkills);
 

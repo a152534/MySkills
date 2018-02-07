@@ -102,11 +102,11 @@ public class LoginScreenGUI extends JPanel implements ActionListener {
 
 	private void validateUser() {
 		String userId = userIDField.getText();
-		if (userId.equals("")) {
-			userId = "A000123";
-		} else {
+		//if (userId.equals("")) {
+		//	userId = "A000123";
+		//} else {
 			userId = userIDField.getText();
-		}
+		//}
 		Transaction transaction = new Transaction("getUser", userId);
 		transaction = commonStuff.getClient().sendTransaction(transaction);
 
