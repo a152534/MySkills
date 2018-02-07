@@ -593,8 +593,8 @@ public class BusinessControl {
 				skillsDB.updateDB("INSERT INTO endorsement VALUES (null, " + userSkillId + ",'" + endorsor + "',"
 						+ level + ", null)");// Moved into if statement by Tony
 			} else {
-				skillsDB.updateDB("update endorsement set level = " + level + ", user_skill_id = '" + userSkillId
-						+ "' , endorsor = '" + endorser + "' where user_skill_id = " + userSkillId);// Added by Tony
+				skillsDB.updateDB("update endorsement set level = " + level + " where user_skill_id = " + userSkillId
+						+ " and  endorsor = '" + endorser + "'");// Added by Tony
 			}
 
 		} catch (Exception e) {
